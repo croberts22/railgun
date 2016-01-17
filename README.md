@@ -1,6 +1,8 @@
 railgun
 =======
 
+[![Build Status](https://travis-ci.org/croberts22/railgun.svg?branch=master)](https://travis-ci.org/croberts22/railgun)
+
 Railgun is an extension to the [MyAnimeList API](http://myanimelist.net/modules.php?go=api). 
 
 ## Motivation
