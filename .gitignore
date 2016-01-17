@@ -38,4 +38,3 @@ build/
 
 # Specific to RubyMine
 **/.idea/
-services/keys.rb
