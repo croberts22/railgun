@@ -1,3 +1,5 @@
+require 'nokogiri'
+
 module Railgun
 
   class Anime
@@ -19,6 +21,17 @@ module Railgun
 
   class AnimeScraper
 
+    def parse_anime(nokogiri)
+
+    end
+
+
+    def parse_title(nokogiri)
+      # Title and rank.
+      # anime.title = doc.at('h1 span').text
+
+      nokogiri.at('h1 span').text
+    end
 
 
   end

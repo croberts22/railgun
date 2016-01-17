@@ -1,8 +1,8 @@
-require './models/actor'
-require './models/anime'
-require './models/character'
-require './models/manga'
-require './services/mal_network_service'
+require_relative 'models/actor'
+require_relative 'models/anime'
+require_relative 'models/character'
+require_relative 'models/manga'
+require_relative 'services/mal_network_service'
 
 module Railgun
 

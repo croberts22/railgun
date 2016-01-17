@@ -13,6 +13,9 @@ GEM
     rack (1.6.4)
     rack-cache (1.5.1)
       rack (>= 0.4)
+    rack-test (0.6.3)
+      rack (>= 1.0)
+    rake (0.9.6)
     sinatra (1.1.0)
       rack (~> 1.1)
       tilt (~> 1.1)
@@ -33,6 +36,8 @@ DEPENDENCIES
   nokogiri
   rack
   rack-cache
+  rack-test
+  rake
   sinatra (= 1.1.0)
   thin
 

@@ -13,4 +13,9 @@ gem 'dalli'
 
 group :development do
   gem 'thin'
+  gem 'rack-test'
+end
+
+group :test do
+  gem 'rake'
 end
