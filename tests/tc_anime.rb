@@ -2,7 +2,7 @@ require 'test/unit'
 require 'rack/test'
 require 'sinatra'
 
-class AnimeTests < Test::Unit::TestCase
+class TestAnime < Test::Unit::TestCase
   include Rack::Test::Methods
 
   # def app
