@@ -9,6 +9,7 @@ gem 'json'
 gem 'builder'
 gem 'rack'
 gem 'rack-cache'
+gem 'dalli'
 
 group :development do
   gem 'thin'
