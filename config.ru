@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'bundler'
+require 'yaml'
 
 Bundler.require
 
