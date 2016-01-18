@@ -200,6 +200,7 @@ module Railgun
 
     end
 
+
     def parse_id(nokogiri)
       anime_id_input = nokogiri.at('input[@name="aid"]')
       if anime_id_input
@@ -212,12 +213,14 @@ module Railgun
       id
     end
 
+
     def parse_title(nokogiri)
       # Title and rank.
       # anime.title = doc.at('h1 span').text
 
       nokogiri.at('h1 span').text
     end
+
 
     def parse_synopsis(nokogiri)
       synopsis_h2 = nokogiri.at('//h2[text()="Synopsis"]')
@@ -246,6 +249,18 @@ module Railgun
       end
 
       synopsis
+    end
+
+
+    def parse_rank(nokogiri)
+      nokogiri.at('div[@id="contentWrapper"] > div > span').text.gsub(/\D/, '').to_i
+    end
+
+
+    def parse_image_url(nokogiri)
+      if image_node = nokogiri.at('div#content tr td div img')
+        image_node['src']
+      end
     end
 
   end
