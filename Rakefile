@@ -1,3 +1,6 @@
+require 'coveralls'
+Coveralls.wear!
+
 require 'rake/testtask'
 
 Rake::TestTask.new do |t|

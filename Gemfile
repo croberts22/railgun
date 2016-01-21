@@ -11,6 +11,7 @@ gem 'rack'
 gem 'rack-cache'
 gem 'dalli'
 gem 'rollbar', '~> 2.7.1'
+gem 'chronic'
 
 group :development do
   gem 'thin'
@@ -19,4 +20,5 @@ end
 
 group :test do
   gem 'rake'
+  gem 'coveralls', require: false
 end

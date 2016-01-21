@@ -1,4 +1,5 @@
 require 'nokogiri'
+require_relative '../utilities/base_scraper'
 
 module Railgun
 
@@ -190,13 +191,29 @@ module Railgun
   ### AnimeScraper
   ### Takes a Nokogiri object and converts it into an Anime object.
 
-  class AnimeScraper
+  class AnimeScraper < BaseScraper
 
     def parse_anime(nokogiri, anime)
 
       anime.id = parse_id(nokogiri)
       anime.title = parse_title(nokogiri)
       anime.synopsis = parse_synopsis(nokogiri)
+      anime.rank = parse_rank(nokogiri)
+      anime.image_url = parse_image_url(nokogiri)
+
+      node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
+
+      anime.other_titles = parse_alternative_titles(node)
+      anime.type = parse_type(node)
+      anime.episodes = parse_episode_count(node)
+      anime.start_date = parse_airing_end_date(node)
+      anime.end_date = parse_airing_end_date(node)
+      anime.genres = parse_genres(node)
+      anime.classification = parse_rating(node)
+      anime.members_score = parse_score(node)
+      anime.popularity_rank = parse_popularity_rank(node)
+      anime.members_count = parse_member_count(node)
+      anime.favorited_count = parse_favorite_count(node)
 
     end
 
@@ -260,6 +277,117 @@ module Railgun
     def parse_image_url(nokogiri)
       if image_node = nokogiri.at('div#content tr td div img')
         image_node['src']
+      end
+    end
+
+
+    def parse_alternative_titles(nokogiri)
+      other_titles = {}
+
+      if (node = nokogiri.at('//span[text()="English:"]')) && node.next
+        other_titles[:english] = node.next.text.strip.split(/,\s?/)
+      end
+      if (node = nokogiri.at('//span[text()="Synonyms:"]')) && node.next
+        other_titles[:synonyms] = node.next.text.strip.split(/,\s?/)
+      end
+      if (node = nokogiri.at('//span[text()="Japanese:"]')) && node.next
+        other_titles[:japanese] = node.next.text.strip.split(/,\s?/)
+      end
+
+      other_titles
+    end
+
+    def parse_type(nokogiri)
+      if (node = nokogiri.at('//span[text()="Type:"]')) && node.next.next
+        type = node.next.next.text.strip
+
+        type
+      end
+    end
+
+    def parse_episode_count(nokogiri)
+      if (node = nokogiri.at('//span[text()="Episodes:"]')) && node.next
+        episodes = node.next.text.strip.gsub(',', '').to_i
+        episodes = nil if episodes == 0
+
+        episodes
+      end
+    end
+
+    def parse_status(nokogiri)
+      if (node = nokogiri.at('//span[text()="Status:"]')) && node.next
+        status = node.next.text.strip
+
+        status
+      end
+    end
+
+    def parse_airing_start_date(nokogiri)
+      if (node = nokogiri.at('//span[text()="Aired:"]')) && node.next
+        airdates_text = node.next.text.strip
+        start_date = BaseScraper::parse_start_date(airdates_text)
+
+        start_date
+      end
+    end
+
+    def parse_airing_end_date(nokogiri)
+      if (node = nokogiri.at('//span[text()="Aired:"]')) && node.next
+        airdates_text = node.next.text.strip
+        end_date = BaseScraper::parse_end_date(airdates_text)
+
+        end_date
+      end
+    end
+
+    def parse_genres(nokogiri)
+      if node = nokogiri.at('//span[text()="Genres:"]')
+        genres = []
+        node.parent.search('a').each do |a|
+          genres << a.text.strip
+        end
+
+        genres
+      end
+    end
+
+    def parse_rating(nokogiri)
+      if (node = nokogiri.at('//span[text()="Rating:"]')) && node.next
+        classification = node.next.text.strip
+
+        classification
+      end
+    end
+
+    def parse_score(nokogiri)
+      if (node = nokogiri.at('//span[@itemprop="ratingValue"]'))
+        members_score = node.text.strip.to_f
+
+        members_score
+      end
+    end
+
+    def parse_popularity_rank(nokogiri)
+      if (node = nokogiri.at('//span[text()="Popularity:"]')) && node.next
+        popularity_rank = node.next.text.strip.sub('#', '').gsub(',', '').to_i
+
+        popularity_rank
+      end
+    end
+
+    def parse_member_count(nokogiri)
+      if (node = nokogiri.at('//span[text()="Members:"]')) && node.next
+        member_count = node.next.text.strip.gsub(',', '').to_i
+
+        member_count
+      end
+    end
+
+    def parse_favorite_count(nokogiri)
+      if (node = nokogiri.at('//span[text()="Favorites:"]')) && node.next
+        favorite_count = node.next.text.strip.gsub(',', '').to_i
+
+        favorite_count
       end
     end
 

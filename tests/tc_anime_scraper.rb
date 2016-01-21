@@ -67,5 +67,112 @@ class TestAnimeScraper < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
+  def test_parse_alternative_titles
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_alternative_titles(nokogiri)
+    expected = {
+        english: ['Shirobako'],
+        japanese: ['SHIROBAKO']
+    }
+
+    assert_equal(expected, actual)
+  end
+
+
+  def test_parse_type
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
+
+    actual = scraper.parse_type(node)
+    expected = 'TV'
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_episode_count
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
+
+    actual = scraper.parse_episode_count(node)
+    expected = 24
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_airing_start_date
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
+
+    actual = scraper.parse_airing_start_date(node)
+    expected = Time.parse('Oct 9, 2014')
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_airing_end_date
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
+
+    actual = scraper.parse_airing_end_date(node)
+    expected = Time.parse('Mar 26, 2015')
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_genres
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
+
+    actual = scraper.parse_genres(node)
+    expected = %w[ Comedy Drama ]
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_rating
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
+
+    actual = scraper.parse_rating(node)
+    expected = 'PG-13 - Teens 13 or older'
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_anime
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    anime = Railgun::Anime.new
+    scraper.parse_anime(nokogiri, anime)
+
+    assert(!anime.id.nil?)
+    assert(!anime.title.nil?)
+    assert(!anime.synopsis.nil?)
+    assert(!anime.rank.nil?)
+    assert(!anime.image_url.nil?)
+    assert(!anime.other_titles.empty?)
+    assert(!anime.type.nil?)
+    assert(anime.episodes > 0)
+    assert(!anime.start_date.nil?)
+    assert(!anime.end_date.nil?)
+    assert(!anime.genres.empty?)
+    assert(!anime.classification.nil?)
+
+  end
 
 end
