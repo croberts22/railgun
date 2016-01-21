@@ -4,8 +4,7 @@ Coveralls.wear!
 require 'rake/testtask'
 
 Rake::TestTask.new do |t|
-  t.pattern = 'tests/tc_*.rb'
+  t.libs << 'tests'
+  t.test_files = FileList['tests/test*.rb']
   t.verbose = true
 end
-
-task :default => :test
