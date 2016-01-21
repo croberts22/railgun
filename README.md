@@ -2,6 +2,7 @@ railgun
 =======
 
 [![Build Status](https://travis-ci.org/croberts22/railgun.svg?branch=master)](https://travis-ci.org/croberts22/railgun)
+[![Coverage Status](https://coveralls.io/repos/github/croberts22/railgun/badge.svg?branch=master)](https://coveralls.io/github/croberts22/railgun?branch=master)
 
 Railgun is an extension to the [MyAnimeList API](http://myanimelist.net/modules.php?go=api). 
 
