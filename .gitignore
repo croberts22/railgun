@@ -38,3 +38,4 @@ build/
 
 # Specific to RubyMine
 **/.idea/
+.DS_Store
