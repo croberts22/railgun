@@ -1,6 +1,4 @@
-require 'test/unit'
-require 'rack/test'
-require 'sinatra'
+require File.dirname(__FILE__) + '/test_helper'
 
 class TestAnime < Test::Unit::TestCase
   include Rack::Test::Methods

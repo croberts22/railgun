@@ -1,5 +1,4 @@
-require 'test/unit'
-require_relative '../railgun'
+require File.dirname(__FILE__) + '/test_helper'
 
 class TestAnimeScraper < Test::Unit::TestCase
 

@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'bundler'
 require 'yaml'
+require 'rollbar'
 
 Bundler.require
 
@@ -18,6 +19,10 @@ use Rack::Cache,
         Rack::Cache::Key.new(request).generate
       end
     }
+
+Rollbar.configure do |config|
+  config.access_token = 'a9edc3147c2a4c0b841ef5f9e1e564f8'
+end
 
 # Used to whitelist web requests.
 ENV['USER_AGENT'] = 'api-MyAniList-0529FA876D3D7805641D09E06AEE157D'
