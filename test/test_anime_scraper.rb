@@ -152,6 +152,124 @@ class TestAnimeScraper < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
+  def test_parse_score
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
+
+    actual = scraper.parse_score(node)
+    expected = 8.5
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_popularity_rank
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
+
+    actual = scraper.parse_popularity_rank(node)
+    expected = 431
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_member_count
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
+
+    actual = scraper.parse_member_count(node)
+    expected = 92646
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_favorite_count
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
+
+    actual = scraper.parse_favorite_count(node)
+    expected = 1897
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_tags
+
+  end
+
+  def test_parse_additional_info_urls
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
+
+    actual = scraper.parse_additional_info_urls(node)
+    expected = {
+        details: 'http://myanimelist.net/anime/25835/Shirobako',
+        reviews: 'http://myanimelist.net/anime/25835/Shirobako/reviews',
+        recommendations: 'http://myanimelist.net/anime/25835/Shirobako/userrecs',
+        stats: 'http://myanimelist.net/anime/25835/Shirobako/stats',
+        characters_and_staff: 'http://myanimelist.net/anime/25835/Shirobako/characters',
+        news: 'http://myanimelist.net/anime/25835/Shirobako/news',
+        forum: 'http://myanimelist.net/anime/25835/Shirobako/forum',
+        pictures: 'http://myanimelist.net/anime/25835/Shirobako/pics',
+    }
+
+    assert_equal(expected, actual)
+
+  end
+
+  def test_parse_manga_adaptations
+
+  end
+
+  def test_parse_prequels
+
+  end
+
+  def test_parse_sequels
+
+  end
+
+  def test_parse_side_stories
+
+  end
+
+  def test_parse_parent_stories
+
+  end
+
+  def test_parse_spin_offs
+
+  end
+
+  def test_parse_summaries
+
+  end
+
+  def test_parse_alternative_versions
+
+  end
+
+  def test_parse_alternative_settings
+
+  end
+
+  def test_parse_full_stories
+
+  end
+
+  def test_parse_other
+
+  end
+
   def test_parse_anime
     scraper = Railgun::AnimeScraper.new
     nokogiri = nokogiri_for_sample_response
