@@ -9,6 +9,10 @@ class TestAnimeScraper < Test::Unit::TestCase
     Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/shirobako_anime_response.html"))
   end
 
+  def nokogiri_for_railgun_response
+    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/railgun_anime_response.html"))
+  end
+
   def text_for_related_anime(nokogiri)
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
     related_anime_h2 = node.at('//h2[text()="Related Anime"]')
@@ -264,19 +268,96 @@ class TestAnimeScraper < Test::Unit::TestCase
   end
 
   def test_parse_sequels
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_railgun_response
 
+    related_anime_text = text_for_related_anime(nokogiri)
+
+    actual = scraper.parse_sequels(related_anime_text)
+    expected = [
+        {
+            anime_id: '16049',
+            title: 'Toaru Kagaku no Railgun S',
+            url: '/anime/16049/Toaru_Kagaku_no_Railgun_S'
+        }
+    ]
+
+    assert_equal(expected, actual)
   end
 
   def test_parse_side_stories
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_railgun_response
 
+    related_anime_text = text_for_related_anime(nokogiri)
+
+    actual = scraper.parse_side_stories(related_anime_text)
+    expected = [
+        {
+            anime_id: '9047',
+            title: 'Toaru Kagaku no Railgun: Misaka-san wa Ima Chuumoku no Mato Desukara',
+            url: '/anime/9047/Toaru_Kagaku_no_Railgun__Misaka-san_wa_Ima_Chuumoku_no_Mato_Desukara'
+        },
+        {
+            anime_id: '9063',
+            title: 'Toaru Kagaku no Railgun: Entenka no Satsuei Model mo Raku Ja Arimasen wa ne.',
+            url: '/anime/9063/Toaru_Kagaku_no_Railgun__Entenka_no_Satsuei_Model_mo_Raku_Ja_Arimasen_wa_ne'
+        }
+    ]
+
+    assert_equal(expected, actual)
   end
 
-  def test_parse_parent_stories
+  def test_parse_parent_story
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_railgun_response
 
+    related_anime_text = text_for_related_anime(nokogiri)
+
+    actual = scraper.parse_parent_story(related_anime_text)
+    expected = {
+        anime_id: '4654',
+        title: 'Toaru Majutsu no Index',
+        url: '/anime/4654/Toaru_Majutsu_no_Index'
+    }
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_character_anime
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_railgun_response
+
+    related_anime_text = text_for_related_anime(nokogiri)
+
+    actual = scraper.parse_character_anime(related_anime_text)
+    expected = [
+        {
+            anime_id: '27509',
+            title: 'Toaru Majutsu no Index 10th Anniversary PV',
+            url: '/anime/27509/Toaru_Majutsu_no_Index_10th_Anniversary_PV'
+        }
+    ]
+
+    assert_equal(expected, actual)
   end
 
   def test_parse_spin_offs
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_railgun_response
 
+    related_anime_text = text_for_related_anime(nokogiri)
+
+    actual = scraper.parse_spin_offs(related_anime_text)
+    expected = [
+        {
+            anime_id: '8023',
+            title: 'Toaru Kagaku no Railgun Specials',
+            url: '/anime/8023/Toaru_Kagaku_no_Railgun_Specials'
+        }
+    ]
+
+    assert_equal(expected, actual)
   end
 
   def test_parse_summaries
