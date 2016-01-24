@@ -154,4 +154,27 @@ class TestAnime < Test::Unit::TestCase
 
   end
 
+  def test_initialized_attributes
+    anime = Railgun::Anime.new
+
+    assert(anime.genres.empty?)
+    assert(anime.other_titles.empty?)
+    assert(anime.manga_adaptations.empty?)
+    assert(anime.prequels.empty?)
+    assert(anime.sequels.empty?)
+    assert(anime.side_stories.empty?)
+    assert(anime.character_anime.empty?)
+    assert(anime.spin_offs.empty?)
+    assert(anime.summaries.empty?)
+    assert(anime.alternative_versions.empty?)
+    assert(anime.alternative_settings.empty?)
+    assert(anime.full_stories.empty?)
+    assert(anime.others.empty?)
+    assert(anime.parent_story.empty?)
+    assert(anime.summary_stats.empty?)
+    assert(anime.score_stats.empty?)
+    assert(anime.additional_info_urls.empty?)
+    assert(anime.character_voice_actors.empty?)
+  end
+
 end

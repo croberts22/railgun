@@ -399,12 +399,11 @@ module Railgun
       anime
     end
 
-
     def self.generate_anime_from_pattern(html_string, string_to_match, regex_pattern)
-      manga = []
+      anime = []
       if html_string.match(string_to_match)
         $1.scan(regex_pattern) do |url, anime_id, title|
-          manga << {
+          anime << {
               :anime_id => anime_id,
               :title => title,
               :url => url
@@ -412,7 +411,78 @@ module Railgun
         end
       end
 
-      manga
+      anime
+    end
+
+    # FIXME: Ripped from umalapi. This should be revisited.
+    def parse_summary_stats(nokogiri)
+
+      summary_stats = {}
+
+      # Summary Stats.
+      # Example:
+      # <div class="spaceit_pad"><span class="dark_text">Watching:</span> 12,334</div>
+      # <div class="spaceit_pad"><span class="dark_text">Completed:</span> 59,459</div>
+      # <div class="spaceit_pad"><span class="dark_text">On-Hold:</span> 3,419</div>
+      # <div class="spaceit_pad"><span class="dark_text">Dropped:</span> 2,907</div>
+      # <div class="spaceit_pad"><span class="dark_text">Plan to Watch:</span> 17,571</div>
+      # <div class="spaceit_pad"><span class="dark_text">Total:</span> 95,692</div>
+
+      left_column_nodeset = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
+
+      if (node = left_column_nodeset.at('//span[text()="Watching:"]')) && node.next
+        summary_stats[:watching] = node.next.text.strip.gsub(',','').to_i
+      end
+      if (node = left_column_nodeset.at('//span[text()="Completed:"]')) && node.next
+        summary_stats[:completed] = node.next.text.strip.gsub(',','').to_i
+      end
+      if (node = left_column_nodeset.at('//span[text()="On-Hold:"]')) && node.next
+        summary_stats[:on_hold] = node.next.text.strip.gsub(',','').to_i
+      end
+      if (node = left_column_nodeset.at('//span[text()="Dropped:"]')) && node.next
+        summary_stats[:dropped] = node.next.text.strip.gsub(',','').to_i
+      end
+      if (node = left_column_nodeset.at('//span[text()="Plan to Watch:"]')) && node.next
+        summary_stats[:plan_to_watch] = node.next.text.strip.gsub(',','').to_i
+      end
+      if (node = left_column_nodeset.at('//span[text()="Total:"]')) && node.next
+        summary_stats[:total] = node.next.text.strip.gsub(',','').to_i
+      end
+
+      summary_stats
+    end
+
+    # FIXME: Ripped from umalapi. This should be revisited.
+    def parse_score_stats(nokogiri)
+
+      score_stats = {}
+
+      # Summary Stats.
+      # Example:
+      # <tr>
+      #   <td width="20">10</td>
+      #	  <td>
+      #     <div class="spaceit_pad">
+      #       <div class="updatesBar" style="float: left; height: 15px; width: 23%;"></div>
+      #       <span>&nbsp;22.8% <small>(12989 votes)</small></span>
+      #     </div>
+      #   </td>
+      # </tr>
+
+      left_column_nodeset = nokogiri.xpath('//table[preceding-sibling::h2[text()="Score Stats"]]')
+      left_column_nodeset.search('tr').each do |tr|
+        if (tr_array = tr.search('td')) && tr_array.count == 2
+          name = tr_array[0].at('text()')
+          value = tr_array[1].at('div/span/small/text()').to_s
+
+          if value.match %r{\(([0-9]+) votes\)}
+            score_stats[name] = $1.to_i
+          end
+
+        end
+      end
+
+      score_stats
     end
 
   end

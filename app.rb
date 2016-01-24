@@ -12,7 +12,7 @@ class App < Sinatra::Base
   get '/:v/anime/:id' do
     pass unless params[:id] =~ /^\d+$/
 
-    options = nil
+    options = []
 
     if params.include? 'options'
       options = params[:options].split(',')
