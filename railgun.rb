@@ -1,3 +1,9 @@
+# Railgun
+#
+# Author: Corey Roberts
+# Description: An extension to the MyAnimeList API.
+# Version: 0.1
+
 require_relative 'models/actor'
 require_relative 'models/anime'
 require_relative 'models/character'
