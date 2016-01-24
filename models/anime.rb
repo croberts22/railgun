@@ -7,11 +7,12 @@ module Railgun
 
     attr_accessor :id, :title, :rank, :popularity_rank, :image_url, :episodes, :classification,
                   :members_score, :members_count, :favorited_count, :synopsis, :start_date, :end_date
-    attr_accessor :listed_anime_id, :parent_story
     attr_reader :type, :status
-    attr_writer :genres, :tags, :other_titles, :manga_adaptations, :prequels, :sequels, :side_stories,
-                :character_anime, :spin_offs, :summaries, :alternative_versions, :summary_stats, :score_stats,
-                :additional_info_urls, :character_voice_actors, :alternative_settings, :full_stories, :others
+    attr_writer :genres, :tags,
+                :other_titles, :manga_adaptations, :prequels, :sequels, :side_stories,
+                :character_anime, :spin_offs, :summaries, :alternative_versions, :alternative_settings,
+                :full_stories, :others, :parent_story,
+                :summary_stats, :score_stats,  :additional_info_urls, :character_voice_actors
 
 
     ### Custom Setter Methods
@@ -88,6 +89,10 @@ module Railgun
       @character_anime ||= []
     end
 
+    def parent_story
+      @parent_story ||= {}
+    end
+
     def spin_offs
       @spin_offs ||= []
     end
@@ -126,41 +131,44 @@ module Railgun
 
     def attributes
       {
-          :id => id,
-          :title => title,
-          :other_titles => other_titles,
-          :summary_stats => summary_stats,
-          :score_stats => score_stats,
-          :additional_info_urls => additional_info_urls,
-          :synopsis => synopsis,
-          :type => type,
-          :rank => rank,
-          :popularity_rank => popularity_rank,
-          :image_url => image_url,
-          :episodes => episodes,
-          :status => status,
-          :start_date => start_date,
-          :end_date => end_date,
-          :genres => genres,
-          :tags => tags,
-          :classification => classification,
-          :members_score => members_score,
-          :members_count => members_count,
-          :favorited_count => favorited_count,
-          :manga_adaptations => manga_adaptations,
-          :prequels => prequels,
-          :sequels => sequels,
-          :side_stories => side_stories,
-          :parent_story => parent_story,
-          :character_anime => character_anime,
-          :spin_offs => spin_offs,
-          :summaries => summaries,
-          :alternative_versions => alternative_versions,
-          :listed_anime_id => listed_anime_id,
-          :character_voice_actors => character_voice_actors,
-          :alternative_settings => alternative_settings,
-          :full_stories => full_stories,
-          :others => others
+          id: id,
+          title: title,
+          type: type,
+          episodes: episodes,
+          classification: classification,
+          genres: genres,
+          synopsis: synopsis,
+          status: status,
+          start_date: start_date,
+          end_date: end_date,
+          image_url: image_url,
+          other_titles: other_titles,
+          tags: tags,
+          stats: {
+              rank: rank,
+              popularity_rank: popularity_rank,
+              members_score: members_score,
+              members_count: members_count,
+              favorited_count: favorited_count,
+              summary_stats: summary_stats,
+              score_stats: score_stats
+          },
+          related_anime: {
+              manga_adaptations: manga_adaptations,
+              prequels: prequels,
+              sequels: sequels,
+              side_stories: side_stories,
+              parent_story: parent_story,
+              character_anime: character_anime,
+              spin_offs: spin_offs,
+              summaries: summaries,
+              alternative_versions: alternative_versions,
+              alternative_settings: alternative_settings,
+              full_stories: full_stories,
+              others: others
+          },
+          character_voice_actors: character_voice_actors,
+          additional_info_urls: additional_info_urls
       }
     end
 
