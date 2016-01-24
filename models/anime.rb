@@ -1,11 +1,11 @@
-require 'nokogiri'
+require_relative 'resource'
 require_relative '../utilities/anime_scraper'
 
 module Railgun
 
-  class Anime
+  class Anime < Resource
 
-    attr_accessor :id, :title, :rank, :popularity_rank, :image_url, :episodes, :classification,
+    attr_accessor :rank, :popularity_rank, :episodes, :classification,
                   :members_score, :members_count, :favorited_count, :synopsis, :start_date, :end_date
     attr_reader :type, :status
     attr_writer :genres, :tags,
@@ -190,7 +190,6 @@ module Railgun
       scraper.parse_anime(nokogiri, anime)
 
       # If any options were passed in, perform a fetch and continue parsing.
-
       if options.include? 'characters_and_staff'
         puts 'Scraping characters and staff...'
         nokogiri = MALNetworkService.nokogiri_from_request(anime.additional_info_urls[:characters_and_staff])

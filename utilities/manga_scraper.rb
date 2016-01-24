@@ -7,6 +7,10 @@ module Railgun
 
   class MangaScraper < BaseScraper
 
+    def parse_manga(nokogiri, manga)
+      # TODO
+    end
+
     def self.generate_manga_from_pattern(html_string, string_to_match, regex_pattern)
       manga = []
       html_string.match(string_to_match)
