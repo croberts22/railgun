@@ -8,14 +8,17 @@ module Railgun
   class MangaScraper < BaseScraper
 
     def self.generate_manga_from_pattern(html_string, string_to_match, regex_pattern)
+      manga = []
       html_string.match(string_to_match)
-      $1.scan(%r{regex_pattern}) do |url, manga_id, title|
-        return {
+      $1.scan(regex_pattern) do |url, manga_id, title|
+        manga << {
             :manga_id => manga_id,
             :title => title,
             :url => url
         }
       end
+
+      manga
     end
 
   end

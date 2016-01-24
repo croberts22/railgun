@@ -46,7 +46,7 @@ module Railgun
           anime.prequels = parse_prequels(related_anime_text)
           anime.sequels = parse_sequels(related_anime_text)
           anime.side_stories = parse_side_stories(related_anime_text)
-          anime.parent_story = parse_parent_stories(related_anime_text)
+          anime.parent_story = parse_parent_story(related_anime_text)
           anime.character_anime = parse_character_anime(related_anime_text)
           anime.spin_offs = parse_spin_offs(related_anime_text)
           anime.summaries = parse_summaries(related_anime_text)
@@ -292,65 +292,126 @@ module Railgun
 
     def parse_manga_adaptations(html_string)
       string_to_match = /Adaptation:\<\/td\>(.+?)\<\/td\>/m
-      regex_pattern = '<a href="(/manga/(\d+)/.*?)">(.+?)</a>'
+      regex_pattern = %r{<a href="(/manga/(\d+)/.*?)">(.+?)</a>}
 
-      MangaScraper::generate_manga_from_pattern(html_string, string_to_match, regex_pattern)
+      manga = MangaScraper::generate_manga_from_pattern(html_string, string_to_match, regex_pattern)
+
+      manga
     end
 
     def parse_prequels(html_string)
+      string_to_match = /Prequel:\<\/td\>(.+?)\<\/td\>/m
+      regex_pattern = %r{<a href="(/anime/(\d+)/.*?)">(.+?)</a>}
 
+      anime = self.class.generate_anime_from_pattern(html_string, string_to_match, regex_pattern)
+
+      anime
     end
 
     def parse_sequels(html_string)
+      string_to_match = /Sequel:\<\/td\>(.+?)\<\/td\>/m
+      regex_pattern = %r{<a href="(/anime/(\d+)/.*?)">(.+?)</a>}
 
+      anime = self.class.generate_anime_from_pattern(html_string, string_to_match, regex_pattern)
+
+      anime
     end
 
     def parse_side_stories(html_string)
+      string_to_match = /Side story:\<\/td\>(.+?)\<\/td\>/m
+      regex_pattern = %r{<a href="(/anime/(\d+)/.*?)">(.+?)</a>}
 
+      anime = self.class.generate_anime_from_pattern(html_string, string_to_match, regex_pattern)
+
+      anime
     end
 
-    def parse_parent_stories(html_string)
+    def parse_parent_story(html_string)
+      string_to_match = /Parent story:\<\/td\>(.+?)\<\/td\>/m
+      regex_pattern = %r{<a href="(/anime/(\d+)/.*?)">(.+?)</a>}
 
+      anime = self.class.generate_anime_from_pattern(html_string, string_to_match, regex_pattern)
+
+      anime.first
     end
 
     def parse_character_anime(html_string)
+      string_to_match = /Character:\<\/td\>(.+?)\<\/td\>/m
+      regex_pattern = %r{<a href="(/anime/(\d+)/.*?)">(.+?)</a>}
 
+      anime = self.class.generate_anime_from_pattern(html_string, string_to_match, regex_pattern)
+
+      anime
     end
 
     def parse_spin_offs(html_string)
+      string_to_match = /Spin-off:\<\/td\>(.+?)\<\/td\>/m
+      regex_pattern = %r{<a href="(/anime/(\d+)/.*?)">(.+?)</a>}
 
+      anime = self.class.generate_anime_from_pattern(html_string, string_to_match, regex_pattern)
+
+      anime
     end
 
     def parse_summaries(html_string)
+      string_to_match = /Summary:\<\/td\>(.+?)\<\/td\>/m
+      regex_pattern = %r{<a href="(/anime/(\d+)/.*?)">(.+?)</a>}
 
+      anime = self.class.generate_anime_from_pattern(html_string, string_to_match, regex_pattern)
+
+      anime
     end
 
     def parse_alternative_versions(html_string)
+      string_to_match = /Alternative version?:\<\/td\>(.+?)\<\/td\>/m
+      regex_pattern = %r{<a href="(/anime/(\d+)/.*?)">(.+?)</a>}
 
+      anime = self.class.generate_anime_from_pattern(html_string, string_to_match, regex_pattern)
+
+      anime
     end
 
     def parse_alternative_settings(html_string)
+      string_to_match = /Alternative setting:\<\/td\>(.+?)\<\/td\>/m
+      regex_pattern = %r{<a href="(/anime/(\d+)/.*?)">(.+?)</a>}
 
+      anime = self.class.generate_anime_from_pattern(html_string, string_to_match, regex_pattern)
+
+      anime
     end
 
     def parse_full_stories(html_string)
+      string_to_match = /Full story:\<\/td\>(.+?)\<\/td\>/m
+      regex_pattern = %r{<a href="(/anime/(\d+)/.*?)">(.+?)</a>}
 
+      anime = self.class.generate_anime_from_pattern(html_string, string_to_match, regex_pattern)
+
+      anime
     end
 
     def parse_other(html_string)
+      string_to_match = /Other:\<\/td\>(.+?)\<\/td\>/m
+      regex_pattern = %r{<a href="(/anime/(\d+)/.*?)">(.+?)</a>}
 
+      anime = self.class.generate_anime_from_pattern(html_string, string_to_match, regex_pattern)
+
+      anime
     end
 
 
     def self.generate_anime_from_pattern(html_string, string_to_match, regex_pattern)
-      html_string.match(string_to_match)
-      $1.scan(%r{regex_pattern}) do |url, anime_id, title|
-        return {
-            :anime_id => anime_id,
-            :title => title,
-            :url => url
-        }
+      manga = []
+      if html_string.match(string_to_match)
+        $1.scan(regex_pattern) do |url, anime_id, title|
+          manga << {
+              :anime_id => anime_id,
+              :title => title,
+              :url => url
+          }
+        end
       end
+
+      manga
     end
 
   end

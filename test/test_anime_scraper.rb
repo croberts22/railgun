@@ -6,7 +6,17 @@ class TestAnimeScraper < Test::Unit::TestCase
   ### Convenience Methods
 
   def nokogiri_for_sample_response
-    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/anime_response.html"))
+    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/shirobako_anime_response.html"))
+  end
+
+  def text_for_related_anime(nokogiri)
+    node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
+    related_anime_h2 = node.at('//h2[text()="Related Anime"]')
+
+    if related_anime_h2
+      match_data = related_anime_h2.parent.to_s.match(%r{</div>Related Anime</h2>(.+?)<h2>}m)
+      match_data[1]
+    end
   end
 
 
@@ -183,7 +193,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
     actual = scraper.parse_member_count(node)
-    expected = 92646
+    expected = 93735
 
     assert_equal(expected, actual)
   end
@@ -195,7 +205,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
     actual = scraper.parse_favorite_count(node)
-    expected = 1897
+    expected = 1936
 
     assert_equal(expected, actual)
   end
@@ -227,7 +237,26 @@ class TestAnimeScraper < Test::Unit::TestCase
   end
 
   def test_parse_manga_adaptations
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
 
+    related_anime_text = text_for_related_anime(nokogiri)
+
+    actual = scraper.parse_manga_adaptations(related_anime_text)
+    expected = [
+        {
+            manga_id: '80441',
+            title: 'Shirobako: Kaminoyama Koukou Animation Doukoukai',
+            url: '/manga/80441/Shirobako__Kaminoyama_Koukou_Animation_Doukoukai'
+        },
+        {
+            manga_id: '84949',
+            title: 'Shirobako: Introduction',
+            url: '/manga/84949/Shirobako__Introduction'
+        }
+    ]
+
+    assert_equal(expected, actual)
   end
 
   def test_parse_prequels
