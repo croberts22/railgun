@@ -1,5 +1,7 @@
 require 'coveralls'
-Coveralls.wear!
+Coveralls.wear! do
+  add_filter '/test/'
+end
 SimpleCov.command_name 'Unit Tests'
 
 require 'test/unit'
