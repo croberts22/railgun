@@ -1,5 +1,4 @@
 require_relative 'base_scraper'
-require_relative 'manga_scraper'
 
 module Railgun
 
@@ -75,95 +74,12 @@ module Railgun
       id
     end
 
-
-    def parse_title(nokogiri)
-      # Title and rank.
-      # anime.title = doc.at('h1 span').text
-
-      nokogiri.at('h1 span').text
-    end
-
-
-    def parse_synopsis(nokogiri)
-      synopsis_h2 = nokogiri.at('//h2[text()="Synopsis"]')
-      synopsis = ''
-
-      if synopsis_h2
-        node = synopsis_h2.next
-
-        while node
-
-          if node.name.eql? 'h2'
-            node = nil
-            next
-          end
-
-          # Replace occurrences of br with escaped newlines.
-          if node.to_s.eql? '<br>' or node.to_s.eql? '<br />'
-            synopsis << "\\n"
-          else
-            synopsis << '' << Nokogiri::HTML(node.to_s).xpath('//text()').map(&:text).join('')
-          end
-
-          node = node.next
-
-        end
-      end
-
-      synopsis
-    end
-
-
-    def parse_rank(nokogiri)
-      nokogiri.at('div[@id="contentWrapper"] > div > span').text.gsub(/\D/, '').to_i
-    end
-
-
-    def parse_image_url(nokogiri)
-      if image_node = nokogiri.at('div#content tr td div img')
-        image_node['src']
-      end
-    end
-
-
-    def parse_alternative_titles(nokogiri)
-      other_titles = {}
-
-      if (node = nokogiri.at('//span[text()="English:"]')) && node.next
-        other_titles[:english] = node.next.text.strip.split(/,\s?/)
-      end
-      if (node = nokogiri.at('//span[text()="Synonyms:"]')) && node.next
-        other_titles[:synonyms] = node.next.text.strip.split(/,\s?/)
-      end
-      if (node = nokogiri.at('//span[text()="Japanese:"]')) && node.next
-        other_titles[:japanese] = node.next.text.strip.split(/,\s?/)
-      end
-
-      other_titles
-    end
-
-    def parse_type(nokogiri)
-      if (node = nokogiri.at('//span[text()="Type:"]')) && node.next.next
-        type = node.next.next.text.strip
-
-        type
-      end
-    end
-
     def parse_episode_count(nokogiri)
       if (node = nokogiri.at('//span[text()="Episodes:"]')) && node.next
         episodes = node.next.text.strip.gsub(',', '').to_i
         episodes = nil if episodes == 0
 
         episodes
-      end
-    end
-
-    def parse_status(nokogiri)
-      if (node = nokogiri.at('//span[text()="Status:"]')) && node.next
-        status = node.next.text.strip
-
-        status
       end
     end
 
@@ -185,18 +101,6 @@ module Railgun
       end
     end
 
-    def parse_genres(nokogiri)
-      genres = []
-
-      if node = nokogiri.at('//span[text()="Genres:"]')
-        node.parent.search('a').each do |a|
-          genres << a.text.strip
-        end
-
-        genres
-      end
-    end
-
     def parse_rating(nokogiri)
       if (node = nokogiri.at('//span[text()="Rating:"]')) && node.next
         classification = node.next.text.strip
@@ -205,93 +109,8 @@ module Railgun
       end
     end
 
-    def parse_score(nokogiri)
-      if (node = nokogiri.at('//span[@itemprop="ratingValue"]'))
-        members_score = node.text.strip.to_f
-
-        members_score
-      end
-    end
-
-    def parse_popularity_rank(nokogiri)
-      if (node = nokogiri.at('//span[text()="Popularity:"]')) && node.next
-        popularity_rank = node.next.text.strip.sub('#', '').gsub(',', '').to_i
-
-        popularity_rank
-      end
-    end
-
-    def parse_member_count(nokogiri)
-      if (node = nokogiri.at('//span[text()="Members:"]')) && node.next
-        member_count = node.next.text.strip.gsub(',', '').to_i
-
-        member_count
-      end
-    end
-
-    def parse_favorite_count(nokogiri)
-      if (node = nokogiri.at('//span[text()="Favorites:"]')) && node.next
-        favorite_count = node.next.text.strip.gsub(',', '').to_i
-
-        favorite_count
-      end
-    end
-
-    def parse_tags(nokogiri)
-      tags = []
-
-      if (node = nokogiri.at('//span[preceding-sibling::h2[text()="Popular Tags"]]'))
-        node.search('a').each do |a|
-          tags << a.text
-        end
-      end
-
-      tags
-    end
-
-    def parse_additional_info_urls(nokogiri)
-      additional_info_urls = {}
-
-      if (node = nokogiri.at('//div[@id="horiznav_nav"]/ul'))
-        urls = node.search('li')
-
-        (0..urls.length-1).each { |i|
-          url_node = urls[i]
-
-          additional_url_title = url_node.at('//div[@id="horiznav_nav"]/ul/li['+(i+1).to_s+']/a[1]/text()')
-          additional_url = url_node.at('//div[@id="horiznav_nav"]/ul/li['+(i+1).to_s+']/a[1]/@href')
-
-          if (additional_url_title.to_s == 'Details')
-            additional_info_urls[:details] = additional_url.to_s
-          end
-          if (additional_url_title.to_s == 'Reviews')
-            additional_info_urls[:reviews] = additional_url.to_s
-          end
-          if (additional_url_title.to_s == 'Recommendations')
-            additional_info_urls[:recommendations] = additional_url.to_s
-          end
-          if (additional_url_title.to_s == 'Stats')
-            additional_info_urls[:stats] = additional_url.to_s
-          end
-          if (additional_url_title.to_s == 'Characters &amp; Staff')
-            additional_info_urls[:characters_and_staff] = additional_url.to_s
-          end
-          if (additional_url_title.to_s == 'News')
-            additional_info_urls[:news] = additional_url.to_s
-          end
-          if (additional_url_title.to_s == 'Forum')
-            additional_info_urls[:forum] = additional_url.to_s
-          end
-          if (additional_url_title.to_s == 'Pictures')
-            additional_info_urls[:pictures] = additional_url.to_s
-          end
-        }
-      end
-
-      additional_info_urls
-    end
-
     def parse_manga_adaptations(html_string)
+      require_relative 'manga_scraper'
       string_to_match = /Adaptation:\<\/td\>(.+?)\<\/td\>/m
       regex_pattern = %r{<a href="(/manga/(\d+)/.*?)">(.+?)</a>}
 
