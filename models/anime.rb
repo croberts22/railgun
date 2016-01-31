@@ -135,8 +135,10 @@ module Railgun
           title: title,
           type: type,
           episodes: episodes,
+
           classification: classification,
           genres: genres,
+
           synopsis: synopsis,
           status: status,
           start_date: start_date,
@@ -144,6 +146,7 @@ module Railgun
           image_url: image_url,
           other_titles: other_titles,
           tags: tags,
+
           stats: {
               rank: rank,
               popularity_rank: popularity_rank,
@@ -153,6 +156,7 @@ module Railgun
               summary_stats: summary_stats,
               score_stats: score_stats
           },
+
           related_anime: {
               manga_adaptations: manga_adaptations,
               prequels: prequels,
@@ -167,6 +171,7 @@ module Railgun
               full_stories: full_stories,
               others: others
           },
+
           characters: character_voice_actors,
           additional_info_urls: additional_info_urls
       }

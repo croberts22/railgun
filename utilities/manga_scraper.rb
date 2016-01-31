@@ -60,11 +60,11 @@ module Railgun
     end
 
     def parse_id(nokogiri)
-      manga_id_input = doc.at('input[@name="mid"]')
+      manga_id_input = nokogiri.at('input[@name="mid"]')
       if manga_id_input
         id = manga_id_input['value'].to_i
       else
-        details_link = doc.at('//a[text()="Details"]')
+        details_link = nokogiri.at('//a[text()="Details"]')
         id = details_link['href'][%r{http://myanimelist.net/manga/(\d+)/.*?}, 1].to_i
       end
 
@@ -81,7 +81,7 @@ module Railgun
     end
 
     def parse_chapter_count(nokogiri)
-      if (node = nokogiri.at('//span[text()="Volumes:"]')) && node.next
+      if (node = nokogiri.at('//span[text()="Chapters:"]')) && node.next
         chapters = node.next.text.strip.gsub(',', '').to_i
         chapters = nil if chapters == 0
 
@@ -209,13 +209,14 @@ module Railgun
 
     def self.generate_manga_from_pattern(html_string, string_to_match, regex_pattern)
       manga = []
-      html_string.match(string_to_match)
-      $1.scan(regex_pattern) do |url, manga_id, title|
-        manga << {
-            :manga_id => manga_id,
-            :title => title,
-            :url => url
-        }
+      if html_string.match(string_to_match)
+        $1.scan(regex_pattern) do |url, manga_id, title|
+          manga << {
+              :manga_id => manga_id,
+              :title => title,
+              :url => url
+          }
+        end
       end
 
       manga
