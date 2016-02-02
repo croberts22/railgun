@@ -20,13 +20,13 @@ module Railgun
     def status=(value)
       @status = case value
                   when '2', 2, /finished/i
-                    :finished
+                    :'finished'
                   when '1', 1, /publishing/i
-                    :publishing
+                    :'publishing'
                   when '3', 3, /not yet published/i
-                    :"not yet published"
+                    :'not yet published'
                   else
-                    :finished
+                    :'finished'
                 end
     end
 
@@ -37,7 +37,7 @@ module Railgun
                 when /novel/i, '2', 2
                   :Novel
                 when /one shot/i, '3', 3
-                  :"One Shot"
+                  :'One Shot'
                 when /doujin/i, '4', 4
                   :Doujin
                 when /manwha/i, '5', 5
