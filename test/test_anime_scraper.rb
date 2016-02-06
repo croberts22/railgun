@@ -9,6 +9,14 @@ class TestAnimeScraper < Test::Unit::TestCase
     Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/shirobako_anime_response.html"))
   end
 
+  def nokogiri_for_shirobako_stats_response
+    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/shirobako_stats_anime_response.html"))
+  end
+
+  def nokogiri_for_railgun_s_characters_response
+    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/railgun_s_characters_anime_response.html"))
+  end
+
   def nokogiri_for_railgun_response
     Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/railgun_anime_response.html"))
   end
@@ -431,6 +439,68 @@ class TestAnimeScraper < Test::Unit::TestCase
     assert(!anime.end_date.nil?)
     assert(!anime.genres.empty?)
     assert(!anime.classification.nil?)
+
+  end
+
+  def test_parse_additional_stats
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_shirobako_stats_response
+
+    actual = scraper.parse_summary_stats(nokogiri)
+    expected = {
+        watching: 12338,
+        completed: 37950,
+        on_hold: 6019,
+        dropped: 3953,
+        plan_to_watch: 36190,
+        total: 96450
+    }
+
+    assert_equal(expected, actual)
+
+    actual = scraper.parse_score_stats(nokogiri)
+    expected = {
+        '1' => 78,
+        '2' => 38,
+        '3' => 92,
+        '4' => 246,
+        '5' => 816,
+        '6' => 1701,
+        '7' => 4816,
+        '8' => 10177,
+        '9' => 11509,
+        '10' => 7322
+    }
+
+    assert_equal(expected, actual)
+
+  end
+
+  def test_parse_characters_and_staff
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_railgun_s_characters_response
+
+    actual = scraper.parse_staff(nokogiri)
+
+    actual.each { |pair|
+      character = pair[:character]
+
+      assert(!character[:name].empty?)
+      assert(!character[:id].empty?)
+      assert(!character[:url].empty?)
+      assert(!character[:role].empty?)
+      assert(!character[:image_url].empty?)
+
+      voice_actors = pair[:voice_actor]
+
+      voice_actors.each { |actor|
+        assert(!actor[:name].empty?)
+        assert(!actor[:id].empty?)
+        assert(!actor[:url].empty?)
+        assert(!actor[:language].empty?)
+        assert(!actor[:image_url].empty?)
+      }
+    }
 
   end
 

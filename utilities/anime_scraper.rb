@@ -291,7 +291,7 @@ module Railgun
       left_column_nodeset = nokogiri.xpath('//table[preceding-sibling::h2[text()="Score Stats"]]')
       left_column_nodeset.search('tr').each do |tr|
         if (tr_array = tr.search('td')) && tr_array.count == 2
-          name = tr_array[0].at('text()')
+          name = tr_array[0].at('text()').to_s
           value = tr_array[1].at('div/span/small/text()').to_s
 
           if value.match %r{\(([0-9]+) votes\)}
