@@ -9,6 +9,14 @@ class TestMangaScraper < Test::Unit::TestCase
     Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/monogatari_manga_response.html"))
   end
 
+  def nokogiri_for_monogatari_2_response
+    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/monogatari_2_manga_response.html"))
+  end
+
+  def nokogiri_for_monogatari_side_story_response
+    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/monogatari_side_story_manga_response.html"))
+  end
+
   def text_for_related_manga(nokogiri)
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
     related_manga_h2 = node.at('//h2[text()="Related Manga"]')
@@ -240,48 +248,82 @@ Vol.6: Nekomonogatari: Kuro'
   end
 
   def test_parse_anime_adaptations
-    # scraper = Railgun::MangaScraper.new
-    # nokogiri = nokogiri_for_sample_response
-    #
-    # related_manga_text = text_for_related_manga(nokogiri)
-    #
-    # actual = scraper.parse_manga_adaptations(related_manga_text)
-    # expected = [
-    #     {
-    #         manga_id: '80441',
-    #         title: 'Shirobako: Kaminoyama Koukou Animation Doukoukai',
-    #         url: '/manga/80441/Shirobako__Kaminoyama_Koukou_Animation_Doukoukai'
-    #     },
-    #     {
-    #         manga_id: '84949',
-    #         title: 'Shirobako: Introduction',
-    #         url: '/manga/84949/Shirobako__Introduction'
-    #     }
-    # ]
-    #
-    # assert_equal(expected, actual)
+    scraper = Railgun::MangaScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    related_manga_text = text_for_related_manga(nokogiri)
+
+    actual = scraper.parse_anime_adaptations(related_manga_text)
+    expected = [
+        {
+            anime_id: '31758',
+            title: 'Kizumonogatari Part 3: Reiketsu-hen',
+            url: '/anime/31758/Kizumonogatari_Part_3__Reiketsu-hen'
+        },
+        {
+            anime_id: '5081',
+            title: 'Bakemonogatari',
+            url: '/anime/5081/Bakemonogatari'
+        },
+        {
+            anime_id: '11597',
+            title: 'Nisemonogatari',
+            url: '/anime/11597/Nisemonogatari'
+        },
+        {
+            anime_id: '31757',
+            title: 'Kizumonogatari Part 2: Nekketsu-hen',
+            url: '/anime/31757/Kizumonogatari_Part_2__Nekketsu-hen'
+        },
+        {
+            anime_id: '9260',
+            title: 'Kizumonogatari Part 1: Tekketsu-hen',
+            url: '/anime/9260/Kizumonogatari_Part_1__Tekketsu-hen'
+        },
+        {
+            anime_id: '15689',
+            title: 'Nekomonogatari: Kuro',
+            url: '/anime/15689/Nekomonogatari__Kuro'
+        }
+    ]
+
+    assert_equal(expected, actual)
   end
 
   def test_parse_prequels
+    scraper = Railgun::MangaScraper.new
+    nokogiri = nokogiri_for_monogatari_2_response
 
+    related_manga_text = text_for_related_manga(nokogiri)
+
+    actual = scraper.parse_prequels(related_manga_text)
+    expected = [
+        {
+            manga_id: '14893',
+            title: 'Monogatari Series: First Season',
+            url: '/manga/14893/Monogatari_Series__First_Season'
+        }
+    ]
+
+    assert_equal(expected, actual)
   end
 
   def test_parse_sequels
-    # scraper = Railgun::MangaScraper.new
-    # nokogiri = nokogiri_for_railgun_response
-    #
-    # related_manga_text = text_for_related_manga(nokogiri)
-    #
-    # actual = scraper.parse_sequels(related_manga_text)
-    # expected = [
-    #     {
-    #         manga_id: '16049',
-    #         title: 'Toaru Kagaku no Railgun S',
-    #         url: '/manga/16049/Toaru_Kagaku_no_Railgun_S'
-    #     }
-    # ]
-    #
-    # assert_equal(expected, actual)
+    scraper = Railgun::MangaScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    related_manga_text = text_for_related_manga(nokogiri)
+
+    actual = scraper.parse_sequels(related_manga_text)
+    expected = [
+        {
+            manga_id: '23751',
+            title: 'Monogatari Series: Second Season',
+            url: '/manga/23751/Monogatari_Series__Second_Season'
+        }
+    ]
+
+    assert_equal(expected, actual)
   end
 
   def test_parse_side_stories
@@ -318,19 +360,19 @@ Vol.6: Nekomonogatari: Kuro'
   end
 
   def test_parse_parent_story
-    # scraper = Railgun::MangaScraper.new
-    # nokogiri = nokogiri_for_railgun_response
-    #
-    # related_manga_text = text_for_related_manga(nokogiri)
-    #
-    # actual = scraper.parse_parent_story(related_manga_text)
-    # expected = {
-    #     manga_id: '4654',
-    #     title: 'Toaru Majutsu no Index',
-    #     url: '/manga/4654/Toaru_Majutsu_no_Index'
-    # }
-    #
-    # assert_equal(expected, actual)
+    scraper = Railgun::MangaScraper.new
+    nokogiri = nokogiri_for_monogatari_side_story_response
+
+    related_manga_text = text_for_related_manga(nokogiri)
+
+    actual = scraper.parse_parent_story(related_manga_text)
+    expected = {
+            manga_id: '23751',
+            title: 'Monogatari Series: Second Season',
+            url: '/manga/23751/Monogatari_Series__Second_Season'
+    }
+
+    assert_equal(expected, actual)
   end
 
   def test_parse_spin_offs
@@ -368,7 +410,21 @@ Vol.6: Nekomonogatari: Kuro'
   end
 
   def test_parse_other
+    scraper = Railgun::MangaScraper.new
+    nokogiri = nokogiri_for_monogatari_2_response
 
+    related_manga_text = text_for_related_manga(nokogiri)
+
+    actual = scraper.parse_other(related_manga_text)
+    expected = [
+        {
+            manga_id: '66695',
+            title: 'Kimi to Nadekko!',
+            url: '/manga/66695/Kimi_to_Nadekko'
+        }
+    ]
+
+    assert_equal(expected, actual)
   end
 
   def test_parse_manga

@@ -13,6 +13,10 @@ class TestAnimeScraper < Test::Unit::TestCase
     Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/railgun_anime_response.html"))
   end
 
+  def nokogiri_for_railgun_s_response
+    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/railgun_s_anime_response.html"))
+  end
+
   def text_for_related_anime(nokogiri)
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
     related_anime_h2 = node.at('//h2[text()="Related Anime"]')
@@ -264,7 +268,21 @@ class TestAnimeScraper < Test::Unit::TestCase
   end
 
   def test_parse_prequels
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_railgun_s_response
 
+    related_anime_text = text_for_related_anime(nokogiri)
+
+    actual = scraper.parse_prequels(related_anime_text)
+    expected = [
+        {
+            anime_id: '6213',
+            title: 'Toaru Kagaku no Railgun',
+            url: '/anime/6213/Toaru_Kagaku_no_Railgun'
+        }
+    ]
+
+    assert_equal(expected, actual)
   end
 
   def test_parse_sequels
@@ -377,7 +395,21 @@ class TestAnimeScraper < Test::Unit::TestCase
   end
 
   def test_parse_other
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_railgun_s_response
 
+    related_anime_text = text_for_related_anime(nokogiri)
+
+    actual = scraper.parse_other(related_anime_text)
+    expected = [
+        {
+            anime_id: '22759',
+            title: 'Toaru Kagaku no Railgun S: Daiji na Koto wa Zenbu Sentou ni Osowatta',
+            url: '/anime/22759/Toaru_Kagaku_no_Railgun_S__Daiji_na_Koto_wa_Zenbu_Sentou_ni_Osowatta'
+        }
+    ]
+
+    assert_equal(expected, actual)
   end
 
   def test_parse_anime
