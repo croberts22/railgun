@@ -1,6 +1,8 @@
 railgun
 =======
 
+[![Twitter](https://img.shields.io/badge/contact-%40spacepyro-00aced.svg)](https://twitter.com/spacepyro)
+[![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/)
 [![Build Status](https://travis-ci.org/croberts22/railgun.svg?branch=master)](https://travis-ci.org/croberts22/railgun)
 [![Coverage Status](https://coveralls.io/repos/github/croberts22/railgun/badge.svg?branch=master)](https://coveralls.io/github/croberts22/railgun?branch=master)
 
@@ -15,6 +17,7 @@ Learning a few new languages and technologies is also a New Year's Resolution of
 ## Requirements
 
 - A User-Agent from MyAnimeList.net
+- Ruby 2.0.0 or greater
 
 ## How to Use
 
