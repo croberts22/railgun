@@ -1,0 +1,121 @@
+FORMAT: 1A
+HOST: http://railgun-api.herokuapp.com/1.0/
+
+# railgun
+
+[![Build Status](https://travis-ci.org/croberts22/railgun.svg?branch=master)](https://travis-ci.org/croberts22/railgun)
+[![Coverage Status](https://coveralls.io/repos/github/croberts22/railgun/badge.svg?branch=master)](https://coveralls.io/github/croberts22/railgun?branch=master)
+
+Railgun is an extension to the [MyAnimeList API](http://myanimelist.net/modules.php?go=api). 
+
+## Anime [/anime/{anime_id}]
+
++ Parameters
+    + anime_id (number) - ID of the anime
+
+### View Anime [GET]
+
++ Response 200 (application/json)
+
+        {
+           id: 6213,
+           title: "Toaru Kagaku no Railgun",
+           type: "TV",
+           episodes: 24,
+           classification: "PG-13 - Teens 13 or older",
+           genres: [
+                "Action",
+                "Sci-Fi",
+                "Super Power"
+            ],
+            synopsis: "Academy City is a highly developed place in terms of technology. It is said to be 20 to 30 years ahead of the rest of the world, and 80% of its 2.3 million residents are students. The focus of studies here is directed towards esper powers. Misaka Mikoto, one of the top level espers in town, shares a room with Kuroko Shirai, another high level esper who is a member of Judgement, a law enforcing agency composed of students. Both attend Tokiwadai, a private school reserved for the high-leveled and the rich. Kuroko's partner at Judgement, Kazari Uiharu, is a low level esper who studies at Sakugawa middle school. Her best friend and classmate there is Ruiko Saten, a level zero, one who has no esper powers. Together, the four encounter several adventures in the exciting scientific town. (Source: ANN)",
+            status: "finished airing",
+            start_date: "2009-10-03 00:00:00 +0000",
+            end_date: "2010-03-20 00:00:00 +0000",
+            image_url: "http://cdn.myanimelist.net/images/anime/8/53581.jpg",
+            other_titles: {
+                english: [
+                    "A Certain Scientific Railgun"
+                ],
+                synonyms: [
+                    "Toaru Kagaku no Choudenjihou"
+                ],
+                japanese: [
+                    "とある科学の超電磁砲"
+                ]
+            },
+            tags: [ ],
+            stats: {
+                rank: 692,
+                popularity_rank: 143,
+                members_score: 7.89,
+                members_count: 193438,
+                favorited_count: 2732,
+                summary_stats: { },
+                score_stats: { }
+            },
+            related_anime: {
+                manga_adaptations: [
+                {
+                    manga_id: "7776",
+                    title: "Toaru Kagaku no Railgun",
+                    url: "/manga/7776/Toaru_Kagaku_no_Railgun"
+                }
+                ],
+                prequels: [ ],
+                sequels: [
+                {
+                    anime_id: "16049",
+                    title: "Toaru Kagaku no Railgun S",
+                    url: "/anime/16049/Toaru_Kagaku_no_Railgun_S"
+                }
+                ],
+                side_stories: [
+                {
+                    anime_id: "9047",
+                    title: "Toaru Kagaku no Railgun: Misaka-san wa Ima Chuumoku no Mato Desukara",
+                    url: "/anime/9047/Toaru_Kagaku_no_Railgun__Misaka-san_wa_Ima_Chuumoku_no_Mato_Desukara"
+                },
+                {
+                    anime_id: "9063",
+                    title: "Toaru Kagaku no Railgun: Entenka no Satsuei Model mo Raku Ja Arimasen wa ne.",
+                    url: "/anime/9063/Toaru_Kagaku_no_Railgun__Entenka_no_Satsuei_Model_mo_Raku_Ja_Arimasen_wa_ne"
+                }
+                ],
+                parent_story: {
+                    anime_id: "4654",
+                    title: "Toaru Majutsu no Index",
+                    url: "/anime/4654/Toaru_Majutsu_no_Index"
+                },
+                character_anime: [
+                {
+                    anime_id: "27509",
+                    title: "Toaru Majutsu no Index 10th Anniversary PV",
+                    url: "/anime/27509/Toaru_Majutsu_no_Index_10th_Anniversary_PV"
+                }
+                ],
+                spin_offs: [
+                {
+                    anime_id: "8023",
+                    title: "Toaru Kagaku no Railgun Specials",
+                    url: "/anime/8023/Toaru_Kagaku_no_Railgun_Specials"
+                }
+                ],
+                summaries: [ ],
+                alternative_versions: [ ],
+                alternative_settings: [ ],
+                full_stories: [ ],
+                others: [ ]
+            },
+            characters: [ ],
+            additional_info_urls: {
+                details: "http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun",
+                reviews: "http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/reviews",
+                recommendations: "http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/userrecs",
+                stats: "http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/stats",
+                characters_and_staff: "http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/characters",
+                news: "http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/news",
+                forum: "http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/forum",
+                pictures: "http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/pics"
+            }
+        }
