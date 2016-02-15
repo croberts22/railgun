@@ -6,6 +6,10 @@ module Railgun
       ENV['USER_AGENT']
     end
 
+    def self.rollbar_access_token
+      ENV['ROLLBAR_ACCESS_TOKEN']
+    end
+
   end
 
 end
