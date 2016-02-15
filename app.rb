@@ -3,6 +3,10 @@ require_relative 'railgun'
 
 class App < Sinatra::Base
 
+  before do
+    content_type 'application/json'
+  end
+
   # GET /#{VERSION}/anime/#{anime_id}
   # Get an anime's details.
   # Parameters:

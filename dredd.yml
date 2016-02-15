@@ -1,0 +1,27 @@
+reporter: apiary
+custom:
+  apiaryApiKey: 70feb9c002bf57c92decbff59cc302da
+  apiaryApiName: railgun
+dry-run: null
+hookfiles: null
+language: ruby
+sandbox: false
+server: rackup config.ru
+server-wait: 3
+init: false
+names: false
+only: []
+output: []
+header: []
+sorted: false
+user: null
+inline-errors: false
+details: false
+method: []
+color: true
+level: info
+timestamp: false
+silent: false
+path: []
+blueprint: apiary.apib
+endpoint: 'http://localhost:9292/1.0'

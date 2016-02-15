@@ -1,8 +1,12 @@
 language: ruby
 cache: bundler
 rvm:
-- 2.0.0
+  - 2.0.0
 script: bundle exec rake
 notifications:
   slack:
     secure: UjvI5GTb38+FUKg6iu/V/4t0rUkMSbNqal1LrnOognUJS85sW/zH/4S/+2PnOMrOw7cSi9ENU6Tk586g7RqOPAXoHeVwKQenrJonnlsRS1bbnNk2unXr2lIOPBZKw1Bhxo2nm6WiYtDoo+XSTj9W8TjD7KBcPcsC1v8oDPXcy7XBfN5S3a//8JAWQZGfoTipnP8fGROSVw9maH4TOJarxV/nuoASbV68ZiNa6/7N074ahE1CZmCBX9uAFPnJUljOzoocbqPbfzihri6Acu2S/k4rCE6uJpswLujlbVzaJPM0wmOqu8VIeNq0c/sn+sucM36XxGsge8CwzRmuvvMc57Or1QRBXl7lypvPuIsL3Zq6NwACZ15lomrMgz2sgPOiHS/2u7/ni2naWZMpgymK4mO6id6EQXrxoTdyisk/hpsYHI6e9MAB/HiBWZy3sB6xsaPg34TvbWMWzIX35fmFzIO3Y+j3/IcQtAD1NENc+wna19pgOoUidO09oz/p4ZIXtQkzQERmQJfGIhhfNg16oARyzD1NIStd4OUCukDwKwBRBpBw0YqmEsbfPu1hZeMdGRDcbVp5dpeKRf1e+dLucvJYvPvQq7rFp30KT2wfUm4T7CQsfgZ9qfpoiybH+mSXrSWRwu1qS1HbppFwulVhp+urHneh84E/Az1wdqUDgJU=
+before_install:
+  - npm install -g dredd
+before_script:
+  - dredd
