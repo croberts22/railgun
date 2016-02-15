@@ -6,7 +6,7 @@ dry-run: null
 hookfiles: null
 language: ruby
 sandbox: false
-server: rackup config.ru
+server: bundle exec rackup
 server-wait: 3
 init: false
 names: false
