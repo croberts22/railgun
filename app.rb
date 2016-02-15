@@ -22,11 +22,21 @@ class App < Sinatra::Base
       options = params[:options].split(',')
     end
 
+    expires 3600, :public, :must_revalidate
+    last_modified Time.now
+    etag "anime/#{params[:id]}/#{options}"
+
     anime = Railgun::Anime.scrape(params[:id], options)
 
     anime.to_json
   end
 
+  # GET /#{VERSION}/manga/#{manga_id}
+  # Get a manga's details.
+  # Parameters:
+  # - id: The manga's ID.
+  # - options (optional): A comma-separated list of strings that define additional stats.
+  #                       Available options include 'stats' and 'characters_and_staff'.
   get '/:v/manga/:id' do
     pass unless params[:id] =~ /^\d+$/
 
@@ -36,6 +46,10 @@ class App < Sinatra::Base
       options = params[:options].split(',')
     end
 
+    expires 3600, :public, :must_revalidate
+    last_modified Time.now
+    etag "manga/#{params[:id]}/#{options}"
+
     manga = Railgun::Manga.scrape(params[:id], options)
 
     manga.to_json
@@ -44,6 +58,5 @@ class App < Sinatra::Base
   get '/:v/search/?q=:q' do
 
   end
-
 
 end
