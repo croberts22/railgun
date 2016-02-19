@@ -15,7 +15,6 @@ if memcache_servers = ENV['MEMCACHIER_SERVERS']
       metastore:   "memcached://#{memcache_servers}/meta",
       entitystore: "memcached://#{memcache_servers}/body",
       default_ttl: 86400,
-      verbose: true,
       allow_reload: true,
       cache_key: Proc.new { |request|
         if request.env['HTTP_ORIGIN']
