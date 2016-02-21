@@ -1,3 +1,5 @@
+require_relative 'url_utilities'
+
 module Railgun
 
   class SearchScraper
@@ -20,6 +22,35 @@ module Railgun
 
     def parse_row(nokogiri)
       # TO BE OVERRIDDEN BY SUBCLASSES
+    end
+
+    def parse_image_url(entity, nokogiri)
+      image_element = nokogiri.at('td[1] div a img')
+      image_url = image_element['src']
+
+      # MAL returns a tiny image for the thumbnail.
+      # In order to get the full-sized image, we must construct our own url.
+
+      UrlUtilities::create_original_image_url(entity, image_url)
+    end
+
+    def parse_name(nokogiri)
+      name_element = nokogiri.at('td[2] a strong')
+      name_element.text
+    end
+
+    def parse_url(nokogiri)
+      url_element = nokogiri.at('td[2] a')
+      url_element['href']
+    end
+
+    def parse_id(entity, url)
+      UrlUtilities::parse_id_from_url(entity, url)
+    end
+
+    def parse_synopsis(nokogiri)
+      synopsis_element = nokogiri.at('td[2] div[class="spaceit"]')
+      synopsis_element.text.gsub('read more.', '').strip
     end
 
   end
