@@ -1,6 +1,6 @@
 require_relative 'resource'
 require_relative '../utilities/anime_scraper'
-require_relative '../utilities/search_scraper'
+require_relative '../utilities/anime_search_scraper'
 
 module Railgun
 
@@ -225,7 +225,7 @@ module Railgun
 
         anime
       else
-        scraper = SearchScraper.new
+        scraper = AnimeSearchScraper.new
         anime = scraper.scrape(redirectable_nokogiri.nokogiri)
 
         anime

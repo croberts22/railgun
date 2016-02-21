@@ -3,6 +3,8 @@ module Railgun
   class SearchScraper
 
     def scrape(nokogiri)
+      resources = []
+
       # Find the table.
       table = nokogiri.xpath('//div[@id="content"]/table')
       table.xpath('//tr').each do |tr|
