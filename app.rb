@@ -7,6 +7,7 @@ class App < Sinatra::Base
     content_type 'application/json'
   end
 
+
   # GET /#{VERSION}/anime/#{anime_id}
   # Get an anime's details.
   # Parameters:
@@ -30,6 +31,7 @@ class App < Sinatra::Base
 
     anime.to_json
   end
+
 
   # GET /#{VERSION}/manga/#{manga_id}
   # Get a manga's details.
@@ -55,8 +57,35 @@ class App < Sinatra::Base
     manga.to_json
   end
 
-  get '/:v/search/?q=:q' do
 
+  # GET /#{VERSION}/anime?q=#{query}
+  # Searhes for an anime based on a given query.
+  # Parameters:
+  # - q: A search query.
+  get '/:v/anime?' do
+
+    pass unless !params[:q].nil? && params[:q].strip.length > 0
+
+    query = CGI.escape(params[:q].strip)
+
+    results = Railgun::Anime.search(query)
+
+    results.to_json
+  end
+
+  # GET /#{VERSION}/manga?q=#{query}
+  # Searhes for a manga based on a given query.
+  # Parameters:
+  # - q: A search query.
+  get '/:v/manga?' do
+
+    pass unless !params[:q].nil? && params[:q].strip.length > 0
+
+    query = CGI.escape(params[:q].strip)
+
+    results = Railgun::Manga.search(query)
+
+    results.to_json
   end
 
 end

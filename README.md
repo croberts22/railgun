@@ -17,11 +17,15 @@ Learning a few new languages and technologies is also a New Year's Resolution of
 ## Requirements
 
 - A User-Agent from MyAnimeList.net
-- Ruby 2.0.0 or greater
+- Ruby 2.2.1 or greater
 
 ## How to Use
 
 Coming soon.
+
+## Demo
+
+The interactive API is currently under construction, but you can check it out [here](http://docs.railgun.apiary.io/).
 
 ## Why the name "Railgun"?
 

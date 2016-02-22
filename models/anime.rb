@@ -1,5 +1,6 @@
 require_relative 'resource'
 require_relative '../utilities/anime_scraper'
+require_relative '../utilities/anime_search_scraper'
 
 module Railgun
 
@@ -189,7 +190,7 @@ module Railgun
       puts 'Scraping anime...'
 
       anime = Anime.new
-      nokogiri = MALNetworkService.nokogiri_from_request("http://myanimelist.net/anime/#{id}")
+      nokogiri = MALNetworkService.nokogiri_from_request(MALNetworkService.anime_request_for_id(id))
 
       scraper = AnimeScraper.new
       scraper.parse_anime(nokogiri, anime)
@@ -212,7 +213,24 @@ module Railgun
       anime
     end
 
+    def self.search(query)
+      redirectable_nokogiri = MALNetworkService.nokogiri_from_redirectable_request(MALNetworkService.anime_search_request_with_query(query))
 
+      # Did we redirect? If so, we know this is just one anime object, and we can parse it as an anime.
+      # Otherwise, parse the table.
+      if redirectable_nokogiri.redirected then
+        anime = Anime.new
+        scraper = AnimeScraper.new
+        scraper.parse_anime(redirectable_nokogiri.nokogiri, anime)
+
+        anime
+      else
+        scraper = AnimeSearchScraper.new
+        anime = scraper.scrape(redirectable_nokogiri.nokogiri)
+
+        anime
+      end
+    end
   end
 
 end

@@ -1,5 +1,6 @@
 require_relative 'resource'
 require_relative '../utilities/manga_scraper'
+require_relative '../utilities/manga_search_scraper'
 
 module Railgun
 
@@ -199,6 +200,25 @@ module Railgun
       # If any options were passed in, perform a fetch and continue parsing.
 
       manga
+    end
+
+    def self.search(query)
+      redirectable_nokogiri = MALNetworkService.nokogiri_from_redirectable_request(MALNetworkService.manga_search_request_with_query(query))
+
+      # Did we redirect? If so, we know this is just one manga object, and we can parse it as an manga.
+      # Otherwise, parse the table.
+      if redirectable_nokogiri.redirected then
+        manga = Manga.new
+        scraper = MangaScraper.new
+        scraper.parse_manga(redirectable_nokogiri.nokogiri, manga)
+
+        manga
+      else
+        scraper = MangaSearchScraper.new
+        manga = scraper.scrape(redirectable_nokogiri.nokogiri)
+
+        manga
+      end
     end
 
   end
