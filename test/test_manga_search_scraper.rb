@@ -1,12 +1,12 @@
 require File.dirname(__FILE__) + '/test_helper'
 
-class TestAnimeSearchScraper < Test::Unit::TestCase
+class TestMangaSearchScraper < Test::Unit::TestCase
 
 
   ### Convenience Methods
 
   def nokogiri_for_sample_response
-    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/railgun_search_anime_response.html"))
+    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/railgun_search_manga_response.html"))
   end
 
 
@@ -14,7 +14,7 @@ class TestAnimeSearchScraper < Test::Unit::TestCase
 
   def test_scrape
     nokogiri = nokogiri_for_sample_response
-    scraper = Railgun::AnimeSearchScraper.new
+    scraper = Railgun::MangaSearchScraper.new
 
     result = scraper.scrape(nokogiri)
 
@@ -51,11 +51,11 @@ class TestAnimeSearchScraper < Test::Unit::TestCase
       assert(type.is_a? String)
       assert(!type.empty?)
 
-      episodes = row[:episodes]
+      volumes = row[:volumes]
 
-      assert(!episodes.nil?)
-      assert(episodes.is_a? Integer)
-      assert(episodes >= 0)
+      assert(!volumes.nil?)
+      assert(volumes.is_a? Integer)
+      assert(volumes >= 0)
 
       synopsis = row[:synopsis]
 

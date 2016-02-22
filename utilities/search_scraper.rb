@@ -48,12 +48,27 @@ module Railgun
       UrlUtilities::parse_id_from_url(entity, url)
     end
 
+    def parse_type(nokogiri)
+      type = nokogiri.at('td[3]')
+      type.text
+    end
+
+    def parse_quantity(nokogiri)
+      quantity = nokogiri.at('td[4]')
+      quantity.text.to_i
+    end
+
     def parse_synopsis(nokogiri)
       synopsis_element = nokogiri.at('td[2] div[class="spaceit"]')
+
+      # Sometimes, spaceit_pad is used. I'm not sure why.
+      if synopsis_element.nil?
+        synopsis_element = nokogiri.at('td[2] div[class="spaceit_pad"]')
+      end
+
       synopsis_element.text.gsub('read more.', '').strip
     end
 
   end
-
 
 end

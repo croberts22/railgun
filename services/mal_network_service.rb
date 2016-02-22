@@ -71,6 +71,14 @@ module Railgun
       "http://myanimelist.net/anime.php?q=#{query}"
     end
 
+    def self.manga_request_for_id(query)
+      "http://myanimelist.net/manga/#{id}"
+    end
+
+    def self.manga_search_request_with_query(query)
+      "http://myanimelist.net/manga.php?q=#{query}"
+    end
+
   end
 
 end
