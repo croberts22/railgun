@@ -8,7 +8,7 @@ module Railgun
       resources = []
 
       # Find the table.
-      table = nokogiri.xpath('//div[@id="content"]/table')
+      table = nokogiri.xpath('//div[@id="content"]/div/table')
       table.xpath('//tr').each do |tr|
 
         td = tr.at('td a strong')
@@ -50,7 +50,7 @@ module Railgun
 
     def parse_type(nokogiri)
       type = nokogiri.at('td[3]')
-      type.text
+      type.text.strip
     end
 
     def parse_quantity(nokogiri)
@@ -59,13 +59,7 @@ module Railgun
     end
 
     def parse_synopsis(nokogiri)
-      synopsis_element = nokogiri.at('td[2] div[class="spaceit"]')
-
-      # Sometimes, spaceit_pad is used. I'm not sure why.
-      if synopsis_element.nil?
-        synopsis_element = nokogiri.at('td[2] div[class="spaceit_pad"]')
-      end
-
+      synopsis_element = nokogiri.at('td div[class="pt4"]')
       synopsis_element.text.gsub('read more.', '').strip
     end
 

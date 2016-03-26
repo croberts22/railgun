@@ -231,6 +231,6 @@ module Railgun
         anime
       end
     end
-  end
 
+  end
 end

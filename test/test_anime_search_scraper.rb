@@ -18,6 +18,8 @@ class TestAnimeSearchScraper < Test::Unit::TestCase
 
     result = scraper.scrape(nokogiri)
 
+    assert(!result.empty?)
+
     result.each { |row|
 
       id = row[:id]

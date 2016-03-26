@@ -68,6 +68,10 @@ class App < Sinatra::Base
 
     query = CGI.escape(params[:q].strip)
 
+    expires 3600, :public, :must_revalidate
+    last_modified Time.now
+    etag "anime?#{query}"
+
     results = Railgun::Anime.search(query)
 
     results.to_json
@@ -82,6 +86,10 @@ class App < Sinatra::Base
     pass unless !params[:q].nil? && params[:q].strip.length > 0
 
     query = CGI.escape(params[:q].strip)
+
+    expires 3600, :public, :must_revalidate
+    last_modified Time.now
+    etag "manga?#{query}"
 
     results = Railgun::Manga.search(query)
 
