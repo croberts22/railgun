@@ -1,4 +1,6 @@
-railgun
+<h3 align="center">
+  <img src="http://i.imgur.com/t3yKpjC.png" alt="Railgun" />
+</h3>
 =======
 
 [![Twitter](https://img.shields.io/badge/contact-%40spacepyro-00aced.svg)](https://twitter.com/spacepyro)
