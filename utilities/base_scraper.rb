@@ -11,7 +11,7 @@ module Railgun
     end
 
     def parse_rank(nokogiri)
-      nokogiri.at('div[@id="contentWrapper"] > div > span').text.gsub(/\D/, '').to_i
+      nokogiri.at('div[@id="contentWrapper"] > div > table > tr > td > div > div > span:contains("Ranked:")').next.text.gsub(/\D/, '').to_i
     end
 
     def parse_image_url(nokogiri)
