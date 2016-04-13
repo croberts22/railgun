@@ -222,14 +222,12 @@ module Railgun
         anime = Anime.new
         scraper = AnimeScraper.new
         scraper.parse_anime(redirectable_nokogiri.nokogiri, anime)
-
-        anime
       else
         scraper = AnimeSearchScraper.new
         anime = scraper.scrape(redirectable_nokogiri.nokogiri)
-
-        anime
       end
+
+      { results: anime }
     end
 
   end
