@@ -211,14 +211,12 @@ module Railgun
         manga = Manga.new
         scraper = MangaScraper.new
         scraper.parse_manga(redirectable_nokogiri.nokogiri, manga)
-
-        manga
       else
         scraper = MangaSearchScraper.new
         manga = scraper.scrape(redirectable_nokogiri.nokogiri)
-
-        manga
       end
+
+      { results: manga }
     end
 
   end
