@@ -1,7 +1,9 @@
 require 'sinatra'
+require 'rollbar/middleware/sinatra'
 require_relative 'railgun'
 
 class App < Sinatra::Base
+  use Rollbar::Middleware::Sinatra
 
   before do
     content_type 'application/json'

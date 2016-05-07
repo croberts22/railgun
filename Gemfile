@@ -10,7 +10,7 @@ gem 'builder'
 gem 'rack'
 gem 'rack-cache'
 gem 'dalli'
-gem 'rollbar', '~> 2.7.1'
+gem 'rollbar'
 gem 'chronic'
 gem 'memcachier'
 

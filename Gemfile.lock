@@ -79,7 +79,7 @@ DEPENDENCIES
   rack-cache
   rack-test
   rake
-  rollbar (~> 2.7.1)
+  rollbar
   sinatra (= 1.1.0)
   test-unit
   thin
