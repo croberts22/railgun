@@ -30,6 +30,7 @@ module Railgun
           image_url: image_url,
           type: type,
           episodes: episodes,
+
           synopsis: synopsis
       }
     end

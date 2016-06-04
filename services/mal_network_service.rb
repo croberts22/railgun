@@ -71,12 +71,37 @@ module Railgun
       "http://myanimelist.net/anime.php?q=#{query}"
     end
 
-    def self.manga_request_for_id(query)
+    def self.manga_request_for_id(id)
       "http://myanimelist.net/manga/#{id}"
     end
 
     def self.manga_search_request_with_query(query)
       "http://myanimelist.net/manga.php?q=#{query}"
+    end
+
+    def self.anime_rank_request(type, page)
+      request = 'http://myanimelist.net/topanime.php'
+      if rank_type_is_acceptable_for_anime_request(type)
+        request += "?type=#{type}"
+      else
+        request += '?type=all'
+      end
+
+      request += "&page=#{page}" if page && (page.is_a? Integer)
+
+      request
+    end
+
+
+    ### Parameter Checking Methods
+
+    def self.rank_type_is_acceptable_for_anime_request(type)
+      accepted_types = %w(all airing upcoming tv movie ova special popular favorite)
+
+      acceptable_type = false
+      acceptable_type = true if type and accepted_types.include? type
+
+      acceptable_type
     end
 
   end

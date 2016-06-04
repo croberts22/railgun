@@ -1,6 +1,7 @@
 require_relative 'resource'
 require_relative '../utilities/anime_scraper'
 require_relative '../utilities/anime_search_scraper'
+require_relative '../utilities/anime_list_scraper'
 
 module Railgun
 
@@ -228,6 +229,19 @@ module Railgun
       end
 
       { results: anime }
+    end
+
+    def self.top(options)
+
+      puts 'Scraping top anime list...'
+
+      anime = Anime.new
+      nokogiri = MALNetworkService.nokogiri_from_request(MALNetworkService.anime_rank_request(options[:type], options[:rank]))
+
+      scraper = AnimeListScraper.new
+      scraper.scrape(nokogiri)
+
+
     end
 
   end

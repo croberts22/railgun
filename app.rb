@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'rollbar/middleware/sinatra'
+require_relative 'services/mal_network_service'
 require_relative 'railgun'
 
 class App < Sinatra::Base
@@ -8,6 +9,10 @@ class App < Sinatra::Base
   before do
     content_type 'application/json'
   end
+
+  #
+  # Anime Endpoints
+  #
 
 
   # GET /#{VERSION}/anime/#{anime_id}
@@ -34,6 +39,65 @@ class App < Sinatra::Base
     anime.to_json
   end
 
+  # GET /#{VERSION}/anime?q=#{query}
+  # Searches for an anime based on a given query.
+  # Parameters:
+  # - q: A search query.
+  get '/:v/anime?' do
+
+    pass unless !params[:q].nil? && params[:q].strip.length > 0
+
+    query = CGI.escape(params[:q].strip)
+
+    expires 3600, :public, :must_revalidate
+    last_modified Time.now
+    etag "anime?#{query}"
+
+    results = Railgun::Anime.search(query)
+
+    results.to_json
+  end
+
+  # GET /#{VERSION}/anime/top
+  # Gets a page of a ranked list of anime. A page consists of 50 anime.
+  # Parameters:
+  # - type (optional): The type of list to fetch. Available options:
+  #                    'all', 'airing', 'upcoming', 'tv', 'movie', 'ova', 'special', 'popular', 'favorite'.
+  #                    If no type is provided, this defaults to 'all'.
+  # - page (optional): The page of anime to fetch. If no value is provided, this defaults to 0.
+  #                    Each page consists of 50 anime; fetching page 1 returns anime
+  #                    ranked 51-100, page 2 returns 101-150, etc.
+  get '/:v/anime/top' do
+
+    options = {
+        type: 'all',
+        page: 0
+    }
+
+    if params.include? 'type' and Railgun::MALNetworkService.rank_type_is_acceptable_for_anime_request(params[:type])
+      options[:type] = params[:type]
+    end
+
+    if params.include? 'page' and params[:age].is_a? Integer
+      options[:page] = params[:page]
+    end
+
+
+    expires 3600, :public, :must_revalidate
+    last_modified Time.now
+    etag "anime/top/#{options[:type]}/#{options[:page]}"
+
+    anime = Railgun::Anime.top(options)
+
+    anime.to_json
+
+  end
+
+
+  #
+  # Manga Endpoints
+  #
+
 
   # GET /#{VERSION}/manga/#{manga_id}
   # Get a manga's details.
@@ -59,28 +123,8 @@ class App < Sinatra::Base
     manga.to_json
   end
 
-
-  # GET /#{VERSION}/anime?q=#{query}
-  # Searhes for an anime based on a given query.
-  # Parameters:
-  # - q: A search query.
-  get '/:v/anime?' do
-
-    pass unless !params[:q].nil? && params[:q].strip.length > 0
-
-    query = CGI.escape(params[:q].strip)
-
-    expires 3600, :public, :must_revalidate
-    last_modified Time.now
-    etag "anime?#{query}"
-
-    results = Railgun::Anime.search(query)
-
-    results.to_json
-  end
-
   # GET /#{VERSION}/manga?q=#{query}
-  # Searhes for a manga based on a given query.
+  # Searches for a manga based on a given query.
   # Parameters:
   # - q: A search query.
   get '/:v/manga?' do
