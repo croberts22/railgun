@@ -6,10 +6,18 @@ module Railgun
 
   class MALNetworkService
 
-    def self.nokogiri_from_request(url)
-
+    # Generates a simple Curl object, bundled with a User-Agent.
+    # returns a Curl object.
+    def self.create_request(url)
       curl = Curl::Easy.new(url)
       curl.headers['User-Agent'] = Keys.myanimelist_api_key
+
+      curl
+    end
+
+    def self.nokogiri_from_request(url)
+
+      curl = create_request(url)
 
       begin
         curl.perform

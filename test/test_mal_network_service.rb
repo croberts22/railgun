@@ -4,6 +4,20 @@ class TestMALNetworkService < Test::Unit::TestCase
 
   ### Tests
 
+  def test_create_request
+
+    url = 'http://path/to/url/'
+
+    expected = Curl::Easy.new(url)
+    expected.headers['User-Agent'] = Railgun::Keys.myanimelist_api_key
+
+    actual = Railgun::MALNetworkService.create_request(url)
+
+    assert_equal(expected.url, actual.url)
+    assert_equal(expected.headers['User-Agent'], actual.headers['User-Agent'])
+
+  end
+
   def test_anime_request_for_id
     id = 6213
 
