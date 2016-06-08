@@ -46,6 +46,7 @@ class TestAnimeSearchScraper < Test::Unit::TestCase
       assert(!image_url.nil?)
       assert(image_url.is_a? String)
       assert(!image_url.empty?)
+      assert_not_equal('http://cdn.myanimelist.net/images/spacer.gif', image_url)
 
       type = row[:type]
 

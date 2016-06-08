@@ -26,7 +26,7 @@ module Railgun
 
     def parse_image_url(entity, nokogiri)
       image_element = nokogiri.at('td[1] div a img')
-      image_url = image_element['src']
+      image_url = image_element['data-src']
 
       # MAL returns a tiny image for the thumbnail.
       # In order to get the full-sized image, we must construct our own url.

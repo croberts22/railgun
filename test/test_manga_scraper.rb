@@ -55,7 +55,7 @@ class TestMangaScraper < Test::Unit::TestCase
     nokogiri = nokogiri_for_sample_response
 
     actual = scraper.parse_synopsis(nokogiri)
-    expected = 'This entry includes the first season of the Monogatari series.
+    expected = 'This entry includes the first season of the Monogatari Series.
 
 Vol.1-2: Bakemonogatari
 Vol.3: Kizumonogatari
@@ -168,9 +168,10 @@ Vol.6: Nekomonogatari: Kuro'
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
     actual = scraper.parse_genres(node)
-    expected = %w[ Action Mystery Romance Vampire Supernatural ]
+    expected = %w( Action Mystery Romance Vampire Supernatural Comedy )
 
-    assert_equal(expected, actual)
+    expected.each { |genre| assert(actual.include? genre) }
+
   end
 
   def test_parse_score
@@ -257,8 +258,8 @@ Vol.6: Nekomonogatari: Kuro'
     expected = [
         {
             anime_id: '31758',
-            title: 'Kizumonogatari Part 3: Reiketsu-hen',
-            url: '/anime/31758/Kizumonogatari_Part_3__Reiketsu-hen'
+            title: 'Kizumonogatari III: Reiketsu-hen',
+            url: '/anime/31758/Kizumonogatari_III__Reiketsu-hen'
         },
         {
             anime_id: '5081',
@@ -272,13 +273,13 @@ Vol.6: Nekomonogatari: Kuro'
         },
         {
             anime_id: '31757',
-            title: 'Kizumonogatari Part 2: Nekketsu-hen',
-            url: '/anime/31757/Kizumonogatari_Part_2__Nekketsu-hen'
+            title: 'Kizumonogatari II: Nekketsu-hen',
+            url: '/anime/31757/Kizumonogatari_II__Nekketsu-hen'
         },
         {
             anime_id: '9260',
-            title: 'Kizumonogatari Part 1: Tekketsu-hen',
-            url: '/anime/9260/Kizumonogatari_Part_1__Tekketsu-hen'
+            title: 'Kizumonogatari I: Tekketsu-hen',
+            url: '/anime/9260/Kizumonogatari_I__Tekketsu-hen'
         },
         {
             anime_id: '15689',
@@ -439,6 +440,7 @@ Vol.6: Nekomonogatari: Kuro'
     assert(!manga.synopsis.nil?)
     assert(!manga.rank.nil?)
     assert(!manga.image_url.nil?)
+    assert_not_equal('http://cdn.myanimelist.net/images/spacer.gif', manga.image_url)
     assert(!manga.other_titles.empty?)
     assert(!manga.type.nil?)
     assert(manga.volumes > 0)

@@ -97,7 +97,8 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_alternative_titles(nokogiri)
     expected = {
         english: ['Shirobako'],
-        japanese: ['SHIROBAKO']
+        japanese: ['SHIROBAKO'],
+        synonyms: ['White Box']
     }
 
     assert_equal(expected, actual)
@@ -319,8 +320,8 @@ class TestAnimeScraper < Test::Unit::TestCase
     expected = [
         {
             anime_id: '9047',
-            title: 'Toaru Kagaku no Railgun: Misaka-san wa Ima Chuumoku no Mato Desukara',
-            url: '/anime/9047/Toaru_Kagaku_no_Railgun__Misaka-san_wa_Ima_Chuumoku_no_Mato_Desukara'
+            title: 'Toaru Kagaku no Railgun: Misaka-san wa Ima Chuumoku no Mato desukara',
+            url: '/anime/9047/Toaru_Kagaku_no_Railgun__Misaka-san_wa_Ima_Chuumoku_no_Mato_desukara'
         },
         {
             anime_id: '9063',
@@ -376,8 +377,8 @@ class TestAnimeScraper < Test::Unit::TestCase
     expected = [
         {
             anime_id: '8023',
-            title: 'Toaru Kagaku no Railgun Specials',
-            url: '/anime/8023/Toaru_Kagaku_no_Railgun_Specials'
+            title: 'Toaru Kagaku no Railgun: Motto Marutto Railgun',
+            url: '/anime/8023/Toaru_Kagaku_no_Railgun__Motto_Marutto_Railgun'
         }
     ]
 
@@ -430,6 +431,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     assert(!anime.synopsis.nil?)
     assert(!anime.rank.nil?)
     assert(!anime.image_url.nil?)
+    assert_not_equal('http://cdn.myanimelist.net/images/spacer.gif', anime.image_url)
     assert(!anime.other_titles.empty?)
     assert(!anime.type.nil?)
     assert(anime.episodes > 0)
@@ -472,6 +474,7 @@ class TestAnimeScraper < Test::Unit::TestCase
       assert(!character[:url].empty?)
       assert(!character[:role].empty?)
       assert(!character[:image_url].empty?)
+      assert_not_equal('http://cdn.myanimelist.net/images/spacer.gif', character[:image_url])
 
       voice_actors = pair[:voice_actor]
 
@@ -481,6 +484,7 @@ class TestAnimeScraper < Test::Unit::TestCase
         assert(!actor[:url].empty?)
         assert(!actor[:language].empty?)
         assert(!actor[:image_url].empty?)
+        assert_not_equal('http://cdn.myanimelist.net/images/spacer.gif',actor[:image_url])
       }
     }
 

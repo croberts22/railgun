@@ -16,7 +16,7 @@ module Railgun
 
     def parse_image_url(nokogiri)
       if image_node = nokogiri.at('div#content tr td div img')
-        image_node['src']
+        image_node['data-src']
       end
     end
 
@@ -245,7 +245,7 @@ module Railgun
           # Character URL and Image URL.
           if counter == 0
             character_url = td.at('a/@href').to_s
-            image_url = td.at('img/@src').to_s
+            image_url = td.at('img/@data-src').to_s
             image_url = 'http://cdn.myanimelist.net' + image_url.match(%r{/images/characters/.*.jpg}).to_s
 
             id = character_url[%r{/character/(\d+)/.*?}, 1].to_s
@@ -283,7 +283,7 @@ module Railgun
               id = actor_name_url[%r{/people/(\d+)/.*?}, 1].to_s
 
               # Actor's image URL
-              actor_image_url = inner_tr.xpath('td[2]').at('div/a/img/@src').to_s
+              actor_image_url = inner_tr.xpath('td[2]').at('div/a/img/@data-src').to_s
               actor_image_url = 'http://cdn.myanimelist.net' + actor_image_url.match(%r{/images/voiceactors/.*.jpg}).to_s
 
               if actor_name.length > 0
