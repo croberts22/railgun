@@ -191,7 +191,7 @@ module Railgun
       puts 'Scraping manga...'
 
       manga = Manga.new
-      nokogiri = MALNetworkService.nokogiri_from_request("http://myanimelist.net/manga/#{id}")
+      nokogiri = MALNetworkService.nokogiri_from_request(MALNetworkService.manga_request_for_id(id))
 
       scraper = MangaScraper.new
       scraper.parse_manga(nokogiri, manga)

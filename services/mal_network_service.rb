@@ -49,7 +49,7 @@ module Railgun
 
             # Strip everything after the anime ID - in cases where there is a non-ASCII character in the URL,
             # MyAnimeList.net will return a page that says "Access has been restricted for this account".
-            redirect_url = response['location'].sub(%r{(http://myanimelist.net/.*/\d+)/?.*}, '\2')
+            redirect_url = response['location'].sub(%r{(http[s]?://myanimelist.net/.*/\d+)/?.*}, '\2')
 
             response = Net::HTTP.start('myanimelist.net', 80) do |http|
               http.get(redirect_url, { 'User-Agent' => Keys.myanimelist_api_key })
@@ -72,23 +72,23 @@ module Railgun
     ### Convenience Methods
 
     def self.anime_request_for_id(id)
-      "http://myanimelist.net/anime/#{id}"
+      "https://myanimelist.net/anime/#{id}"
     end
 
     def self.anime_search_request_with_query(query)
-      "http://myanimelist.net/anime.php?q=#{query}"
+      "https://myanimelist.net/anime.php?q=#{query}"
     end
 
     def self.manga_request_for_id(id)
-      "http://myanimelist.net/manga/#{id}"
+      "https://myanimelist.net/manga/#{id}"
     end
 
     def self.manga_search_request_with_query(query)
-      "http://myanimelist.net/manga.php?q=#{query}"
+      "https://myanimelist.net/manga.php?q=#{query}"
     end
 
     def self.anime_rank_request(type, page)
-      request = 'http://myanimelist.net/topanime.php'
+      request = 'https://myanimelist.net/topanime.php'
       if rank_type_is_acceptable_for_anime_request(type)
         request += "?type=#{type}"
       else
