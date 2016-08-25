@@ -215,18 +215,10 @@ module Railgun
     end
 
     def self.search(query)
-      redirectable_nokogiri = MALNetworkService.nokogiri_from_redirectable_request(MALNetworkService.anime_search_request_with_query(query))
+      nokogiri = MALNetworkService.nokogiri_from_request(MALNetworkService.anime_search_request_with_query(query))
 
-      # Did we redirect? If so, we know this is just one anime object, and we can parse it as an anime.
-      # Otherwise, parse the table.
-      if redirectable_nokogiri.redirected then
-        anime = Anime.new
-        scraper = AnimeScraper.new
-        scraper.parse_anime(redirectable_nokogiri.nokogiri, anime)
-      else
-        scraper = AnimeSearchScraper.new
-        anime = scraper.scrape(redirectable_nokogiri.nokogiri)
-      end
+      scraper = AnimeSearchScraper.new
+      anime = scraper.scrape(nokogiri)
 
       { results: anime }
     end

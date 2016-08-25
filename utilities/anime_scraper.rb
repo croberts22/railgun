@@ -67,7 +67,7 @@ module Railgun
       if anime_id_input
         id = anime_id_input['value'].to_i
       else
-        details_link = doc.at('//a[text()="Details"]')
+        details_link = nokogiri.at('//a[text()="Details"]')
         id = details_link['href'][%r{http://myanimelist.net/anime/(\d+)/.*?}, 1].to_i
       end
 
