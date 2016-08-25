@@ -65,7 +65,7 @@ module Railgun
         id = manga_id_input['value'].to_i
       else
         details_link = nokogiri.at('//a[text()="Details"]')
-        id = details_link['href'][%r{http://myanimelist.net/manga/(\d+)/.*?}, 1].to_i
+        id = details_link['href'][%r{http[s]?://myanimelist.net/manga/(\d+)/.*?}, 1].to_i
       end
 
       id

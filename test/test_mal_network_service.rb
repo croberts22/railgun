@@ -21,7 +21,7 @@ class TestMALNetworkService < Test::Unit::TestCase
   def test_anime_request_for_id
     id = 6213
 
-    expected = "http://myanimelist.net/anime/#{id}"
+    expected = "https://myanimelist.net/anime/#{id}"
     actual = Railgun::MALNetworkService.anime_request_for_id(id)
 
     assert_equal(expected, actual)
@@ -30,7 +30,7 @@ class TestMALNetworkService < Test::Unit::TestCase
   def test_anime_search_request_with_query
     query = 'toaru kagaku no railgun'
 
-    expected = "http://myanimelist.net/anime.php?q=#{query}"
+    expected = "https://myanimelist.net/anime.php?q=#{query}"
     actual = Railgun::MALNetworkService.anime_search_request_with_query(query)
 
     assert_equal(expected, actual)
@@ -39,7 +39,7 @@ class TestMALNetworkService < Test::Unit::TestCase
   def test_manga_request_for_id
     id = 6213
 
-    expected = "http://myanimelist.net/manga/#{id}"
+    expected = "https://myanimelist.net/manga/#{id}"
     actual = Railgun::MALNetworkService.manga_request_for_id(id)
 
     assert_equal(expected, actual)
@@ -48,7 +48,7 @@ class TestMALNetworkService < Test::Unit::TestCase
   def test_manga_search_request_with_query
     query = 'toaru kagaku no railgun'
 
-    expected = "http://myanimelist.net/manga.php?q=#{query}"
+    expected = "https://myanimelist.net/manga.php?q=#{query}"
     actual = Railgun::MALNetworkService.manga_search_request_with_query(query)
 
     assert_equal(expected, actual)
@@ -57,7 +57,7 @@ class TestMALNetworkService < Test::Unit::TestCase
   def test_anime_rank_request_valid_requests
 
     # No values. This defaults to 'all'.
-    expected = 'http://myanimelist.net/topanime.php?type=all'
+    expected = 'https://myanimelist.net/topanime.php?type=all'
     actual = Railgun::MALNetworkService.anime_rank_request(nil, nil)
 
     assert_equal(expected, actual)
@@ -66,7 +66,7 @@ class TestMALNetworkService < Test::Unit::TestCase
     type = 'all'
     page = 0
 
-    expected = 'http://myanimelist.net/topanime.php?type=all&page=0'
+    expected = 'https://myanimelist.net/topanime.php?type=all&page=0'
     actual = Railgun::MALNetworkService.anime_rank_request(type, page)
 
     assert_equal(expected, actual)
@@ -75,7 +75,7 @@ class TestMALNetworkService < Test::Unit::TestCase
     type = 'airing'
     page += 1
 
-    expected = 'http://myanimelist.net/topanime.php?type=airing&page=1'
+    expected = 'https://myanimelist.net/topanime.php?type=airing&page=1'
     actual = Railgun::MALNetworkService.anime_rank_request(type, page)
 
     assert_equal(expected, actual)
@@ -84,7 +84,7 @@ class TestMALNetworkService < Test::Unit::TestCase
     type = 'upcoming'
     page += 1
 
-    expected = 'http://myanimelist.net/topanime.php?type=upcoming&page=2'
+    expected = 'https://myanimelist.net/topanime.php?type=upcoming&page=2'
     actual = Railgun::MALNetworkService.anime_rank_request(type, page)
 
     assert_equal(expected, actual)
@@ -93,7 +93,7 @@ class TestMALNetworkService < Test::Unit::TestCase
     type = 'tv'
     page += 1
 
-    expected = 'http://myanimelist.net/topanime.php?type=tv&page=3'
+    expected = 'https://myanimelist.net/topanime.php?type=tv&page=3'
     actual = Railgun::MALNetworkService.anime_rank_request(type, page)
 
     assert_equal(expected, actual)
@@ -102,7 +102,7 @@ class TestMALNetworkService < Test::Unit::TestCase
     type = 'movie'
     page += 1
 
-    expected = 'http://myanimelist.net/topanime.php?type=movie&page=4'
+    expected = 'https://myanimelist.net/topanime.php?type=movie&page=4'
     actual = Railgun::MALNetworkService.anime_rank_request(type, page)
 
     assert_equal(expected, actual)
@@ -111,7 +111,7 @@ class TestMALNetworkService < Test::Unit::TestCase
     type = 'ova'
     page += 1
 
-    expected = 'http://myanimelist.net/topanime.php?type=ova&page=5'
+    expected = 'https://myanimelist.net/topanime.php?type=ova&page=5'
     actual = Railgun::MALNetworkService.anime_rank_request(type, page)
 
     assert_equal(expected, actual)
@@ -120,7 +120,7 @@ class TestMALNetworkService < Test::Unit::TestCase
     type = 'special'
     page += 1
 
-    expected = 'http://myanimelist.net/topanime.php?type=special&page=6'
+    expected = 'https://myanimelist.net/topanime.php?type=special&page=6'
     actual = Railgun::MALNetworkService.anime_rank_request(type, page)
 
     assert_equal(expected, actual)
@@ -129,7 +129,7 @@ class TestMALNetworkService < Test::Unit::TestCase
     type = 'popular'
     page += 1
 
-    expected = 'http://myanimelist.net/topanime.php?type=popular&page=7'
+    expected = 'https://myanimelist.net/topanime.php?type=popular&page=7'
     actual = Railgun::MALNetworkService.anime_rank_request(type, page)
 
     assert_equal(expected, actual)
@@ -138,7 +138,7 @@ class TestMALNetworkService < Test::Unit::TestCase
     type = 'favorite'
     page += 1
 
-    expected = 'http://myanimelist.net/topanime.php?type=favorite&page=8'
+    expected = 'https://myanimelist.net/topanime.php?type=favorite&page=8'
     actual = Railgun::MALNetworkService.anime_rank_request(type, page)
 
     assert_equal(expected, actual)
@@ -150,7 +150,7 @@ class TestMALNetworkService < Test::Unit::TestCase
     type = 'manga'
     page = 0
 
-    expected = 'http://myanimelist.net/topanime.php?type=all&page=0'
+    expected = 'https://myanimelist.net/topanime.php?type=all&page=0'
     actual = Railgun::MALNetworkService.anime_rank_request(type, page)
 
     assert_equal(expected, actual)
@@ -158,7 +158,7 @@ class TestMALNetworkService < Test::Unit::TestCase
     type = 'actor'
     page = 'next'
 
-    expected = 'http://myanimelist.net/topanime.php?type=all'
+    expected = 'https://myanimelist.net/topanime.php?type=all'
     actual = Railgun::MALNetworkService.anime_rank_request(type, page)
 
     assert_equal(expected, actual)
@@ -166,7 +166,7 @@ class TestMALNetworkService < Test::Unit::TestCase
     type = 1337
     page = 'bad values here'
 
-    expected = 'http://myanimelist.net/topanime.php?type=all'
+    expected = 'https://myanimelist.net/topanime.php?type=all'
     actual = Railgun::MALNetworkService.anime_rank_request(type, page)
 
     assert_equal(expected, actual)
