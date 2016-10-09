@@ -6,7 +6,8 @@ class TestAnimeScraper < Test::Unit::TestCase
   ### Convenience Methods
 
   def nokogiri_for_sample_response
-    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/shirobako_anime_response.html"))
+    # Shirobako
+    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/anime_25835.html"))
   end
 
   def nokogiri_for_shirobako_stats_response
@@ -85,7 +86,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     nokogiri = nokogiri_for_sample_response
 
     actual = scraper.parse_image_url(nokogiri)
-    expected = 'http://cdn.myanimelist.net/images/anime/6/68021.jpg'
+    expected = 'https://myanimelist.cdn-dena.com/images/anime/6/68021.jpg'
 
     assert_equal(expected, actual)
   end
@@ -237,14 +238,14 @@ class TestAnimeScraper < Test::Unit::TestCase
 
     actual = scraper.parse_additional_info_urls(node)
     expected = {
-        details: 'http://myanimelist.net/anime/25835/Shirobako',
-        reviews: 'http://myanimelist.net/anime/25835/Shirobako/reviews',
-        recommendations: 'http://myanimelist.net/anime/25835/Shirobako/userrecs',
-        stats: 'http://myanimelist.net/anime/25835/Shirobako/stats',
-        characters_and_staff: 'http://myanimelist.net/anime/25835/Shirobako/characters',
-        news: 'http://myanimelist.net/anime/25835/Shirobako/news',
-        forum: 'http://myanimelist.net/anime/25835/Shirobako/forum',
-        pictures: 'http://myanimelist.net/anime/25835/Shirobako/pics',
+        details: 'https://myanimelist.net/anime/25835/Shirobako',
+        reviews: 'https://myanimelist.net/anime/25835/Shirobako/reviews',
+        recommendations: 'https://myanimelist.net/anime/25835/Shirobako/userrecs',
+        stats: 'https://myanimelist.net/anime/25835/Shirobako/stats',
+        characters_and_staff: 'https://myanimelist.net/anime/25835/Shirobako/characters',
+        news: 'https://myanimelist.net/anime/25835/Shirobako/news',
+        forum: 'https://myanimelist.net/anime/25835/Shirobako/forum',
+        pictures: 'https://myanimelist.net/anime/25835/Shirobako/pics',
     }
 
     assert_equal(expected, actual)
@@ -487,6 +488,79 @@ class TestAnimeScraper < Test::Unit::TestCase
         assert_not_equal('http://cdn.myanimelist.net/images/spacer.gif',actor[:image_url])
       }
     }
+
+  end
+
+  def test_reviews
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    reviews_h2 = nokogiri.at('//h2[text()="Reviews"]')
+    if reviews_h2
+      # Get all text between "Reviews</h2>" and the next </h2> tag.
+      matched_data = reviews_h2.parent.to_s.match(%r{Reviews</h2>(.+?)<h2>}m)
+      if matched_data
+
+        data = matched_data[1].gsub(/>\s+</, '><')
+        reviews_nokogiri = Nokogiri::HTML(data)
+
+        reviews = scraper.parse_reviews(reviews_nokogiri)
+        reviews.each do |review|
+
+          # User
+          assert(!review.username.empty?)
+          assert(!review.user_url.empty?)
+          assert(!review.user_image_url.empty?)
+
+          # Metadata
+          assert(review.helpful_review_count.is_a? (Integer))
+          assert(review.helpful_review_count > 0)
+          assert(!review.date.empty?)
+          assert(review.episodes_watched.is_a? (Integer))
+          assert(review.episodes_watched > 0)
+          assert(review.episodes_total.is_a? (Integer))
+          assert(review.episodes_total > 0)
+
+          # Ratings
+          unless review.rating[:overall].nil?
+            assert(review.rating[:overall].is_a? (Integer))
+            assert(review.rating[:overall] > 0)
+          end
+
+          unless review.rating[:story].nil?
+            assert(review.rating[:story].is_a? (Integer))
+            assert(review.rating[:story] > 0)
+          end
+
+          unless review.rating[:animation].nil?
+            assert(review.rating[:animation].is_a? (Integer))
+            assert(review.rating[:animation] > 0)
+          end
+
+          unless review.rating[:sound].nil?
+            assert(review.rating[:sound].is_a? (Integer))
+            assert(review.rating[:sound] > 0)
+          end
+
+          unless review.rating[:character].nil?
+            assert(review.rating[:character].is_a? (Integer))
+            assert(review.rating[:character] > 0)
+          end
+
+          unless review.rating[:enjoyment].nil?
+            assert(review.rating[:enjoyment].is_a? (Integer))
+            assert(review.rating[:enjoyment] > 0)
+          end
+
+
+          # Review
+          assert_not_nil(review.review)
+          assert_false(review.review.include? '<br>')
+
+        end
+
+      end
+    end
 
   end
 

@@ -7,7 +7,7 @@ module Railgun
       # http://cdn.myanimelist.net        /images/anime/2/73842.jpg
 
       image_url = url
-      base_url = 'http://cdn.myanimelist.net'
+      base_url = 'https://myanimelist.cdn-dena.com'
 
       url_match = url.match("/images/#{entity}/.+.jpg")
       if url_match

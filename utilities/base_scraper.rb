@@ -16,7 +16,9 @@ module Railgun
 
     def parse_image_url(nokogiri)
       if image_node = nokogiri.at('div#content tr td div img')
-        image_node['data-src']
+        # There are often times where this will change between 'src'
+        # and 'data-src'. Try one; if it fails, then fallback.
+        image_node['src'] || image_node['data-src']
       end
     end
 
@@ -339,7 +341,7 @@ module Railgun
 
         # Review Metadata (number of users who found the review helpful)
         # TODO: Rename these variables to something a little more sensible.
-        review.helpful_review_count = reviewer_table.at('td[2] strong').parent.text.scan(/\d+/).first
+        review.helpful_review_count = reviewer_table.at('td[2] strong').parent.text.scan(/\d+/).first.to_i
 
         # TODO: For now, bypassing "Other reviews from this user" for a later update.
         review_metadata_td = reviewer_table.at('td[3]')
@@ -347,8 +349,8 @@ module Railgun
         review.date = review_metadata_td.at('div[1]').text
 
         review_episodes_text = review_metadata_td.at('div[2]').text
-        review.episodes_watched = review_episodes_text.scan(/\d+/).first
-        review.episodes_total = review_episodes_text.scan(/\d+/).last
+        review.episodes_watched = review_episodes_text.scan(/\d+/).first.to_i
+        review.episodes_total = review_episodes_text.scan(/\d+/).last.to_i
 
         # Split between : in "Overall Rating: 7", take the last, and strip spaces on the edges.
         # review.rating = review_metadata_td.at('div[3]').text.split(/:/).last.strip
@@ -357,12 +359,18 @@ module Railgun
         score_table = review_div.at('div[@class="spaceit textReadability word-break"] > div > table')
         score_table.search('tr').each do |tr|
           # td[0]: Category
-          category = tr.child.text.downcase
+          category = tr.child.text.strip.downcase
 
           # td[1]: Score
-          score = tr.child.next.text
+          score = tr.child.next.text.strip
 
-          review.rating[category] = score
+          # If there is no score (as they are optional),
+          # nil it out.
+          if score.length == 0
+            score = nil
+          end
+
+          review.rating[category] = score.to_i
 
         end
 
