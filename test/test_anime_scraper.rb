@@ -76,7 +76,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     nokogiri = nokogiri_for_sample_response
 
     actual = scraper.parse_rank(nokogiri)
-    expected = actual.is_a?(Integer)
+    expected = actual.is_a?Integer
 
     assert(expected)
   end
@@ -197,7 +197,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
     actual = scraper.parse_popularity_rank(node)
-    expected = actual.is_a?(Integer)
+    expected = actual.is_a?Integer
 
     assert(expected)
   end
@@ -209,7 +209,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
     actual = scraper.parse_member_count(node)
-    expected = actual.is_a?(Integer)
+    expected = actual.is_a?Integer
 
     assert(expected)
   end
@@ -221,7 +221,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
     actual = scraper.parse_favorite_count(node)
-    expected = actual.is_a?(Integer)
+    expected = actual.is_a?Integer
 
     assert(expected)
   end
@@ -450,13 +450,13 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_summary_stats(nokogiri)
 
     actual.each do | key, value |
-      assert(value.is_a?(Integer))
+      assert(value.is_a?Integer)
     end
 
     actual = scraper.parse_score_stats(nokogiri)
 
     actual.each do | key, value |
-      assert(value.is_a?(Integer))
+      assert(value.is_a?Integer)
     end
 
   end
@@ -513,42 +513,42 @@ class TestAnimeScraper < Test::Unit::TestCase
           assert(!review.user_image_url.empty?)
 
           # Metadata
-          assert(review.helpful_review_count.is_a? (Integer))
+          assert(review.helpful_review_count.is_a? Integer)
           assert(review.helpful_review_count > 0)
-          assert(!review.date.empty?)
-          assert(review.episodes_watched.is_a? (Integer))
+          assert(review.date.is_a? Time)
+          assert(review.episodes_watched.is_a? Integer)
           assert(review.episodes_watched > 0)
-          assert(review.episodes_total.is_a? (Integer))
+          assert(review.episodes_total.is_a? Integer)
           assert(review.episodes_total > 0)
 
           # Ratings
           unless review.rating[:overall].nil?
-            assert(review.rating[:overall].is_a? (Integer))
+            assert(review.rating[:overall].is_a? Integer)
             assert(review.rating[:overall] > 0)
           end
 
           unless review.rating[:story].nil?
-            assert(review.rating[:story].is_a? (Integer))
+            assert(review.rating[:story].is_a? Integer)
             assert(review.rating[:story] > 0)
           end
 
           unless review.rating[:animation].nil?
-            assert(review.rating[:animation].is_a? (Integer))
+            assert(review.rating[:animation].is_a? Integer)
             assert(review.rating[:animation] > 0)
           end
 
           unless review.rating[:sound].nil?
-            assert(review.rating[:sound].is_a? (Integer))
+            assert(review.rating[:sound].is_a? Integer)
             assert(review.rating[:sound] > 0)
           end
 
           unless review.rating[:character].nil?
-            assert(review.rating[:character].is_a? (Integer))
+            assert(review.rating[:character].is_a? Integer)
             assert(review.rating[:character] > 0)
           end
 
           unless review.rating[:enjoyment].nil?
-            assert(review.rating[:enjoyment].is_a? (Integer))
+            assert(review.rating[:enjoyment].is_a? Integer)
             assert(review.rating[:enjoyment] > 0)
           end
 
