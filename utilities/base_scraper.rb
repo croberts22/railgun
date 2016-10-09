@@ -1,4 +1,4 @@
-require 'chronic'
+require_relative 'date_formatter'
 
 module Railgun
 
@@ -185,40 +185,21 @@ module Railgun
 
     def self.parse_start_date(text)
       text = text.strip
-
-      case text
-        when /^\d{4}$/
-          return text.strip
-        when /^(\d{4}) to \?/
-          return $1
-        when /^\d{2}-\d{2}-\d{2}$/
-          return Date.strptime(text, '%m-%d-%y')
-        else
-          date_string = text.split(/\s+to\s+/).first
-          return nil if !date_string
-
-          Chronic.parse(date_string, guess: :begin)
-      end
+      date_string = text.split(/\s+to\s+/).first
+      parse_date(date_string)
     end
 
     def self.parse_end_date(text)
       text = text.strip
-
-      case text
-        when /^\d{4}$/
-          return text.strip
-        when /^\? to (\d{4})/
-          return $1
-        when /^\d{2}-\d{2}-\d{2}$/
-          return Date.strptime(text, '%m-%d-%y')
-        else
-          date_string = text.split(/\s+to\s+/).last
-          return nil if !date_string
-
-          Chronic.parse(date_string, guess: :begin)
-      end
+      date_string = text.split(/\s+to\s+/).last
+      parse_date(date_string)
     end
 
+    def self.parse_date(text)
+      text = text.strip
+      formatter = Railgun::DateFormatter.new
+      formatter.date_from_string(text)
+    end
 
     # Character and Voice Actor parsing.
     # FIXME: Ripped from umalapi. This does not currently include staff parsing. Very fragile code, this should be revisited.
@@ -346,7 +327,8 @@ module Railgun
         # TODO: For now, bypassing "Other reviews from this user" for a later update.
         review_metadata_td = reviewer_table.at('td[3]')
 
-        review.date = review_metadata_td.at('div[1]').text
+        review_date_text = review_metadata_td.at('div[1]').text
+        review.date = BaseScraper.parse_date(review_date_text)
 
         review_episodes_text = review_metadata_td.at('div[2]').text
         review.episodes_watched = review_episodes_text.scan(/\d+/).first.to_i
@@ -362,15 +344,14 @@ module Railgun
           category = tr.child.text.strip.downcase
 
           # td[1]: Score
-          score = tr.child.next.text.strip
+          score = tr.child.next.text.strip.to_i
 
-          # If there is no score (as they are optional),
-          # nil it out.
-          if score.length == 0
+          # If there is no score (as they are optional), nil it out.
+          if score == 0
             score = nil
           end
 
-          review.rating[category] = score.to_i
+          review.rating[category] = score
 
         end
 
