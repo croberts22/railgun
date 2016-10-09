@@ -6,7 +6,9 @@ class TestMangaScraper < Test::Unit::TestCase
   ### Convenience Methods
 
   def nokogiri_for_sample_response
-    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/monogatari_manga_response.html"))
+    # Monogatari Series: First Season
+    # https://myanimelist.net/manga/14893/Monogatari_Series__First_Season
+    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/manga_14893.html"))
   end
 
   def nokogiri_for_monogatari_2_response
@@ -55,12 +57,7 @@ class TestMangaScraper < Test::Unit::TestCase
     nokogiri = nokogiri_for_sample_response
 
     actual = scraper.parse_synopsis(nokogiri)
-    expected = 'This entry includes the first season of the Monogatari Series.
-
-Vol.1-2: Bakemonogatari
-Vol.3: Kizumonogatari
-Vol.4-5: Nisemonogatari
-Vol.6: Nekomonogatari: Kuro'
+    expected = 'This entry includes the first season of the Monogatari Series.'
 
     assert(!(actual.include? '<br>'))
     assert(!(actual.include? '<br />'))
@@ -82,7 +79,7 @@ Vol.6: Nekomonogatari: Kuro'
     nokogiri = nokogiri_for_sample_response
 
     actual = scraper.parse_image_url(nokogiri)
-    expected = 'http://cdn.myanimelist.net/images/manga/5/173535.jpg'
+    expected = 'https://myanimelist.cdn-dena.com/images/manga/1/181552.jpg'
 
     assert_equal(expected, actual)
   end
