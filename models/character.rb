@@ -1,6 +1,6 @@
 module Railgun
 
-  class Character
+  class Character < Resource
   end
 
 end

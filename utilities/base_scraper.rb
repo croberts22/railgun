@@ -308,6 +308,95 @@ module Railgun
 
       character_voice_actors
     end
+
+
+    def parse_reviews(nokogiri)
+
+      reviews = []
+
+      # TODO: maybe?
+      review_div = nokogiri.at('//div[contains(@class, "borderDark")]')
+
+      while review_div
+
+        review = Review.new
+
+        # Reviewer.
+        # td[1] = Profile picture, url
+        # td[2] = Reviewer name, metadata
+        # td[3] = Additional metadata
+        reviewer_table = review_div.at('div > table > tr')
+        break unless !reviewer_table.nil?
+
+        # Odd that there is an embedded div with the same class ("picSurround").
+        # May not need to check for this if we explicitly request td[0].
+        reviewer_profile = reviewer_table.at('td[1] div div[@class="picSurround"]')
+        review.user_url = reviewer_profile.at('a')['href']
+
+        # FIXME: Can strip /thumbs/ and _thumb at the end of the url to get a full-size resolution image.
+        review.user_image_url = reviewer_profile.at('a img')['data-src']
+        review.username = reviewer_table.at('td[2] a').text
+
+        # Review Metadata (number of users who found the review helpful)
+        # TODO: Rename these variables to something a little more sensible.
+        review.helpful_review_count = reviewer_table.at('td[2] strong').parent.text.scan(/\d+/).first
+
+        # TODO: For now, bypassing "Other reviews from this user" for a later update.
+        review_metadata_td = reviewer_table.at('td[3]')
+
+        review.date = review_metadata_td.at('div[1]').text
+
+        review_episodes_text = review_metadata_td.at('div[2]').text
+        review.episodes_watched = review_episodes_text.scan(/\d+/).first
+        review.episodes_total = review_episodes_text.scan(/\d+/).last
+
+        # Split between : in "Overall Rating: 7", take the last, and strip spaces on the edges.
+        # review.rating = review_metadata_td.at('div[3]').text.split(/:/).last.strip
+
+        # Score Breakdown.
+        score_table = review_div.at('div[@class="spaceit textReadability word-break"] > div > table')
+        score_table.search('tr').each do |tr|
+          # td[0]: Category
+          category = tr.child.text.downcase
+
+          # td[1]: Score
+          score = tr.child.next.text
+
+          review.rating[category] = score
+
+        end
+
+        # Review.
+        user_review_div = review_div.at('div[@class="spaceit textReadability word-break"] > div').next
+        review_text = ''
+
+        while user_review_div
+
+          # Treat <br> as newlines in the response.
+          if user_review_div.to_s.eql? '<br>'
+            review_text << '\n'
+          end
+
+          # Do not include the last part of the div, which includes a 'read more' button.
+          review_text << user_review_div.text unless user_review_div.to_s.include? 'read more'
+
+          # Move on to the next element.
+          user_review_div = user_review_div.next
+        end
+
+        review.review = review_text
+
+        reviews << review
+        review_div = review_div.next
+      end
+
+      reviews
+    end
+
+    def parse_recommendations(nokogiri)
+
+    end
+
   end
 
 end

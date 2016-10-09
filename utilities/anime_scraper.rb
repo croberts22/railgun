@@ -59,6 +59,27 @@ module Railgun
       end
 
 
+      reviews_h2 = node.at('//h2[text()="Reviews"]')
+      if reviews_h2
+        # Get all text between "Reviews</h2>" and the next </h2> tag.
+        matched_data = reviews_h2.parent.to_s.match(%r{Reviews</h2>(.+?)<h2>}m)
+        if matched_data
+
+          # Translate the captured string back into HTML so we can iterate upon it easier.
+          # This is preferred versus attempting to iterate against a preset condition against
+          # the entire page, since the outline could potentially change at any time (and it
+          # would suck if this while loop kept going endlessly).
+
+          # FIXME: This isn't the right regex, but will suffice for now. Having trailing \t\t\t\t at the beginning.
+          data = matched_data[1].gsub(/>\s+</, '><')
+          reviews = Nokogiri::HTML(data)
+
+          anime.reviews = parse_reviews(reviews)
+
+
+        end
+      end
+
     end
 
 
