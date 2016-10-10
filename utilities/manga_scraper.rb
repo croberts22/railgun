@@ -92,7 +92,7 @@ module Railgun
     def parse_publishing_start_date(nokogiri)
       if (node = nokogiri.at('//span[text()="Published:"]')) && node.next
         airdates_text = node.next.text.strip
-        start_date = BaseScraper::parse_start_date(airdates_text)
+        start_date = parse_start_date(airdates_text)
 
         start_date
       end
@@ -101,7 +101,7 @@ module Railgun
     def parse_publishing_end_date(nokogiri)
       if (node = nokogiri.at('//span[text()="Published:"]')) && node.next
         airdates_text = node.next.text.strip
-        end_date = BaseScraper::parse_end_date(airdates_text)
+        end_date = parse_end_date(airdates_text)
 
         end_date
       end

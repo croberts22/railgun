@@ -56,12 +56,12 @@ module Railgun
 
     def parse_start_date(nokogiri)
       date = parse_dates(nokogiri).first
-      BaseScraper::parse_start_date(date)
+      Railgun::DateFormatter.new.date_from_string(date)
     end
 
     def parse_end_date(nokogiri)
       date = parse_dates(nokogiri).last
-      BaseScraper::parse_end_date(date)
+      Railgun::DateFormatter.new.date_from_string(date)
     end
 
     def parse_member_count(nokogiri)

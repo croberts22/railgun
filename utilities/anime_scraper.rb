@@ -23,6 +23,8 @@ module Railgun
       anime.status = parse_status(node)
       anime.start_date = parse_airing_start_date(node)
       anime.end_date = parse_airing_end_date(node)
+      anime.studios = parse_studios(node)
+      anime.producers = parse_producers(node)
       anime.genres = parse_genres(node)
       anime.classification = parse_rating(node)
       anime.members_score = parse_score(node)
@@ -107,7 +109,7 @@ module Railgun
     def parse_airing_start_date(nokogiri)
       if (node = nokogiri.at('//span[text()="Aired:"]')) && node.next
         airdates_text = node.next.text.strip
-        start_date = BaseScraper::parse_start_date(airdates_text)
+        start_date = parse_start_date(airdates_text)
 
         start_date
       end
@@ -116,7 +118,7 @@ module Railgun
     def parse_airing_end_date(nokogiri)
       if (node = nokogiri.at('//span[text()="Aired:"]')) && node.next
         airdates_text = node.next.text.strip
-        end_date = BaseScraper::parse_end_date(airdates_text)
+        end_date = parse_end_date(airdates_text)
 
         end_date
       end
@@ -127,6 +129,27 @@ module Railgun
         classification = node.next.text.strip
 
         classification
+      end
+    end
+
+    def parse_producers(nokogiri)
+      if (node = nokogiri.at('//span[text()="Producers:"]')) && node.parent
+
+        producers = []
+
+        node.parent.search('a').each do |a|
+          producers << a.text
+        end
+
+        producers
+      end
+    end
+
+    def parse_studios(nokogiri)
+      if (node = nokogiri.at('//span[text()="Studios:"]')) && node.next.next
+        studios = node.next.next.text.strip.split(',')
+
+        studios
       end
     end
 
