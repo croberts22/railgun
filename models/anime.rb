@@ -8,7 +8,7 @@ module Railgun
   class Anime < Resource
 
     attr_accessor :rank, :popularity_rank, :episodes, :classification, :studios, :producers,
-                  :members_score, :members_count, :favorited_count, :synopsis, :start_date, :end_date
+                  :score, :score_count, :members_count, :favorited_count, :synopsis, :start_date, :end_date
     attr_reader :type, :status
     attr_writer :genres, :tags,
                 :other_titles, :manga_adaptations, :prequels, :sequels, :side_stories,
@@ -168,7 +168,8 @@ module Railgun
           stats: {
               rank: rank,
               popularity_rank: popularity_rank,
-              members_score: members_score,
+              score: score,
+              score_count: score_count,
               members_count: members_count,
               favorited_count: favorited_count,
               summary_stats: summary_stats,

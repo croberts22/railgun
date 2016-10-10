@@ -103,6 +103,14 @@ module Railgun
       end
     end
 
+    def parse_score_count(nokogiri)
+      if (node = nokogiri.at('//span[@itemprop="ratingCount"]'))
+        score_count = node.text.gsub(',', '').to_i
+
+        score_count
+      end
+    end
+
     def parse_popularity_rank(nokogiri)
       if (node = nokogiri.at('//span[text()="Popularity:"]')) && node.next
         popularity_rank = node.next.text.strip.sub('#', '').gsub(',', '').to_i

@@ -584,4 +584,14 @@ class TestAnimeScraper < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
+  def test_score_count
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_score_count(nokogiri)
+    expected = 48281
+
+    assert_equal(expected, actual)
+  end
+
 end
