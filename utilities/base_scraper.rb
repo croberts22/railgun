@@ -183,19 +183,19 @@ module Railgun
 
     # Date Parsing.
 
-    def self.parse_start_date(text)
+    def parse_start_date(text)
       text = text.strip
       date_string = text.split(/\s+to\s+/).first
       parse_date(date_string)
     end
 
-    def self.parse_end_date(text)
+    def parse_end_date(text)
       text = text.strip
       date_string = text.split(/\s+to\s+/).last
       parse_date(date_string)
     end
 
-    def self.parse_date(text)
+    def parse_date(text)
       text = text.strip
       formatter = Railgun::DateFormatter.new
       formatter.date_from_string(text)
@@ -328,7 +328,7 @@ module Railgun
         review_metadata_td = reviewer_table.at('td[3]')
 
         review_date_text = review_metadata_td.at('div[1]').text
-        review.date = BaseScraper.parse_date(review_date_text)
+        review.date = parse_date(review_date_text)
 
         review_episodes_text = review_metadata_td.at('div[2]').text
         review.episodes_watched = review_episodes_text.scan(/\d+/).first.to_i

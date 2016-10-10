@@ -7,7 +7,7 @@ module Railgun
 
   class Anime < Resource
 
-    attr_accessor :rank, :popularity_rank, :episodes, :classification,
+    attr_accessor :rank, :popularity_rank, :episodes, :classification, :studios, :producers,
                   :members_score, :members_count, :favorited_count, :synopsis, :start_date, :end_date
     attr_reader :type, :status
     attr_writer :genres, :tags,
@@ -71,6 +71,14 @@ module Railgun
 
     def tags
       @tags ||= []
+    end
+
+    def studios
+      @studios ||= []
+    end
+
+    def producers
+      @producers ||= []
     end
 
     def manga_adaptations
@@ -154,6 +162,8 @@ module Railgun
           image_url: image_url,
           other_titles: other_titles,
           tags: tags,
+          studios: studios,
+          producers: producers,
 
           stats: {
               rank: rank,

@@ -564,4 +564,24 @@ class TestAnimeScraper < Test::Unit::TestCase
 
   end
 
+  def test_producers
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_producers(nokogiri)
+    expected = [ 'Sotsu', 'Movic', 'Warner Bros.', 'KlockWorx', 'Showgate', 'Infinite' ]
+
+    assert_equal(expected, actual)
+  end
+
+  def test_studios
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_studios(nokogiri)
+    expected = [ 'P.A. Works' ]
+
+    assert_equal(expected, actual)
+  end
+
 end
