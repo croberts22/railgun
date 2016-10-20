@@ -268,7 +268,7 @@ module Railgun
       if html_string.match(string_to_match)
         $1.scan(regex_pattern) do |url, anime_id, title|
           anime << {
-              :anime_id => anime_id,
+              :id => anime_id.to_i,
               :title => title,
               :url => url
           }
