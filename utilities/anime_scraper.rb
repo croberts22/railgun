@@ -139,7 +139,17 @@ module Railgun
         producers = []
 
         node.parent.search('a').each do |a|
-          producers << a.text
+
+          url = a.attribute('href').to_s
+          name = a.attribute('title').to_s
+
+          if matches = url.match(%r{/producer/(\d+)/})
+            id = matches[1].to_i
+          end
+
+          producer = { :id => id, :name => name, :url => url }
+          producers << producer
+
         end
 
         producers
@@ -147,8 +157,22 @@ module Railgun
     end
 
     def parse_studios(nokogiri)
-      if (node = nokogiri.at('//span[text()="Studios:"]')) && node.next.next
-        studios = node.next.next.text.strip.split(',')
+      if (node = nokogiri.at('//span[text()="Studios:"]')) && node.parent
+
+        studios = []
+        node.parent.search('a').each do |a|
+
+          url = a.attribute('href').to_s
+          name = a.attribute('title').to_s
+
+          if matches = url.match(%r{/producer/(\d+)/})
+            id = matches[1].to_i
+          end
+
+          studio = { :id => id, :name => name, :url => url }
+          studios << studio
+
+        end
 
         studios
       end
