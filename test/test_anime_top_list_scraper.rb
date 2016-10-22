@@ -64,12 +64,12 @@ class TestAnimeTopListScraper < Test::Unit::TestCase
       start_date = row[:start_date]
 
       assert(!start_date.nil?)
-      assert(start_date.is_a? Time)
+      assert(start_date.is_a? String)
 
       end_date = row[:end_date]
 
       assert(!end_date.nil?)
-      assert(end_date.is_a? Time)
+      assert(end_date.is_a? String)
 
       member_count = row[:member_count]
 

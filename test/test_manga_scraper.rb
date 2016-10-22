@@ -141,7 +141,7 @@ class TestMangaScraper < Test::Unit::TestCase
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
     actual = scraper.parse_publishing_start_date(node)
-    expected = Time.parse('Nov 1, 2006')
+    expected = Time.parse('Nov 1, 2006').utc.iso8601
 
     assert_equal(expected, actual)
   end
@@ -153,7 +153,7 @@ class TestMangaScraper < Test::Unit::TestCase
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
     actual = scraper.parse_publishing_end_date(node)
-    expected = Time.parse('Jul 28, 2010')
+    expected = Time.parse('Jul 28, 2010').utc.iso8601
 
     assert_equal(expected, actual)
   end
@@ -254,32 +254,32 @@ class TestMangaScraper < Test::Unit::TestCase
     actual = scraper.parse_anime_adaptations(related_manga_text).sort_by { |item| item[:title] }
     expected = [
         {
-            anime_id: '31758',
+            id: 31758,
             title: 'Kizumonogatari III: Reiketsu-hen',
             url: '/anime/31758/Kizumonogatari_III__Reiketsu-hen'
         },
         {
-            anime_id: '5081',
+            id: 5081,
             title: 'Bakemonogatari',
             url: '/anime/5081/Bakemonogatari'
         },
         {
-            anime_id: '11597',
+            id: 11597,
             title: 'Nisemonogatari',
             url: '/anime/11597/Nisemonogatari'
         },
         {
-            anime_id: '31757',
+            id: 31757,
             title: 'Kizumonogatari II: Nekketsu-hen',
             url: '/anime/31757/Kizumonogatari_II__Nekketsu-hen'
         },
         {
-            anime_id: '9260',
+            id: 9260,
             title: 'Kizumonogatari I: Tekketsu-hen',
             url: '/anime/9260/Kizumonogatari_I__Tekketsu-hen'
         },
         {
-            anime_id: '15689',
+            id: 15689,
             title: 'Nekomonogatari: Kuro',
             url: '/anime/15689/Nekomonogatari__Kuro'
         }
@@ -297,7 +297,7 @@ class TestMangaScraper < Test::Unit::TestCase
     actual = scraper.parse_prequels(related_manga_text)
     expected = [
         {
-            manga_id: '14893',
+            id: 14893,
             title: 'Monogatari Series: First Season',
             url: '/manga/14893/Monogatari_Series__First_Season'
         }
@@ -315,7 +315,7 @@ class TestMangaScraper < Test::Unit::TestCase
     actual = scraper.parse_sequels(related_manga_text)
     expected = [
         {
-            manga_id: '23751',
+            id: 23751,
             title: 'Monogatari Series: Second Season',
             url: '/manga/23751/Monogatari_Series__Second_Season'
         }
@@ -333,22 +333,22 @@ class TestMangaScraper < Test::Unit::TestCase
     actual = scraper.parse_side_stories(related_manga_text).sort_by { |item| item[:title] }
     expected = [
         {
-            manga_id: '24499',
+            id: 24499,
             title: 'Bakemonogatari Short Stories',
             url: '/manga/24499/Bakemonogatari_Short_Stories'
         },
         {
-            manga_id: '86670',
+            id: 86670,
             title: 'Monogatari Series Heroine Hon',
             url: '/manga/86670/Monogatari_Series_Heroine_Hon'
         },
         {
-            manga_id: '90322',
+            id: 90322,
             title: 'Nisemonogatari Short Stories',
             url: '/manga/90322/Nisemonogatari_Short_Stories'
         },
         {
-            manga_id: '93097',
+            id: 93097,
             title: 'Monogatari Series: Off Season',
             url: '/manga/93097/Monogatari_Series__Off_Season'
         }
@@ -365,7 +365,7 @@ class TestMangaScraper < Test::Unit::TestCase
 
     actual = scraper.parse_parent_story(related_manga_text)
     expected = {
-            manga_id: '23751',
+            id: 23751,
             title: 'Monogatari Series: Second Season',
             url: '/manga/23751/Monogatari_Series__Second_Season'
     }
@@ -382,7 +382,7 @@ class TestMangaScraper < Test::Unit::TestCase
     # actual = scraper.parse_spin_offs(related_manga_text)
     # expected = [
     #     {
-    #         manga_id: '8023',
+    #         id: 8023,
     #         title: 'Toaru Kagaku no Railgun Specials',
     #         url: '/manga/8023/Toaru_Kagaku_no_Railgun_Specials'
     #     }
@@ -416,7 +416,7 @@ class TestMangaScraper < Test::Unit::TestCase
     actual = scraper.parse_other(related_manga_text)
     expected = [
         {
-            manga_id: '66695',
+            id: 66695,
             title: 'Kimi to Nadekko!',
             url: '/manga/66695/Kimi_to_Nadekko'
         }
