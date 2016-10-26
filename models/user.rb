@@ -1,6 +1,6 @@
 module Railgun
 
-  class Actor < Resource
+  class User < Resource
   end
 
 end

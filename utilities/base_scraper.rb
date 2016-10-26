@@ -1,4 +1,4 @@
-require 'chronic'
+require_relative 'date_formatter'
 
 module Railgun
 
@@ -16,7 +16,9 @@ module Railgun
 
     def parse_image_url(nokogiri)
       if image_node = nokogiri.at('div#content tr td div img')
-        image_node['data-src']
+        # There are often times where this will change between 'src'
+        # and 'data-src'. Try one; if it fails, then fallback.
+        image_node['src'] || image_node['data-src']
       end
     end
 
@@ -101,6 +103,14 @@ module Railgun
       end
     end
 
+    def parse_score_count(nokogiri)
+      if (node = nokogiri.at('//span[@itemprop="ratingCount"]'))
+        score_count = node.text.gsub(',', '').to_i
+
+        score_count
+      end
+    end
+
     def parse_popularity_rank(nokogiri)
       if (node = nokogiri.at('//span[text()="Popularity:"]')) && node.next
         popularity_rank = node.next.text.strip.sub('#', '').gsub(',', '').to_i
@@ -181,42 +191,23 @@ module Railgun
 
     # Date Parsing.
 
-    def self.parse_start_date(text)
+    def parse_start_date(text)
       text = text.strip
-
-      case text
-        when /^\d{4}$/
-          return text.strip
-        when /^(\d{4}) to \?/
-          return $1
-        when /^\d{2}-\d{2}-\d{2}$/
-          return Date.strptime(text, '%m-%d-%y')
-        else
-          date_string = text.split(/\s+to\s+/).first
-          return nil if !date_string
-
-          Chronic.parse(date_string, guess: :begin)
-      end
+      date_string = text.split(/\s+to\s+/).first
+      parse_date(date_string)
     end
 
-    def self.parse_end_date(text)
+    def parse_end_date(text)
       text = text.strip
-
-      case text
-        when /^\d{4}$/
-          return text.strip
-        when /^\? to (\d{4})/
-          return $1
-        when /^\d{2}-\d{2}-\d{2}$/
-          return Date.strptime(text, '%m-%d-%y')
-        else
-          date_string = text.split(/\s+to\s+/).last
-          return nil if !date_string
-
-          Chronic.parse(date_string, guess: :begin)
-      end
+      date_string = text.split(/\s+to\s+/).last
+      parse_date(date_string)
     end
 
+    def parse_date(text)
+      text = text.strip
+      formatter = Railgun::DateFormatter.new
+      formatter.date_from_string(text)
+    end
 
     # Character and Voice Actor parsing.
     # FIXME: Ripped from umalapi. This does not currently include staff parsing. Very fragile code, this should be revisited.
@@ -308,6 +299,101 @@ module Railgun
 
       character_voice_actors
     end
+
+
+    def parse_reviews(nokogiri)
+
+      reviews = []
+
+      # TODO: maybe?
+      review_div = nokogiri.at('//div[contains(@class, "borderDark")]')
+
+      while review_div
+
+        review = Review.new
+
+        # Reviewer.
+        # td[1] = Profile picture, url
+        # td[2] = Reviewer name, metadata
+        # td[3] = Additional metadata
+        reviewer_table = review_div.at('div > table > tr')
+        break unless !reviewer_table.nil?
+
+        # Odd that there is an embedded div with the same class ("picSurround").
+        # May not need to check for this if we explicitly request td[0].
+        reviewer_profile = reviewer_table.at('td[1] div div[@class="picSurround"]')
+        review.user_url = reviewer_profile.at('a')['href']
+
+        # FIXME: Can strip /thumbs/ and _thumb at the end of the url to get a full-size resolution image.
+        review.user_image_url = reviewer_profile.at('a img')['data-src']
+        review.username = reviewer_table.at('td[2] a').text
+
+        # Review Metadata (number of users who found the review helpful)
+        # TODO: Rename these variables to something a little more sensible.
+        review.helpful_review_count = reviewer_table.at('td[2] strong').parent.text.scan(/\d+/).first.to_i
+
+        # TODO: For now, bypassing "Other reviews from this user" for a later update.
+        review_metadata_td = reviewer_table.at('td[3]')
+
+        review_date_text = review_metadata_td.at('div[1]').text
+        review.date = parse_date(review_date_text)
+
+        review_episodes_text = review_metadata_td.at('div[2]').text
+        review.episodes_watched = review_episodes_text.scan(/\d+/).first.to_i
+        review.episodes_total = review_episodes_text.scan(/\d+/).last.to_i
+
+        # Split between : in "Overall Rating: 7", take the last, and strip spaces on the edges.
+        # review.rating = review_metadata_td.at('div[3]').text.split(/:/).last.strip
+
+        # Score Breakdown.
+        score_table = review_div.at('div[@class="spaceit textReadability word-break"] > div > table')
+        score_table.search('tr').each do |tr|
+          # td[0]: Category
+          category = tr.child.text.strip.downcase
+
+          # td[1]: Score
+          score = tr.child.next.text.strip.to_i
+
+          # If there is no score (as they are optional), nil it out.
+          if score == 0
+            score = nil
+          end
+
+          review.rating[category] = score
+
+        end
+
+        # Review.
+        user_review_div = review_div.at('div[@class="spaceit textReadability word-break"] > div').next
+        review_text = ''
+
+        while user_review_div
+
+          # Treat <br> as newlines in the response.
+          if user_review_div.to_s.eql? '<br>'
+            review_text << '\n'
+          end
+
+          # Do not include the last part of the div, which includes a 'read more' button.
+          review_text << user_review_div.text unless user_review_div.to_s.include? 'read more'
+
+          # Move on to the next element.
+          user_review_div = user_review_div.next
+        end
+
+        review.review = review_text
+
+        reviews << review
+        review_div = review_div.next
+      end
+
+      reviews
+    end
+
+    def parse_recommendations(nokogiri)
+
+    end
+
   end
 
 end

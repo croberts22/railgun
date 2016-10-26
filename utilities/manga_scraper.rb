@@ -25,7 +25,8 @@ module Railgun
       manga.start_date = parse_publishing_start_date(node)
       manga.end_date = parse_publishing_end_date(node)
       manga.genres = parse_genres(node)
-      manga.members_score = parse_score(node)
+      manga.score = parse_score(node)
+      manga.score_count = parse_score_count(node)
       manga.popularity_rank = parse_popularity_rank(node)
       manga.members_count = parse_member_count(node)
       manga.favorited_count = parse_favorite_count(node)
@@ -92,7 +93,7 @@ module Railgun
     def parse_publishing_start_date(nokogiri)
       if (node = nokogiri.at('//span[text()="Published:"]')) && node.next
         airdates_text = node.next.text.strip
-        start_date = BaseScraper::parse_start_date(airdates_text)
+        start_date = parse_start_date(airdates_text)
 
         start_date
       end
@@ -101,7 +102,7 @@ module Railgun
     def parse_publishing_end_date(nokogiri)
       if (node = nokogiri.at('//span[text()="Published:"]')) && node.next
         airdates_text = node.next.text.strip
-        end_date = BaseScraper::parse_end_date(airdates_text)
+        end_date = parse_end_date(airdates_text)
 
         end_date
       end
@@ -212,7 +213,7 @@ module Railgun
       if html_string.match(string_to_match)
         $1.scan(regex_pattern) do |url, manga_id, title|
           manga << {
-              :manga_id => manga_id,
+              :id => manga_id.to_i,
               :title => title,
               :url => url
           }

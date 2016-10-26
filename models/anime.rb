@@ -7,14 +7,16 @@ module Railgun
 
   class Anime < Resource
 
-    attr_accessor :rank, :popularity_rank, :episodes, :classification,
-                  :members_score, :members_count, :favorited_count, :synopsis, :start_date, :end_date
+    attr_accessor :rank, :popularity_rank, :episodes, :classification, :studios, :producers,
+                  :score, :score_count, :members_count, :favorited_count, :synopsis, :start_date, :end_date
     attr_reader :type, :status
     attr_writer :genres, :tags,
                 :other_titles, :manga_adaptations, :prequels, :sequels, :side_stories,
                 :character_anime, :spin_offs, :summaries, :alternative_versions, :alternative_settings,
                 :full_stories, :others, :parent_story,
                 :summary_stats, :score_stats,  :additional_info_urls, :character_voice_actors
+
+    attr_accessor :reviews
 
 
     ### Custom Setter Methods
@@ -69,6 +71,14 @@ module Railgun
 
     def tags
       @tags ||= []
+    end
+
+    def studios
+      @studios ||= []
+    end
+
+    def producers
+      @producers ||= []
     end
 
     def manga_adaptations
@@ -131,6 +141,10 @@ module Railgun
       @synopsis ||= ''
     end
 
+    def reviews
+      @reviews ||= []
+    end
+
     def attributes
       {
           id: id,
@@ -148,11 +162,14 @@ module Railgun
           image_url: image_url,
           other_titles: other_titles,
           tags: tags,
+          studios: studios,
+          producers: producers,
 
           stats: {
               rank: rank,
               popularity_rank: popularity_rank,
-              members_score: members_score,
+              score: score,
+              score_count: score_count,
               members_count: members_count,
               favorited_count: favorited_count,
               summary_stats: summary_stats,
@@ -175,12 +192,9 @@ module Railgun
           },
 
           characters: character_voice_actors,
-          additional_info_urls: additional_info_urls
+          additional_info_urls: additional_info_urls,
+          reviews: reviews
       }
-    end
-
-    def to_json(*args)
-      attributes.to_json(*args)
     end
 
 
@@ -227,13 +241,10 @@ module Railgun
 
       puts 'Scraping top anime list...'
 
-      anime = Anime.new
       nokogiri = MALNetworkService.nokogiri_from_request(MALNetworkService.anime_rank_request(options[:type], options[:rank]))
 
       scraper = AnimeListScraper.new
       scraper.scrape(nokogiri)
-
-
     end
 
   end

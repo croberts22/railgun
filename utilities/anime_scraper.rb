@@ -23,9 +23,12 @@ module Railgun
       anime.status = parse_status(node)
       anime.start_date = parse_airing_start_date(node)
       anime.end_date = parse_airing_end_date(node)
+      anime.studios = parse_studios(node)
+      anime.producers = parse_producers(node)
       anime.genres = parse_genres(node)
       anime.classification = parse_rating(node)
-      anime.members_score = parse_score(node)
+      anime.score = parse_score(node)
+      anime.score_count = parse_score_count(node)
       anime.popularity_rank = parse_popularity_rank(node)
       anime.members_count = parse_member_count(node)
       anime.favorited_count = parse_favorite_count(node)
@@ -59,6 +62,27 @@ module Railgun
       end
 
 
+      reviews_h2 = node.at('//h2[text()="Reviews"]')
+      if reviews_h2
+        # Get all text between "Reviews</h2>" and the next </h2> tag.
+        matched_data = reviews_h2.parent.to_s.match(%r{Reviews</h2>(.+?)<h2>}m)
+        if matched_data
+
+          # Translate the captured string back into HTML so we can iterate upon it easier.
+          # This is preferred versus attempting to iterate against a preset condition against
+          # the entire page, since the outline could potentially change at any time (and it
+          # would suck if this while loop kept going endlessly).
+
+          # FIXME: This isn't the right regex, but will suffice for now. Having trailing \t\t\t\t at the beginning.
+          data = matched_data[1].gsub(/>\s+</, '><')
+          reviews = Nokogiri::HTML(data)
+
+          anime.reviews = parse_reviews(reviews)
+
+
+        end
+      end
+
     end
 
 
@@ -86,7 +110,7 @@ module Railgun
     def parse_airing_start_date(nokogiri)
       if (node = nokogiri.at('//span[text()="Aired:"]')) && node.next
         airdates_text = node.next.text.strip
-        start_date = BaseScraper::parse_start_date(airdates_text)
+        start_date = parse_start_date(airdates_text)
 
         start_date
       end
@@ -95,7 +119,7 @@ module Railgun
     def parse_airing_end_date(nokogiri)
       if (node = nokogiri.at('//span[text()="Aired:"]')) && node.next
         airdates_text = node.next.text.strip
-        end_date = BaseScraper::parse_end_date(airdates_text)
+        end_date = parse_end_date(airdates_text)
 
         end_date
       end
@@ -106,6 +130,51 @@ module Railgun
         classification = node.next.text.strip
 
         classification
+      end
+    end
+
+    def parse_producers(nokogiri)
+      if (node = nokogiri.at('//span[text()="Producers:"]')) && node.parent
+
+        producers = []
+
+        node.parent.search('a').each do |a|
+
+          url = a.attribute('href').to_s
+          name = a.attribute('title').to_s
+
+          if matches = url.match(%r{/producer/(\d+)/})
+            id = matches[1].to_i
+          end
+
+          producer = { :id => id, :name => name, :url => url }
+          producers << producer
+
+        end
+
+        producers
+      end
+    end
+
+    def parse_studios(nokogiri)
+      if (node = nokogiri.at('//span[text()="Studios:"]')) && node.parent
+
+        studios = []
+        node.parent.search('a').each do |a|
+
+          url = a.attribute('href').to_s
+          name = a.attribute('title').to_s
+
+          if matches = url.match(%r{/producer/(\d+)/})
+            id = matches[1].to_i
+          end
+
+          studio = { :id => id, :name => name, :url => url }
+          studios << studio
+
+        end
+
+        studios
       end
     end
 
@@ -223,7 +292,7 @@ module Railgun
       if html_string.match(string_to_match)
         $1.scan(regex_pattern) do |url, anime_id, title|
           anime << {
-              :anime_id => anime_id,
+              :id => anime_id.to_i,
               :title => title,
               :url => url
           }

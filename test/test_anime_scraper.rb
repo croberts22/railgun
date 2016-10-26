@@ -6,7 +6,8 @@ class TestAnimeScraper < Test::Unit::TestCase
   ### Convenience Methods
 
   def nokogiri_for_sample_response
-    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/shirobako_anime_response.html"))
+    # Shirobako
+    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/anime_25835.html"))
   end
 
   def nokogiri_for_shirobako_stats_response
@@ -75,7 +76,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     nokogiri = nokogiri_for_sample_response
 
     actual = scraper.parse_rank(nokogiri)
-    expected = actual.is_a?(Integer)
+    expected = actual.is_a?Integer
 
     assert(expected)
   end
@@ -85,7 +86,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     nokogiri = nokogiri_for_sample_response
 
     actual = scraper.parse_image_url(nokogiri)
-    expected = 'http://cdn.myanimelist.net/images/anime/6/68021.jpg'
+    expected = 'https://myanimelist.cdn-dena.com/images/anime/6/68021.jpg'
 
     assert_equal(expected, actual)
   end
@@ -136,7 +137,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
     actual = scraper.parse_airing_start_date(node)
-    expected = Time.parse('Oct 9, 2014')
+    expected = Time.parse('Oct 9, 2014').utc.iso8601
 
     assert_equal(expected, actual)
   end
@@ -148,7 +149,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
     actual = scraper.parse_airing_end_date(node)
-    expected = Time.parse('Mar 26, 2015')
+    expected = Time.parse('Mar 26, 2015').utc.iso8601
 
     assert_equal(expected, actual)
   end
@@ -196,7 +197,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
     actual = scraper.parse_popularity_rank(node)
-    expected = actual.is_a?(Integer)
+    expected = actual.is_a?Integer
 
     assert(expected)
   end
@@ -208,7 +209,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
     actual = scraper.parse_member_count(node)
-    expected = actual.is_a?(Integer)
+    expected = actual.is_a?Integer
 
     assert(expected)
   end
@@ -220,7 +221,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
     actual = scraper.parse_favorite_count(node)
-    expected = actual.is_a?(Integer)
+    expected = actual.is_a?Integer
 
     assert(expected)
   end
@@ -237,14 +238,14 @@ class TestAnimeScraper < Test::Unit::TestCase
 
     actual = scraper.parse_additional_info_urls(node)
     expected = {
-        details: 'http://myanimelist.net/anime/25835/Shirobako',
-        reviews: 'http://myanimelist.net/anime/25835/Shirobako/reviews',
-        recommendations: 'http://myanimelist.net/anime/25835/Shirobako/userrecs',
-        stats: 'http://myanimelist.net/anime/25835/Shirobako/stats',
-        characters_and_staff: 'http://myanimelist.net/anime/25835/Shirobako/characters',
-        news: 'http://myanimelist.net/anime/25835/Shirobako/news',
-        forum: 'http://myanimelist.net/anime/25835/Shirobako/forum',
-        pictures: 'http://myanimelist.net/anime/25835/Shirobako/pics',
+        details: 'https://myanimelist.net/anime/25835/Shirobako',
+        reviews: 'https://myanimelist.net/anime/25835/Shirobako/reviews',
+        recommendations: 'https://myanimelist.net/anime/25835/Shirobako/userrecs',
+        stats: 'https://myanimelist.net/anime/25835/Shirobako/stats',
+        characters_and_staff: 'https://myanimelist.net/anime/25835/Shirobako/characters',
+        news: 'https://myanimelist.net/anime/25835/Shirobako/news',
+        forum: 'https://myanimelist.net/anime/25835/Shirobako/forum',
+        pictures: 'https://myanimelist.net/anime/25835/Shirobako/pics',
     }
 
     assert_equal(expected, actual)
@@ -260,12 +261,12 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_manga_adaptations(related_anime_text).sort_by { |item| item[:title] }
     expected = [
         {
-            manga_id: '80441',
+            id: 80441,
             title: 'Shirobako: Kaminoyama Koukou Animation Doukoukai',
             url: '/manga/80441/Shirobako__Kaminoyama_Koukou_Animation_Doukoukai'
         },
         {
-            manga_id: '84949',
+            id: 84949,
             title: 'Shirobako: Introduction',
             url: '/manga/84949/Shirobako__Introduction'
         }
@@ -283,7 +284,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_prequels(related_anime_text)
     expected = [
         {
-            anime_id: '6213',
+            id: 6213,
             title: 'Toaru Kagaku no Railgun',
             url: '/anime/6213/Toaru_Kagaku_no_Railgun'
         }
@@ -301,7 +302,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_sequels(related_anime_text)
     expected = [
         {
-            anime_id: '16049',
+            id: 16049,
             title: 'Toaru Kagaku no Railgun S',
             url: '/anime/16049/Toaru_Kagaku_no_Railgun_S'
         }
@@ -319,12 +320,12 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_side_stories(related_anime_text).sort_by { |item| item[:title] }
     expected = [
         {
-            anime_id: '9047',
+            id: 9047,
             title: 'Toaru Kagaku no Railgun: Misaka-san wa Ima Chuumoku no Mato desukara',
             url: '/anime/9047/Toaru_Kagaku_no_Railgun__Misaka-san_wa_Ima_Chuumoku_no_Mato_desukara'
         },
         {
-            anime_id: '9063',
+            id: 9063,
             title: 'Toaru Kagaku no Railgun: Entenka no Satsuei Model mo Raku Ja Arimasen wa ne.',
             url: '/anime/9063/Toaru_Kagaku_no_Railgun__Entenka_no_Satsuei_Model_mo_Raku_Ja_Arimasen_wa_ne'
         }
@@ -341,7 +342,7 @@ class TestAnimeScraper < Test::Unit::TestCase
 
     actual = scraper.parse_parent_story(related_anime_text)
     expected = {
-        anime_id: '4654',
+        id: 4654,
         title: 'Toaru Majutsu no Index',
         url: '/anime/4654/Toaru_Majutsu_no_Index'
     }
@@ -358,7 +359,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_character_anime(related_anime_text)
     expected = [
         {
-            anime_id: '27509',
+            id: 27509,
             title: 'Toaru Majutsu no Index 10th Anniversary PV',
             url: '/anime/27509/Toaru_Majutsu_no_Index_10th_Anniversary_PV'
         }
@@ -376,7 +377,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_spin_offs(related_anime_text)
     expected = [
         {
-            anime_id: '8023',
+            id: 8023,
             title: 'Toaru Kagaku no Railgun: Motto Marutto Railgun',
             url: '/anime/8023/Toaru_Kagaku_no_Railgun__Motto_Marutto_Railgun'
         }
@@ -410,7 +411,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_other(related_anime_text)
     expected = [
         {
-            anime_id: '22759',
+            id: 22759,
             title: 'Toaru Kagaku no Railgun S: Daiji na Koto wa Zenbu Sentou ni Osowatta',
             url: '/anime/22759/Toaru_Kagaku_no_Railgun_S__Daiji_na_Koto_wa_Zenbu_Sentou_ni_Osowatta'
         }
@@ -449,13 +450,13 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_summary_stats(nokogiri)
 
     actual.each do | key, value |
-      assert(value.is_a?(Integer))
+      assert(value.is_a?Integer)
     end
 
     actual = scraper.parse_score_stats(nokogiri)
 
     actual.each do | key, value |
-      assert(value.is_a?(Integer))
+      assert(value.is_a?Integer)
     end
 
   end
@@ -488,6 +489,150 @@ class TestAnimeScraper < Test::Unit::TestCase
       }
     }
 
+  end
+
+  def test_reviews
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    reviews_h2 = nokogiri.at('//h2[text()="Reviews"]')
+    if reviews_h2
+      # Get all text between "Reviews</h2>" and the next </h2> tag.
+      matched_data = reviews_h2.parent.to_s.match(%r{Reviews</h2>(.+?)<h2>}m)
+      if matched_data
+
+        data = matched_data[1].gsub(/>\s+</, '><')
+        reviews_nokogiri = Nokogiri::HTML(data)
+
+        reviews = scraper.parse_reviews(reviews_nokogiri)
+        reviews.each do |review|
+
+          # User
+          assert(!review.username.empty?)
+          assert(!review.user_url.empty?)
+          assert(!review.user_image_url.empty?)
+
+          # Metadata
+          assert(review.helpful_review_count.is_a? Integer)
+          assert(review.helpful_review_count > 0)
+          assert(review.date.is_a? String)
+          assert(review.episodes_watched.is_a? Integer)
+          assert(review.episodes_watched > 0)
+          assert(review.episodes_total.is_a? Integer)
+          assert(review.episodes_total > 0)
+
+          # Ratings
+          unless review.rating[:overall].nil?
+            assert(review.rating[:overall].is_a? Integer)
+            assert(review.rating[:overall] > 0)
+          end
+
+          unless review.rating[:story].nil?
+            assert(review.rating[:story].is_a? Integer)
+            assert(review.rating[:story] > 0)
+          end
+
+          unless review.rating[:animation].nil?
+            assert(review.rating[:animation].is_a? Integer)
+            assert(review.rating[:animation] > 0)
+          end
+
+          unless review.rating[:sound].nil?
+            assert(review.rating[:sound].is_a? Integer)
+            assert(review.rating[:sound] > 0)
+          end
+
+          unless review.rating[:character].nil?
+            assert(review.rating[:character].is_a? Integer)
+            assert(review.rating[:character] > 0)
+          end
+
+          unless review.rating[:enjoyment].nil?
+            assert(review.rating[:enjoyment].is_a? Integer)
+            assert(review.rating[:enjoyment] > 0)
+          end
+
+
+          # Review
+          assert_not_nil(review.review)
+          assert_false(review.review.include? '<br>')
+
+        end
+
+      end
+    end
+
+  end
+
+  def test_producers
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_producers(nokogiri)
+
+    expected = [{
+                    id: 64,
+                    name: 'Sotsu',
+                    url: '/anime/producer/64/Sotsu'
+                },
+                {
+                    id: 166,
+                    name: 'Movic',
+                    url: '/anime/producer/166/Movic'
+                },
+                {
+                    id: 415,
+                    name: 'Warner Bros.',
+                    url: '/anime/producer/415/Warner_Bros'
+                },
+                {
+                    id: 460,
+                    name: 'KlockWorx',
+                    url: '/anime/producer/460/KlockWorx'
+                },
+                {
+                    id: 777,
+                    name: 'Showgate',
+                    url: '/anime/producer/777/Showgate'
+                },
+                {
+                    id: 1386,
+                    name: 'Infinite',
+                    url: '/anime/producer/1386/Infinite'
+                }]
+
+    actual.each do |producer|
+        assert(expected.include?(producer))
+    end
+
+  end
+
+  def test_studios
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_studios(nokogiri)
+    expected = [{
+        id: 132,
+        name: 'P.A. Works',
+        url: '/anime/producer/132/PA_Works'
+    }]
+
+    actual.each do |studio|
+      assert(expected.include?(studio))
+    end
+
+    assert_equal(expected, actual)
+  end
+
+  def test_score_count
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_score_count(nokogiri)
+    expected = 48281
+
+    assert_equal(expected, actual)
   end
 
 end
