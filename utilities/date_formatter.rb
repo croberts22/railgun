@@ -6,7 +6,9 @@ module Railgun
 
     def date_from_string(date_string)
       return nil if !date_string
-      Chronic.parse(date_string, guess: :begin).utc.iso8601
+      date = Chronic.parse(date_string, guess: :begin)
+
+      date.utc.iso8601 unless date == nil
     end
 
   end
