@@ -237,7 +237,7 @@ module Railgun
           if counter == 0
             character_url = td.at('a/@href').to_s
             image_url = td.at('img/@data-src').to_s
-            image_url = 'http://cdn.myanimelist.net' + image_url.match(%r{/images/characters/.*.jpg}).to_s
+            image_url = 'https://myanimelist.cdn-dena.com' + image_url.match(%r{/images/characters/.*.jpg}).to_s
 
             id = character_url[%r{/character/(\d+)/.*?}, 1].to_s
 
@@ -275,7 +275,7 @@ module Railgun
 
               # Actor's image URL
               actor_image_url = inner_tr.xpath('td[2]').at('div/a/img/@data-src').to_s
-              actor_image_url = 'http://cdn.myanimelist.net' + actor_image_url.match(%r{/images/voiceactors/.*.jpg}).to_s
+              actor_image_url = 'https://myanimelist.cdn-dena.com' + actor_image_url.match(%r{/images/voiceactors/.*.jpg}).to_s
 
               if actor_name.length > 0
                 voice_actor_details << {
@@ -371,7 +371,7 @@ module Railgun
 
           # Treat <br> as newlines in the response.
           if user_review_div.to_s.eql? '<br>'
-            review_text << '\n'
+            review_text << "\\n"
           end
 
           # Do not include the last part of the div, which includes a 'read more' button.
@@ -381,7 +381,13 @@ module Railgun
           user_review_div = user_review_div.next
         end
 
-        review.review = review_text
+        review.review = review_text.gsub(/\r\n/, "\\n")
+
+        # ID
+        review_url = review_div.at('a[@class="lightLink"]').attribute('href').to_s
+        review_id = review_url.match(%r{/reviews\.php\?id=([0-9]+)})[1]
+        
+        review.id = review_id
 
         reviews << review
         review_div = review_div.next

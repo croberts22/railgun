@@ -143,6 +143,10 @@ module Railgun
           url = a.attribute('href').to_s
           name = a.attribute('title').to_s
 
+          if name.empty?
+            break if a.text.to_s == 'add some'
+          end
+
           if matches = url.match(%r{/producer/(\d+)/})
             id = matches[1].to_i
           end
@@ -164,6 +168,10 @@ module Railgun
 
           url = a.attribute('href').to_s
           name = a.attribute('title').to_s
+
+          if name.empty?
+            break if a.text.to_s == 'add some'
+          end
 
           if matches = url.match(%r{/producer/(\d+)/})
             id = matches[1].to_i
