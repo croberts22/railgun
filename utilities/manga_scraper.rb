@@ -63,10 +63,10 @@ module Railgun
     def parse_id(nokogiri)
       manga_id_input = nokogiri.at('input[@name="mid"]')
       if manga_id_input
-        id = manga_id_input['value'].to_i
+        id = manga_id_input['value'].to_s
       else
         details_link = nokogiri.at('//a[text()="Details"]')
-        id = details_link['href'][%r{http[s]?://myanimelist.net/manga/(\d+)/.*?}, 1].to_i
+        id = details_link['href'][%r{http[s]?://myanimelist.net/manga/(\d+)/.*?}, 1].to_s
       end
 
       id
@@ -213,7 +213,7 @@ module Railgun
       if html_string.match(string_to_match)
         $1.scan(regex_pattern) do |url, manga_id, title|
           manga << {
-              :id => manga_id.to_i,
+              :id => manga_id.to_s,
               :title => title,
               :url => url
           }
