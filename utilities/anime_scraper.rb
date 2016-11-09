@@ -89,10 +89,10 @@ module Railgun
     def parse_id(nokogiri)
       anime_id_input = nokogiri.at('input[@name="aid"]')
       if anime_id_input
-        id = anime_id_input['value'].to_i
+        id = anime_id_input['value'].to_s
       else
         details_link = nokogiri.at('//a[text()="Details"]')
-        id = details_link['href'][%r{http[s]?://myanimelist.net/anime/(\d+)/.*?}, 1].to_i
+        id = details_link['href'][%r{http[s]?://myanimelist.net/anime/(\d+)/.*?}, 1].to_s
       end
 
       id
@@ -174,7 +174,7 @@ module Railgun
           end
 
           if matches = url.match(%r{/producer/(\d+)/})
-            id = matches[1].to_i
+            id = matches[1].to_s
           end
 
           studio = { :id => id, :name => name, :url => url }
@@ -300,7 +300,7 @@ module Railgun
       if html_string.match(string_to_match)
         $1.scan(regex_pattern) do |url, anime_id, title|
           anime << {
-              :id => anime_id.to_i,
+              :id => anime_id.to_s,
               :title => title,
               :url => url
           }

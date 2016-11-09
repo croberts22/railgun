@@ -44,7 +44,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     nokogiri = nokogiri_for_sample_response
 
     actual = scraper.parse_id(nokogiri)
-    expected = 25835
+    expected = '25835'
 
     assert_equal(expected, actual)
   end
@@ -261,12 +261,12 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_manga_adaptations(related_anime_text).sort_by { |item| item[:title] }
     expected = [
         {
-            id: 80441,
+            id: '80441',
             title: 'Shirobako: Kaminoyama Koukou Animation Doukoukai',
             url: '/manga/80441/Shirobako__Kaminoyama_Koukou_Animation_Doukoukai'
         },
         {
-            id: 84949,
+            id: '84949',
             title: 'Shirobako: Introduction',
             url: '/manga/84949/Shirobako__Introduction'
         }
@@ -284,7 +284,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_prequels(related_anime_text)
     expected = [
         {
-            id: 6213,
+            id: '6213',
             title: 'Toaru Kagaku no Railgun',
             url: '/anime/6213/Toaru_Kagaku_no_Railgun'
         }
@@ -302,7 +302,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_sequels(related_anime_text)
     expected = [
         {
-            id: 16049,
+            id: '16049',
             title: 'Toaru Kagaku no Railgun S',
             url: '/anime/16049/Toaru_Kagaku_no_Railgun_S'
         }
@@ -320,12 +320,12 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_side_stories(related_anime_text).sort_by { |item| item[:title] }
     expected = [
         {
-            id: 9047,
+            id: '9047',
             title: 'Toaru Kagaku no Railgun: Misaka-san wa Ima Chuumoku no Mato desukara',
             url: '/anime/9047/Toaru_Kagaku_no_Railgun__Misaka-san_wa_Ima_Chuumoku_no_Mato_desukara'
         },
         {
-            id: 9063,
+            id: '9063',
             title: 'Toaru Kagaku no Railgun: Entenka no Satsuei Model mo Raku Ja Arimasen wa ne.',
             url: '/anime/9063/Toaru_Kagaku_no_Railgun__Entenka_no_Satsuei_Model_mo_Raku_Ja_Arimasen_wa_ne'
         }
@@ -342,7 +342,7 @@ class TestAnimeScraper < Test::Unit::TestCase
 
     actual = scraper.parse_parent_story(related_anime_text)
     expected = {
-        id: 4654,
+        id: '4654',
         title: 'Toaru Majutsu no Index',
         url: '/anime/4654/Toaru_Majutsu_no_Index'
     }
@@ -359,7 +359,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_character_anime(related_anime_text)
     expected = [
         {
-            id: 27509,
+            id: '27509',
             title: 'Toaru Majutsu no Index 10th Anniversary PV',
             url: '/anime/27509/Toaru_Majutsu_no_Index_10th_Anniversary_PV'
         }
@@ -377,7 +377,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_spin_offs(related_anime_text)
     expected = [
         {
-            id: 8023,
+            id: '8023',
             title: 'Toaru Kagaku no Railgun: Motto Marutto Railgun',
             url: '/anime/8023/Toaru_Kagaku_no_Railgun__Motto_Marutto_Railgun'
         }
@@ -411,7 +411,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_other(related_anime_text)
     expected = [
         {
-            id: 22759,
+            id: '22759',
             title: 'Toaru Kagaku no Railgun S: Daiji na Koto wa Zenbu Sentou ni Osowatta',
             url: '/anime/22759/Toaru_Kagaku_no_Railgun_S__Daiji_na_Koto_wa_Zenbu_Sentou_ni_Osowatta'
         }
@@ -613,7 +613,7 @@ class TestAnimeScraper < Test::Unit::TestCase
 
     actual = scraper.parse_studios(nokogiri)
     expected = [{
-        id: 132,
+        id: '132',
         name: 'P.A. Works',
         url: '/anime/producer/132/PA_Works'
     }]
