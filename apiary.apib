@@ -87,11 +87,11 @@ Gets an Anime by an ID.
                         "members_count": 226998,
                         "favorited_count": 3068,
                         "summary_stats": {
-                            "watching": 11196,
+                            "in_progress": 11196,
                             "completed": 143867,
                             "on_hold": 8286,
                             "dropped": 5656,
-                            "plan_to_watch": 57982,
+                            "planned": 57982,
                             "total": 226998
                         },
                         "score_stats": {
@@ -1019,17 +1019,29 @@ Gets an Anime by an ID.
 
 Resources related to Manga.
 
-## /manga/{manga_id}
+<table style="width: 100%; margin: 12px 0 0 0;">
+<tr><td colspan="2"><strong>Required Parameters</strong></td></tr>
+<tr><td colspan="2">manga_id</td></tr>
+<tr><td colspan="2"><strong>Optional Parameters</strong></td></tr>
+<tr><td style="padding-right: 40px; width: 140px;">options</td><td>A comma-separated list of strings that define additional stats.
+ Available options include 'stats' and 'characters_and_staff'.</td></tr>
+</table>
+
+## /manga/{manga_id}{?options}
 
 + Parameters
   + manga_id: `7776` (number, required) - ID of the manga.
+  + options: `stats` (enum[string], optional) - A comma-separated list of strings that define additional stats about the anime.
+      + Members:
+          + `stats`
+          + `characters_and_staff`
 
 ### View Manga [GET]
 
 + Response 200 (application/json;charset=utf-8)
 
                 {
-                    "id": 7776,
+                    "id": "7776",
                     "title": "Toaru Kagaku no Railgun",
                     "type": "Manga",
                     "volumes": null,
@@ -1047,50 +1059,68 @@ Resources related to Manga.
                     },
                     "tags": [],
                     "stats": {
-                        "rank": 338,
-                        "popularity_rank": 329,
+                        "rank": 341,
+                        "popularity_rank": 331,
                         "score": 8.29,
-                        "score_count": 5503,
-                        "members_count": 14248,
-                        "favorited_count": 1087,
-                        "summary_stats": {},
-                        "score_stats": {}
+                        "score_count": 5549,
+                        "members_count": 14393,
+                        "favorited_count": 1103,
+                        "summary_stats": {
+                            "in_progress": 9081,
+                            "completed": 198,
+                            "on_hold": 1170,
+                            "dropped": 397,
+                            "planned": 3547,
+                            "total": 14393
+                        },
+                        "score_stats": {
+                            "10": 882,
+                            "9": 1614,
+                            "8": 1826,
+                            "7": 871,
+                            "6": 239,
+                            "5": 86,
+                            "4": 16,
+                            "3": 8,
+                            "2": 4,
+                            "1": 3
+                        }
                     },
                     "related_manga": {
                         "anime_adaptations": [{
-                            "id": 6213,
+                            "id": "6213",
                             "title": "Toaru Kagaku no Railgun",
                             "url": "/anime/6213/Toaru_Kagaku_no_Railgun"
                         }, {
-                            "id": 16049,
+                            "id": "16049",
                             "title": "Toaru Kagaku no Railgun S",
                             "url": "/anime/16049/Toaru_Kagaku_no_Railgun_S"
                         }],
                         "prequels": [],
                         "sequels": [],
                         "side_stories": [{
-                            "id": 27843,
+                            "id": "27843",
                             "title": "Toaru Kagaku no Railgun SS",
                             "url": "/manga/27843/Toaru_Kagaku_no_Railgun_SS"
                         }, {
-                            "id": 36561,
+                            "id": "36561",
                             "title": "Toaru Kagaku no Railgun SS: Dasoku, Mata wa Toaru Jiken no Shuusoku",
                             "url": "/manga/36561/Toaru_Kagaku_no_Railgun_SS__Dasoku_Mata_wa_Toaru_Jiken_no_Shuusoku"
                         }, {
-                            "id": 28973,
+                            "id": "28973",
                             "title": "Toaru Kagaku no Railgun SS2",
                             "url": "/manga/28973/Toaru_Kagaku_no_Railgun_SS2"
                         }, {
-                            "id": 47483,
+                            "id": "47483",
                             "title": "Toaru Kagaku no Railgun: Giten Railgun",
                             "url": "/manga/47483/Toaru_Kagaku_no_Railgun__Giten_Railgun"
                         }, {
-                            "id": 31649,
+                            "id": "31649",
                             "title": "Toaru Majutsu no Index SP",
                             "url": "/manga/31649/Toaru_Majutsu_no_Index_SP"
                         }],
                         "parent_story": {
-                            "id": 12854,
+                            "id": "12854",
                             "title": "Toaru Majutsu no Index",
                             "url": "/manga/12854/Toaru_Majutsu_no_Index"
                         },
@@ -1100,7 +1130,7 @@ Resources related to Manga.
                         "alternative_versions": [],
                         "full_stories": [],
                         "others": [{
-                            "id": 59857,
+                            "id": "59857",
                             "title": "4-koma Koushiki Anthology: Toaru Kagaku no Railgun x Toaru Majutsu no Index",
                             "url": "/manga/59857/4-koma_Koushiki_Anthology__Toaru_Kagaku_no_Railgun_x_Toaru_Majutsu_no_Index"
                         }]
@@ -1115,5 +1145,28 @@ Resources related to Manga.
                         "news": "/manga/7776/Toaru_Kagaku_no_Railgun/news",
                         "forum": "/manga/7776/Toaru_Kagaku_no_Railgun/forum",
                         "pictures": "/manga/7776/Toaru_Kagaku_no_Railgun/pics"
-                    }
+                    },
+                    "reviews": [{
+                        "user": {
+                            "name": "BR12345",
+                            "id": null,
+                            "url": "/profile/BR12345",
+                            "image_url": "https://myanimelist.cdn-dena.com/images/userimages/thumbs/4020827_thumb.jpg"
+                        },
+                        "review": {
+                            "id": "227480",
+                            "date": "2016-08-24T05:00:00Z",
+                            "helpful_review_count": 4,
+                            "episodes_watched": 89,
+                            "episodes_total": 89,
+                            "review": "Surprised that there isn't a review for this manga yet given it's been running for so long, so here's one. I'll keep it as spoiler-free as possible. Other than the paragraph aimed at anime viewers which is marked by spoiler tags, the rest of the review is meant for people who have completely not touched anything in the Raildex franchise. \\n\\n\\nStory-wise, it’s great for an action manga. It has cool action sequences, a logical story flow, and of course some great comedic moments. By shounen manga standards, it does stand out as being rather unique for the many different applications of science. Basically, it starts off with a utopian-like setting of a technological dreamland, but the darker parts of the city manifest over the course of the story. \\nHowever, keep in mind it's meant as a complement to the A Certain Magical Index light novel series. It's a good read on its own, but the manga does not explain a number of things as the novels have already gone into detail for them, or does time skips because that time was apparently filled in the novels. Also, although the synopsis mentions a clash of science and magic, that was the premise for the novels; the manga focuses more on expanding the Science side, Academy City, through the eyes of the protagonist Misaka Mikoto. Basically, expect side stories and a few huge arcs that are impressive in their own right. \\n(If you've somehow not watched the anime series yet, skip the next paragraph)\\nAdditionally, if you came over to the manga from the anime series, the anime ends at chapter 39 at the end of the Sisters arc for Misaka. However, it's highly recommended to read from the start. The anime changed up some scenes like how Kongo and the gang met, slight changes to the very first scene of the anime, etc. The tone of the anime series is also very different: The anime focus more on the girls' cuteness, while the manga takes on a more serious tone. The Sisters' arc felt very different from what was expected of the anime, because for that arc it followed the manga more closely and conveyed the tone and atmosphere pretty well, or in fact better in my opinion because it had the advantage of animation and sound. Also, the anime tends to 'glorify' Misaka as an altruistic absurdly good natured saviour of justice especially in its filler arcs like Silent Party and Big Spider etc, so if you found that unbelievably cheesy or cringey like I did, the manga's Misaka may be more preferable or tolerable. Shirai and the rest were given a lot more spotlight in the anime as well, so expect relatively lesser screen time for them in the manga. \\n(Spoiler end)\\n(I have not read the novels completely yet so I'm not qualified to do a similar comparison between the novels and manga for those coming over from novel to manga. Sorry about that. I do know the manga teases at many events that already happened in the novels however, so if you're a novel -> manga person you're in for a very fun ride ;) ) \\nAbout the art, it's decent, but the artstyle noticably improves over time. I'm not an artsy person so I can't exactly commentate on how good it is, other than that it's easy enough to know what's going on without having to decipher a sea of squiggles and black ink. \\nCharacters? It really depends on personal tastes here. I'm admittedly extremely biased towards Misaka Mikoto, because she has both strengths and flaws. She has your typical tsundere personality, but it only surfaces when she's around her love interest (who appears sporadically). Other times, she's a cool person who’s the opposite of her supposed status as an ojou-sama, with some cuteness thrown in. Sometimes however, she may come off as rather selfish and understandably immature and rash for a 14 year old. But as a whole it does add some depth to her character instead of being that one-dimensional bull-headed main character whose sole purpose is to protect their friends or whatnot like some protagonists from other shounen manga. She's the most powerful electromaster in the city, and what really made me invested in her character is the ways she plays around with that ability. She can do so much more than just shooting lightning bolts like other average shounen protagonists, especially so when the setting is in a technologically advanced city.  \\nAs for the other main characters, they are also multi-faceted like Misaka, but relatively less so since this is Misaka's story: The pervert roommate Shirai Kuroko, the meek and shy Uiharu Kazari, and the upbeat Saten Ruiko. These are all archetypes that have been done to death before in many other mediums, but what makes them special (to me) is that the author gives them enough development to expand them beyond their archetypes. The archetype is just a foundation from which to grow a character from, the easiest way to define a character but is not necessarily the entire definition of the character. Many of the other characters in the manga seem one-dimensional at first, but the series does put in the effort to try to add on to their character and develop them as well alongside the main cast, although understandably not as much. However, that basically only applies to the characters on the good side. Sadly, the ‘bad guys’ often turn out to be rather simple minded one-time goons with the exception of the final few ‘bosses’. \\nFinally, enjoyment. I, for one, really enjoyed reading the manga. I loved the cool action scenes, I love the interactions between the characters, I loved the ways in which it further exposed Academy City for what it was. Ultimately, what I like in the series is that it sets up a situation, then throws the characters into it and think of relatively logical ways to help them escape the adversary, each time unveiling even more about the characters themselves or add on to the already complex world. The characters act rather like themselves rather than what the plot demands of them, and although are based off stereotypes, it is only one part of their personality. \\n(And the main cast are all flat-chested! Any fanserive is also not overblown to the extents of Fairy Tail, which, to me, gives the girls the respect they deserve as human beings rather than objectifying them as something for the male readers to fap off to.)\\nFinally, if I had to give an overall score, it would be an 8. Despite how much I love the manga, it has its flaws, and sometimes the flaws are so glaringly obvious it can disrupts the enjoyment of the manga. (The way things build up is great... the resolution? Not very satisfying sometimes.)\\nI hope you enjoyed reading the only review (so far) of this manga on this site, and thank you for maintaining your attention span up until here. \\n(By the way it's my first review so feel free to inform me on how I can improve =D)",
+                            "rating": {
+                                "overall": 8,
+                                "story": 7,
+                                "art": 7,
+                                "character": 7,
+                                "enjoyment": 9
+                            }
+                        }
+                    }]
                 }
