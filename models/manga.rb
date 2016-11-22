@@ -15,6 +15,7 @@ module Railgun
                 :full_stories, :others, :parent_story,
                 :summary_stats, :score_stats,  :additional_info_urls, :character_voice_actors
 
+    attr_accessor :reviews
 
     ### Custom Setter Methods
 
@@ -176,7 +177,8 @@ module Railgun
           },
 
           characters: character_voice_actors,
-          additional_info_urls: additional_info_urls
+          additional_info_urls: additional_info_urls,
+          reviews: reviews
       }
     end
 
@@ -197,8 +199,20 @@ module Railgun
       scraper = MangaScraper.new
       scraper.parse_manga(nokogiri, manga)
 
-      # TODO:
       # If any options were passed in, perform a fetch and continue parsing.
+      if options.include? 'characters_and_staff'
+        puts 'Scraping characters and staff...'
+        nokogiri = MALNetworkService.nokogiri_from_request(manga.additional_info_urls[:characters_and_staff])
+        characters_and_staff = scraper.parse_staff(nokogiri)
+        manga.character_voice_actors = characters_and_staff
+      end
+
+      if options.include? 'stats'
+        puts 'Scraping additional stats...'
+        nokogiri = MALNetworkService.nokogiri_from_request(manga.additional_info_urls[:stats])
+        manga.summary_stats = scraper.parse_summary_stats(nokogiri)
+        manga.score_stats = scraper.parse_score_stats(nokogiri)
+      end
 
       manga
     end

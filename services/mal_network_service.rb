@@ -1,14 +1,26 @@
 require 'curl'
 require_relative 'keys'
+require_relative '../utilities/endpoints'
 require_relative '../utilities/redirectable_nokogiri'
 
 module Railgun
 
   class MALNetworkService
 
+    def self.myanimelist_host
+      Endpoints.myanimelist_host
+    end
+
     # Generates a simple Curl object, bundled with a User-Agent.
     # returns a Curl object.
     def self.create_request(url)
+
+      # Before we make a request, check to make sure the host exists.
+      if (url.include? self.myanimelist_host) == false
+        puts "url #{url} does not include the host, adding that now..."
+        url = myanimelist_host + url
+      end
+
       curl = Curl::Easy.new(url)
       curl.headers['User-Agent'] = Keys.myanimelist_api_key
 

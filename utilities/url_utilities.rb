@@ -1,3 +1,5 @@
+require_relative 'endpoints'
+
 module Railgun
 
   class UrlUtilities
@@ -7,7 +9,7 @@ module Railgun
       # http://cdn.myanimelist.net        /images/anime/2/73842.jpg
 
       image_url = url
-      base_url = 'https://myanimelist.cdn-dena.com'
+      base_url = Endpoints.myanimelist_cdn_host
 
       url_match = url.match("/images/#{entity}/.+.jpg")
       if url_match

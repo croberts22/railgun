@@ -6,7 +6,7 @@ class TestMALNetworkService < Test::Unit::TestCase
 
   def test_create_request
 
-    url = 'http://path/to/url/'
+    url = 'https://myanimelist.net/blah/'
 
     expected = Curl::Easy.new(url)
     expected.headers['User-Agent'] = Railgun::Keys.myanimelist_api_key
