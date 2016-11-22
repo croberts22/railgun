@@ -400,6 +400,39 @@ module Railgun
 
     end
 
+    # FIXME: Ripped from umalapi. This should be revisited.
+    def parse_score_stats(nokogiri)
+
+      score_stats = {}
+
+      # Summary Stats.
+      # Example:
+      # <tr>
+      #   <td width="20">10</td>
+      #	  <td>
+      #     <div class="spaceit_pad">
+      #       <div class="updatesBar" style="float: left; height: 15px; width: 23%;"></div>
+      #       <span>&nbsp;22.8% <small>(12989 votes)</small></span>
+      #     </div>
+      #   </td>
+      # </tr>
+
+      left_column_nodeset = nokogiri.xpath('//table[preceding-sibling::h2[text()="Score Stats"]]')
+      left_column_nodeset.search('tr').each do |tr|
+        if (tr_array = tr.search('td')) && tr_array.count == 2
+          name = tr_array[0].at('text()').to_s
+          value = tr_array[1].at('div/span/small/text()').to_s
+
+          if value.match %r{\(([0-9]+) votes\)}
+            score_stats[name] = $1.to_i
+          end
+
+        end
+      end
+
+      score_stats
+    end
+
   end
 
 end

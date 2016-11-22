@@ -61,9 +61,9 @@ module Railgun
 
       end
 
-
       reviews_h2 = node.at('//h2[text()="Reviews"]')
       if reviews_h2
+
         # Get all text between "Reviews</h2>" and the next </h2> tag.
         matched_data = reviews_h2.parent.to_s.match(%r{Reviews</h2>(.+?)<h2>}m)
         if matched_data
@@ -148,7 +148,7 @@ module Railgun
           end
 
           if matches = url.match(%r{/producer/(\d+)/})
-            id = matches[1].to_i
+            id = matches[1].to_s
           end
 
           producer = { :id => id, :name => name, :url => url }
@@ -327,7 +327,7 @@ module Railgun
       left_column_nodeset = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
       if (node = left_column_nodeset.at('//span[text()="Watching:"]')) && node.next
-        summary_stats[:watching] = node.next.text.strip.gsub(',','').to_i
+        summary_stats[:in_progress] = node.next.text.strip.gsub(',','').to_i
       end
       if (node = left_column_nodeset.at('//span[text()="Completed:"]')) && node.next
         summary_stats[:completed] = node.next.text.strip.gsub(',','').to_i
@@ -339,7 +339,7 @@ module Railgun
         summary_stats[:dropped] = node.next.text.strip.gsub(',','').to_i
       end
       if (node = left_column_nodeset.at('//span[text()="Plan to Watch:"]')) && node.next
-        summary_stats[:plan_to_watch] = node.next.text.strip.gsub(',','').to_i
+        summary_stats[:planned] = node.next.text.strip.gsub(',','').to_i
       end
       if (node = left_column_nodeset.at('//span[text()="Total:"]')) && node.next
         summary_stats[:total] = node.next.text.strip.gsub(',','').to_i

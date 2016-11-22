@@ -58,6 +58,28 @@ module Railgun
 
       end
 
+      reviews_h2 = node.at('//h2[text()="Reviews"]')
+      if reviews_h2
+
+        # Get all text between "Reviews</h2>" and the next </h2> tag.
+        matched_data = reviews_h2.parent.to_s.match(%r{Reviews</h2>(.+?)<h2>}m)
+        if matched_data
+
+          # Translate the captured string back into HTML so we can iterate upon it easier.
+          # This is preferred versus attempting to iterate against a preset condition against
+          # the entire page, since the outline could potentially change at any time (and it
+          # would suck if this while loop kept going endlessly).
+
+          # FIXME: This isn't the right regex, but will suffice for now. Having trailing \t\t\t\t at the beginning.
+          data = matched_data[1].gsub(/>\s+</, '><')
+          reviews = Nokogiri::HTML(data)
+
+          manga.reviews = parse_reviews(reviews)
+
+
+        end
+      end
+
     end
 
     def parse_id(nokogiri)
@@ -221,6 +243,45 @@ module Railgun
       end
 
       manga
+    end
+
+    # FIXME: Ripped from umalapi. This should be revisited.
+    # TODO: Consolidate with AnimeScraper implementation, as these are virtually identical.
+    def parse_summary_stats(nokogiri)
+
+      summary_stats = {}
+
+      # Summary Stats.
+      # Example:
+      # <div class="spaceit_pad"><span class="dark_text">Watching:</span> 12,334</div>
+      # <div class="spaceit_pad"><span class="dark_text">Completed:</span> 59,459</div>
+      # <div class="spaceit_pad"><span class="dark_text">On-Hold:</span> 3,419</div>
+      # <div class="spaceit_pad"><span class="dark_text">Dropped:</span> 2,907</div>
+      # <div class="spaceit_pad"><span class="dark_text">Plan to Watch:</span> 17,571</div>
+      # <div class="spaceit_pad"><span class="dark_text">Total:</span> 95,692</div>
+
+      left_column_nodeset = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
+
+      if (node = left_column_nodeset.at('//span[text()="Reading:"]')) && node.next
+        summary_stats[:in_progress] = node.next.text.strip.gsub(',','').to_i
+      end
+      if (node = left_column_nodeset.at('//span[text()="Completed:"]')) && node.next
+        summary_stats[:completed] = node.next.text.strip.gsub(',','').to_i
+      end
+      if (node = left_column_nodeset.at('//span[text()="On-Hold:"]')) && node.next
+        summary_stats[:on_hold] = node.next.text.strip.gsub(',','').to_i
+      end
+      if (node = left_column_nodeset.at('//span[text()="Dropped:"]')) && node.next
+        summary_stats[:dropped] = node.next.text.strip.gsub(',','').to_i
+      end
+      if (node = left_column_nodeset.at('//span[text()="Plan to Read:"]')) && node.next
+        summary_stats[:planned] = node.next.text.strip.gsub(',','').to_i
+      end
+      if (node = left_column_nodeset.at('//span[text()="Total:"]')) && node.next
+        summary_stats[:total] = node.next.text.strip.gsub(',','').to_i
+      end
+
+      summary_stats
     end
 
   end

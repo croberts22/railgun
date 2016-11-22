@@ -505,6 +505,9 @@ class TestAnimeScraper < Test::Unit::TestCase
         reviews_nokogiri = Nokogiri::HTML(data)
 
         reviews = scraper.parse_reviews(reviews_nokogiri)
+
+        assert(reviews.count > 0)
+
         reviews.each do |review|
 
           # User
@@ -571,32 +574,32 @@ class TestAnimeScraper < Test::Unit::TestCase
     actual = scraper.parse_producers(nokogiri)
 
     expected = [{
-                    id: 64,
+                    id: '64',
                     name: 'Sotsu',
                     url: '/anime/producer/64/Sotsu'
                 },
                 {
-                    id: 166,
+                    id: '166',
                     name: 'Movic',
                     url: '/anime/producer/166/Movic'
                 },
                 {
-                    id: 415,
+                    id: '415',
                     name: 'Warner Bros.',
                     url: '/anime/producer/415/Warner_Bros'
                 },
                 {
-                    id: 460,
+                    id: '460',
                     name: 'KlockWorx',
                     url: '/anime/producer/460/KlockWorx'
                 },
                 {
-                    id: 777,
+                    id: '777',
                     name: 'Showgate',
                     url: '/anime/producer/777/Showgate'
                 },
                 {
-                    id: 1386,
+                    id: '1386',
                     name: 'Infinite',
                     url: '/anime/producer/1386/Infinite'
                 }]
