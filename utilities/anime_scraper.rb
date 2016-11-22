@@ -32,6 +32,8 @@ module Railgun
       anime.popularity_rank = parse_popularity_rank(node)
       anime.members_count = parse_member_count(node)
       anime.favorited_count = parse_favorite_count(node)
+      anime.premiere_year = parse_premiere_year(node)
+      anime.premiere_season = parse_premiere_season(node)
       anime.tags = parse_tags(node)
 
       node = nokogiri.xpath('//div[@id="content"]/table/tr/td/div')
@@ -131,6 +133,30 @@ module Railgun
 
         classification
       end
+    end
+
+    def parse_premiere_url(nokogiri)
+      if (node = nokogiri.at('//span[text()="Premiered:"]')) && node.next.next
+
+        premiere_href = node.next.next.attribute('href')
+        return unless premiere_href != nil
+
+        matches = node.next.next.attribute('href').to_s.match(%r{/season/(\d+)/([A-z]+)})
+        year = matches[1].to_i
+        season = matches[2]
+
+        [year, season]
+      end
+    end
+
+    def parse_premiere_year(nokogiri)
+      premiere_group = parse_premiere_url(nokogiri)
+      premiere_group.first unless premiere_group.nil?
+    end
+
+    def parse_premiere_season(nokogiri)
+      premiere_group = parse_premiere_url(nokogiri)
+      premiere_group.last unless premiere_group.nil?
     end
 
     def parse_producers(nokogiri)

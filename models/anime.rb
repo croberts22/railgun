@@ -16,7 +16,7 @@ module Railgun
                 :full_stories, :others, :parent_story,
                 :summary_stats, :score_stats,  :additional_info_urls, :character_voice_actors
 
-    attr_accessor :reviews
+    attr_accessor :reviews, :premiere_year, :premiere_season
 
 
     ### Custom Setter Methods
@@ -172,6 +172,10 @@ module Railgun
               score_count: score_count,
               members_count: members_count,
               favorited_count: favorited_count,
+              premiered: {
+                  year: premiere_year,
+                  season: premiere_season
+              },
               summary_stats: summary_stats,
               score_stats: score_stats
           },

@@ -202,6 +202,30 @@ class TestAnimeScraper < Test::Unit::TestCase
     assert(expected)
   end
 
+  def test_parse_premiere_season
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
+
+    actual = scraper.parse_premiere_season(node)
+    expected = 'fall'
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_premiere_year
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
+
+    actual = scraper.parse_premiere_year(node)
+    expected = 2014
+
+    assert_equal(expected, actual)
+  end
+
   def test_parse_member_count
     scraper = Railgun::AnimeScraper.new
     nokogiri = nokogiri_for_sample_response
