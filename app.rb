@@ -9,7 +9,7 @@ class App < Sinatra::Base
   use Rollbar::Middleware::Sinatra
 
   before do
-    content_type 'application/json'
+    content_type 'application/json;charset=utf-8'
   end
 
   namespace '/1.0' do
