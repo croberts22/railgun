@@ -2,7 +2,8 @@ source 'https://rubygems.org'
 
 ruby '2.3.1'
 
-gem 'sinatra', '1.1.0'
+gem 'sinatra'
+gem 'sinatra-contrib'
 gem 'nokogiri'
 gem 'curb'
 gem 'json'
@@ -20,7 +21,7 @@ group :development do
 end
 
 group :test do
-  gem 'rake'
+  # gem 'rake'
   gem 'test-unit'
   gem 'coveralls', require: false
 end

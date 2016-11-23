@@ -1,145 +1,150 @@
 require 'sinatra'
+require 'sinatra/namespace'
 require 'rollbar/middleware/sinatra'
 require_relative 'services/mal_network_service'
 require_relative 'railgun'
 
 class App < Sinatra::Base
+  register Sinatra::Namespace
   use Rollbar::Middleware::Sinatra
 
   before do
     content_type 'application/json'
   end
 
-  #
-  # Anime Endpoints
-  #
+  namespace '/1.0' do
 
+    #
+    # Anime Endpoints
+    #
 
-  # GET /#{VERSION}/anime/#{anime_id}
-  # Get an anime's details.
-  # Parameters:
-  # - id: The anime's ID.
-  # - options (optional): A comma-separated list of strings that define additional stats.
-  #                       Available options include 'stats' and 'characters_and_staff'.
-  get '/:v/anime/:id' do
-    pass unless params[:id] =~ /^\d+$/
+    # GET /anime/#{anime_id}
+    # Get an anime's details.
+    # Parameters:
+    # - id: The anime's ID.
+    # - options (optional): A comma-separated list of strings that define additional stats.
+    #                       Available options include 'stats' and 'characters_and_staff'.
+    get '/anime/:id' do
+      pass unless params[:id] =~ /^\d+$/
 
-    options = []
+      options = []
 
-    if params.include? 'options'
-      options = params[:options].split(',')
+      if params.include? 'options'
+        options = params[:options].split(',')
+      end
+
+      expires 3600, :public, :must_revalidate
+      last_modified Time.now
+      etag "anime/#{params[:id]}/#{options}"
+
+      anime = Railgun::Anime.scrape(params[:id], options)
+
+      anime.to_json
     end
 
-    expires 3600, :public, :must_revalidate
-    last_modified Time.now
-    etag "anime/#{params[:id]}/#{options}"
+    # GET /anime?q=#{query}
+    # Searches for an anime based on a given query.
+    # Parameters:
+    # - q: A search query.
+    get '/anime?' do
 
-    anime = Railgun::Anime.scrape(params[:id], options)
+      pass unless !params[:q].nil? && params[:q].strip.length > 0
 
-    anime.to_json
-  end
+      query = CGI.escape(params[:q].strip)
 
-  # GET /#{VERSION}/anime?q=#{query}
-  # Searches for an anime based on a given query.
-  # Parameters:
-  # - q: A search query.
-  get '/:v/anime?' do
+      #expires 3600, :public, :must_revalidate
+      #last_modified Time.now
+      #etag "anime?#{query}"
 
-    pass unless !params[:q].nil? && params[:q].strip.length > 0
+      results = Railgun::Anime.search(query)
 
-    query = CGI.escape(params[:q].strip)
-
-    #expires 3600, :public, :must_revalidate
-    #last_modified Time.now
-    #etag "anime?#{query}"
-
-    results = Railgun::Anime.search(query)
-
-    results.to_json
-  end
-
-  # GET /#{VERSION}/anime/top
-  # Gets a page of a ranked list of anime. A page consists of 50 anime.
-  # Parameters:
-  # - type (optional): The type of list to fetch. Available options:
-  #                    'all', 'airing', 'upcoming', 'tv', 'movie', 'ova', 'special', 'popular', 'favorite'.
-  #                    If no type is provided, this defaults to 'all'.
-  # - page (optional): The page of anime to fetch. If no value is provided, this defaults to 0.
-  #                    Each page consists of 50 anime; fetching page 1 returns anime
-  #                    ranked 51-100, page 2 returns 101-150, etc.
-  get '/:v/anime/top' do
-
-    options = {
-        type: 'all',
-        page: 0
-    }
-
-    if params.include? 'type' and Railgun::MALNetworkService.rank_type_is_acceptable_for_anime_request(params[:type])
-      options[:type] = params[:type]
+      results.to_json
     end
 
-    if params.include? 'page' and params[:age].is_a? Integer
-      options[:page] = params[:page]
+    # GET /anime/top
+    # Gets a page of a ranked list of anime. A page consists of 50 anime.
+    # Parameters:
+    # - type (optional): The type of list to fetch. Available options:
+    #                    'all', 'airing', 'upcoming', 'tv', 'movie', 'ova', 'special', 'popular', 'favorite'.
+    #                    If no type is provided, this defaults to 'all'.
+    # - page (optional): The page of anime to fetch. If no value is provided, this defaults to 0.
+    #                    Each page consists of 50 anime; fetching page 1 returns anime
+    #                    ranked 51-100, page 2 returns 101-150, etc.
+    get '/anime/top' do
+
+      options = {
+          type: 'all',
+          page: 0
+      }
+
+      if params.include? 'type' and Railgun::MALNetworkService.rank_type_is_acceptable_for_anime_request(params[:type])
+        options[:type] = params[:type]
+      end
+
+      if params.include? 'page' and params[:age].is_a? Integer
+        options[:page] = params[:page]
+      end
+
+
+      expires 3600, :public, :must_revalidate
+      last_modified Time.now
+      etag "anime/top/#{options[:type]}/#{options[:page]}"
+
+      anime = Railgun::Anime.top(options)
+
+      anime.to_json
+
     end
 
 
-    expires 3600, :public, :must_revalidate
-    last_modified Time.now
-    etag "anime/top/#{options[:type]}/#{options[:page]}"
-
-    anime = Railgun::Anime.top(options)
-
-    anime.to_json
-
-  end
+    #
+    # Manga Endpoints
+    #
 
 
-  #
-  # Manga Endpoints
-  #
+    # GET /manga/#{manga_id}
+    # Get a manga's details.
+    # Parameters:
+    # - id: The manga's ID.
+    # - options (optional): A comma-separated list of strings that define additional stats.
+    #                       Available options include 'stats' and 'characters_and_staff'.
+    get '/manga/:id' do
+      pass unless params[:id] =~ /^\d+$/
 
+      options = []
 
-  # GET /#{VERSION}/manga/#{manga_id}
-  # Get a manga's details.
-  # Parameters:
-  # - id: The manga's ID.
-  # - options (optional): A comma-separated list of strings that define additional stats.
-  #                       Available options include 'stats' and 'characters_and_staff'.
-  get '/:v/manga/:id' do
-    pass unless params[:id] =~ /^\d+$/
+      if params.include? 'options'
+        options = params[:options].split(',')
+      end
 
-    options = []
+      expires 3600, :public, :must_revalidate
+      last_modified Time.now
+      etag "manga/#{params[:id]}/#{options}"
 
-    if params.include? 'options'
-      options = params[:options].split(',')
+      manga = Railgun::Manga.scrape(params[:id], options)
+
+      manga.to_json
     end
 
-    expires 3600, :public, :must_revalidate
-    last_modified Time.now
-    etag "manga/#{params[:id]}/#{options}"
+    # GET /manga?q=#{query}
+    # Searches for a manga based on a given query.
+    # Parameters:
+    # - q: A search query.
+    get '/manga?' do
 
-    manga = Railgun::Manga.scrape(params[:id], options)
+      pass unless !params[:q].nil? && params[:q].strip.length > 0
 
-    manga.to_json
-  end
+      query = CGI.escape(params[:q].strip)
 
-  # GET /#{VERSION}/manga?q=#{query}
-  # Searches for a manga based on a given query.
-  # Parameters:
-  # - q: A search query.
-  get '/:v/manga?' do
+      #expires 3600, :public, :must_revalidate
+      #last_modified Time.now
+      #etag "manga?#{query}"
 
-    pass unless !params[:q].nil? && params[:q].strip.length > 0
+      results = Railgun::Manga.search(query)
 
-    query = CGI.escape(params[:q].strip)
+      results.to_json
+    end
 
-    #expires 3600, :public, :must_revalidate
-    #last_modified Time.now
-    #etag "manga?#{query}"
-
-    results = Railgun::Manga.search(query)
-
-    results.to_json
   end
 
 end
