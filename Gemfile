@@ -21,7 +21,7 @@ group :development do
 end
 
 group :test do
-  # gem 'rake'
+  gem 'rake'
   gem 'test-unit'
   gem 'coveralls', require: false
 end

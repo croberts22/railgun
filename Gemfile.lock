@@ -29,6 +29,7 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
+    rake (11.3.0)
     rollbar (2.13.3)
       multi_json
     simplecov (0.12.0)
@@ -74,6 +75,7 @@ DEPENDENCIES
   rack
   rack-cache
   rack-test
+  rake
   rollbar
   sinatra
   sinatra-contrib
