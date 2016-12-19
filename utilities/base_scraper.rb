@@ -236,7 +236,8 @@ module Railgun
           # Character URL and Image URL.
           if counter == 0
             character_url = td.at('a/@href').to_s
-            image_url = td.at('img/@data-src').to_s
+
+            image_url = td.at('img/@data-src').to_s || td.at('img/@src').to_s
             image_url = 'https://myanimelist.cdn-dena.com' + image_url.match(%r{/images/characters/.*.jpg}).to_s
 
             id = character_url[%r{/character/(\d+)/.*?}, 1].to_s
@@ -274,7 +275,7 @@ module Railgun
               id = actor_name_url[%r{/people/(\d+)/.*?}, 1].to_s
 
               # Actor's image URL
-              actor_image_url = inner_tr.xpath('td[2]').at('div/a/img/@data-src').to_s
+              actor_image_url = inner_tr.xpath('td[2]').at('div/a/img/@data-src').to_s || inner_tr.xpath('td[2]').at('div/a/img/@src').to_s
               actor_image_url = 'https://myanimelist.cdn-dena.com' + actor_image_url.match(%r{/images/voiceactors/.*.jpg}).to_s
 
               if actor_name.length > 0
