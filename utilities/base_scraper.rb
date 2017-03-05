@@ -316,12 +316,14 @@ module Railgun
         # td[1] = Profile picture, url
         # td[2] = Reviewer name, metadata
         # td[3] = Additional metadata
-        reviewer_table = review_div.at('div > table > tr')
+
+
+        reviewer_table = review_div.at('div > div > table > tr')
         break unless !reviewer_table.nil?
 
         # Odd that there is an embedded div with the same class ("picSurround").
         # May not need to check for this if we explicitly request td[0].
-        reviewer_profile = reviewer_table.at('td[1] div div[@class="picSurround"]')
+        reviewer_profile = reviewer_table.at('td[1] div[@class="picSurround"]')
         review.user_url = reviewer_profile.at('a')['href']
 
         # FIXME: Can strip /thumbs/ and _thumb at the end of the url to get a full-size resolution image.
@@ -333,12 +335,12 @@ module Railgun
         review.helpful_review_count = reviewer_table.at('td[2] strong').parent.text.scan(/\d+/).first.to_i
 
         # TODO: For now, bypassing "Other reviews from this user" for a later update.
-        review_metadata_td = reviewer_table.at('td[3]')
+        review_metadata_td = review_div.at('div > div[@class="mb8"]')
 
-        review_date_text = review_metadata_td.at('div[1]').text
+        review_date_text = review_metadata_td.children.first.text.strip
         review.date = parse_date(review_date_text)
 
-        review_episodes_text = review_metadata_td.at('div[2]').text
+        review_episodes_text = review_metadata_td.at('div[1]').text.strip
         review.episodes_watched = review_episodes_text.scan(/\d+/).first.to_i
         review.episodes_total = review_episodes_text.scan(/\d+/).last.to_i
 
@@ -346,7 +348,7 @@ module Railgun
         # review.rating = review_metadata_td.at('div[3]').text.split(/:/).last.strip
 
         # Score Breakdown.
-        score_table = review_div.at('div[@class="spaceit textReadability word-break"] > div > table')
+        score_table = review_div.at('div[@class="spaceit textReadability word-break pt8 mt8"] > div > table')
         score_table.search('tr').each do |tr|
           # td[0]: Category
           category = tr.child.text.strip.downcase
@@ -364,21 +366,34 @@ module Railgun
         end
 
         # Review.
-        user_review_div = review_div.at('div[@class="spaceit textReadability word-break"] > div').next
+        user_review_div_elements = review_div.at('div[@class="spaceit textReadability word-break pt8 mt8"]').children
+
+        # Get rid of the table, as it is the first element.
+        user_review_div_elements.delete(user_review_div_elements.first) unless user_review_div_elements.first.to_s.include?('<table') == false
+
+        # Get rid of the read more tag.
+        user_review_div_elements.delete(user_review_div_elements.last) unless user_review_div_elements.last.to_s.include?('read more') == false
+
+        # The last item is now the span tag (content that contains more of the synopsis). Expand this and filter out
+        # the "Helpful" div near the end.
+        span_review_elements = user_review_div_elements.last.children
+        user_review_div_elements += span_review_elements
+
         review_text = ''
 
-        while user_review_div
+        user_review_div_elements.each do |element|
+
+          puts element
+
+          next unless element.to_s.include?('<div') == false
 
           # Treat <br> as newlines in the response.
-          if user_review_div.to_s.eql? '<br>'
+          if element.to_s.eql? '<br>'
             review_text << "\\n"
           end
 
           # Do not include the last part of the div, which includes a 'read more' button.
-          review_text << user_review_div.text unless user_review_div.to_s.include? 'read more'
-
-          # Move on to the next element.
-          user_review_div = user_review_div.next
+          review_text << element.text.strip unless element.to_s.include? 'read more'
         end
 
         review.review = review_text.gsub(/\r\n/, "\\n")
