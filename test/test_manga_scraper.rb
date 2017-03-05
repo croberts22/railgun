@@ -79,7 +79,7 @@ class TestMangaScraper < Test::Unit::TestCase
     nokogiri = nokogiri_for_sample_response
 
     actual = scraper.parse_image_url(nokogiri)
-    expected = 'https://myanimelist.cdn-dena.com/images/manga/1/181552.jpg'
+    expected = 'https://myanimelist.cdn-dena.com/images/manga/5/173535.jpg'
 
     assert_equal(expected, actual)
   end
@@ -90,6 +90,7 @@ class TestMangaScraper < Test::Unit::TestCase
 
     actual = scraper.parse_alternative_titles(nokogiri)
     expected = {
+        english:  ['Monogatari'],
         synonyms: ['Bakemonogatari', 'Kizumonogatari: Wound Tale', 'Nisemonogatari', 'Nekomonogatari: Kuro'],
         japanese: ['〈物語〉シリーズ ファーストシーズン']
     }
@@ -449,7 +450,7 @@ class TestMangaScraper < Test::Unit::TestCase
   end
 
   def test_reviews
-    scraper = Railgun::AnimeScraper.new
+    scraper = Railgun::MangaScraper.new
     nokogiri = nokogiri_for_sample_response
 
     reviews_h2 = nokogiri.at('//h2[text()="Reviews"]')

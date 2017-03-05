@@ -657,7 +657,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     nokogiri = nokogiri_for_sample_response
 
     actual = scraper.parse_score_count(nokogiri)
-    expected = 48281
+    expected = 55311
 
     assert_equal(expected, actual)
   end
