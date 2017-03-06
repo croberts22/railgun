@@ -18,6 +18,8 @@ gem 'memcachier'
 group :development do
   gem 'thin'
   gem 'rack-test'
+  gem 'derailed_benchmarks'
+  gem 'stackprof'
 end
 
 group :test do
