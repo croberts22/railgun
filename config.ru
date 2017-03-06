@@ -7,7 +7,7 @@ require_relative 'services/keys'
 Bundler.require
 
 # For local testing, fire up memcached and uncomment this:
-# ENV['MEMCACHIER_SERVERS'] = 'localhost'
+ENV['MEMCACHIER_SERVERS'] = 'localhost'
 
 # if memcache_servers = ENV['MEMCACHIER_SERVERS']
 #   use Rack::Cache,
@@ -30,6 +30,9 @@ if access_token = Railgun::Keys.rollbar_access_token
     config.access_token = access_token
   end
 end
+
+# Sync log output to Heroku.
+$stdout.sync = true
 
 require './app'
 run App
