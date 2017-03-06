@@ -8,6 +8,10 @@ class App < Sinatra::Base
   register Sinatra::Namespace
   use Rollbar::Middleware::Sinatra
 
+  configure :production, :development do
+    enable :logging
+  end
+
   before do
     content_type 'application/json;charset=utf-8'
   end
@@ -33,6 +37,9 @@ class App < Sinatra::Base
         options = params[:options].split(',')
       end
 
+      logger.info "Fetching anime with ID #{params[:id]}..."
+      logger.info "Options: #{options}" unless options.count == 0
+
       expires 3600, :public, :must_revalidate
       last_modified Time.now
       etag "anime/#{params[:id]}/#{options}"
@@ -52,6 +59,7 @@ class App < Sinatra::Base
 
       query = CGI.escape(params[:q].strip)
 
+      # FIXME: Removing caching on search for now. Figure out how to better cache this
       #expires 3600, :public, :must_revalidate
       #last_modified Time.now
       #etag "anime?#{query}"
@@ -85,6 +93,7 @@ class App < Sinatra::Base
         options[:page] = params[:page]
       end
 
+      logger.info "Fetching anime list with options #{options}..."
 
       expires 3600, :public, :must_revalidate
       last_modified Time.now
@@ -117,6 +126,9 @@ class App < Sinatra::Base
         options = params[:options].split(',')
       end
 
+      logger.info "Fetching manga with ID #{params[:id]}..."
+      logger.info "Options: #{options}" unless options.count == 0
+
       expires 3600, :public, :must_revalidate
       last_modified Time.now
       etag "manga/#{params[:id]}/#{options}"
@@ -136,6 +148,7 @@ class App < Sinatra::Base
 
       query = CGI.escape(params[:q].strip)
 
+      # FIXME: Removing caching on search for now. Figure out how to better cache this
       #expires 3600, :public, :must_revalidate
       #last_modified Time.now
       #etag "manga?#{query}"
