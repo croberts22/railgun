@@ -24,6 +24,8 @@ module Railgun
       manga.status = parse_status(node)
       manga.start_date = parse_publishing_start_date(node)
       manga.end_date = parse_publishing_end_date(node)
+      manga.authors = parse_authors(node)
+      manga.serialization = parse_serialization(node)
       manga.genres = parse_genres(node)
       manga.score = parse_score(node)
       manga.score_count = parse_score_count(node)
@@ -127,6 +129,47 @@ module Railgun
         end_date = parse_end_date(airdates_text)
 
         end_date
+      end
+    end
+
+    def parse_authors(nokogiri)
+      if (node = nokogiri.at('//span[text()="Authors:"]')) && node.parent
+
+        authors = []
+
+        node.parent.children.each do |e|
+
+          if e['href']
+            name = e.text
+            url = e['href']
+
+            if match = /\((.+)\)/.match(e.next.text)
+              types = match[1].to_s.split('&')
+
+              types.each do |type|
+                authors.push({
+                                 :name => name,
+                                 :type => type.strip,
+                                 :url => url
+                             })
+              end
+
+            end
+
+          end
+
+        end
+
+        authors
+      end
+    end
+
+    def parse_serialization(nokogiri)
+      if (node = nokogiri.at('//span[text()="Serialization:"]')) && node.next
+        # airdates_text = node.next.text.strip
+        # end_date = parse_end_date(airdates_text)
+        #
+        # end_date
       end
     end
 

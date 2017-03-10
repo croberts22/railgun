@@ -525,4 +525,26 @@ class TestMangaScraper < Test::Unit::TestCase
 
   end
 
+  def test_authors
+    scraper = Railgun::MangaScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_authors(nokogiri)
+    expected = [
+        {
+            'name': 'Nisio, Isin',
+            'type': 'Story',
+            'url': '/people/5254/Isin_Nisio'
+        },
+        {
+            'name': 'VOFAN',
+            'type': 'Art',
+            'url': '/people/8594/VOFAN'
+        }
+    ]
+
+    assert_equal(expected, actual)
+
+  end
+
 end
