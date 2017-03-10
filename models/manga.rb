@@ -6,7 +6,7 @@ module Railgun
 
   class Manga < Resource
 
-    attr_accessor :rank, :popularity_rank, :volumes, :chapters,
+    attr_accessor :rank, :popularity_rank, :volumes, :chapters, :authors, :serialization,
                   :score, :score_count, :members_count, :favorited_count, :synopsis, :start_date, :end_date
     attr_reader :type, :status
     attr_writer :genres, :tags,
@@ -71,6 +71,10 @@ module Railgun
 
     def tags
       @tags ||= []
+    end
+
+    def authors
+      @authors ||= []
     end
 
     def anime_adaptations
@@ -150,6 +154,8 @@ module Railgun
           image_url: image_url,
           other_titles: other_titles,
           tags: tags,
+          authors: authors,
+          serialization: serialization,
 
           stats: {
               rank: rank,
