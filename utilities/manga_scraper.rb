@@ -165,11 +165,12 @@ module Railgun
     end
 
     def parse_serialization(nokogiri)
-      if (node = nokogiri.at('//span[text()="Serialization:"]')) && node.next
-        # airdates_text = node.next.text.strip
-        # end_date = parse_end_date(airdates_text)
-        #
-        # end_date
+      if (node = nokogiri.at('//span[text()="Serialization:"]'))
+        serialization = node.parent.search('a').first
+        url = serialization.attribute('href').to_s
+        name = serialization.attribute('title').to_s
+
+        { :name => name, :url => url }
       end
     end
 

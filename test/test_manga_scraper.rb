@@ -547,4 +547,18 @@ class TestMangaScraper < Test::Unit::TestCase
 
   end
 
+  def test_serialization
+    scraper = Railgun::MangaScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_serialization(nokogiri)
+    expected = {
+            'name': 'Mephisto',
+            'url': '/manga/magazine/498/Mephisto'
+        }
+
+    assert_equal(expected, actual)
+
+  end
+
 end
