@@ -1,8 +1,6 @@
 require 'sinatra'
 require 'sinatra/namespace'
 require 'rollbar/middleware/sinatra'
-require 'rack-mini-profiler'
-require 'flamegraph'
 require_relative 'services/mal_network_service'
 require_relative 'railgun'
 
@@ -10,7 +8,6 @@ require_relative 'railgun'
 class App < Sinatra::Base
   register Sinatra::Namespace
   use Rollbar::Middleware::Sinatra
-  use Rack::MiniProfiler
 
   configure :production, :development do
     enable :logging
