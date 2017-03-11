@@ -142,17 +142,17 @@ module Railgun
           if e['href']
             name = e.text
             url = e['href']
+            id = /\/(\d+)\//.match(url)[1]
 
             if match = /\((.+)\)/.match(e.next.text)
-              types = match[1].to_s.split('&')
+              type = match[1].to_s
 
-              types.each do |type|
-                authors.push({
-                                 :name => name,
-                                 :type => type.strip,
-                                 :url => url
-                             })
-              end
+              authors.push({
+                               :id => id,
+                               :name => name,
+                               :responsibility => type.strip,
+                               :url => url
+                           })
 
             end
 
@@ -169,8 +169,10 @@ module Railgun
         serialization = node.parent.search('a').first
         url = serialization.attribute('href').to_s
         name = serialization.attribute('title').to_s
+        id = /\/(\d+)\//.match(url)[1]
 
-        { :name => name, :url => url }
+
+        { :id => id, :name => name, :url => url }
       end
     end
 
