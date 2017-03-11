@@ -532,14 +532,16 @@ class TestMangaScraper < Test::Unit::TestCase
     actual = scraper.parse_authors(nokogiri)
     expected = [
         {
-            'name': 'Nisio, Isin',
-            'type': 'Story',
-            'url': '/people/5254/Isin_Nisio'
+            id: '5254',
+            name: 'Nisio, Isin',
+            responsibility: 'Story',
+            url: '/people/5254/Isin_Nisio'
         },
         {
-            'name': 'VOFAN',
-            'type': 'Art',
-            'url': '/people/8594/VOFAN'
+            id: '8594',
+            name: 'VOFAN',
+            responsibility: 'Art',
+            url: '/people/8594/VOFAN'
         }
     ]
 
@@ -553,8 +555,9 @@ class TestMangaScraper < Test::Unit::TestCase
 
     actual = scraper.parse_serialization(nokogiri)
     expected = {
-            'name': 'Mephisto',
-            'url': '/manga/magazine/498/Mephisto'
+            id: '498',
+            name: 'Mephisto',
+            url: '/manga/magazine/498/Mephisto'
         }
 
     assert_equal(expected, actual)
