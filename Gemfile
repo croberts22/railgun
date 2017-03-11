@@ -19,6 +19,10 @@ group :development do
   gem 'thin'
   gem 'rack-test'
   gem 'derailed_benchmarks'
+  gem 'rack-mini-profiler'
+
+  # For call-stack profiling flamegraphs (requires Ruby MRI 2.0.0+)
+  gem 'flamegraph'
   gem 'stackprof'
 end
 
