@@ -12,7 +12,7 @@ gem 'rack-cache'
 gem 'dalli'
 gem 'rollbar'
 gem 'chronic'
-gem 'memcachier'
+# gem 'memcachier'
 
 group :development do
   gem 'thin'
