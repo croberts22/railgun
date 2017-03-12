@@ -1,5 +1,5 @@
 <h3 align="center">
-  <img src="http://i.imgur.com/t3yKpjC.png" alt="Railgun" />
+  <img src="http://i.imgur.com/39yvUPW.png" alt="Railgun" />
 </h3>
 =======
 
@@ -8,7 +8,7 @@
 [![Build Status](https://travis-ci.org/croberts22/railgun.svg?branch=master)](https://travis-ci.org/croberts22/railgun)
 [![Coverage Status](https://coveralls.io/repos/github/croberts22/railgun/badge.svg?branch=master)](https://coveralls.io/github/croberts22/railgun?branch=master)
 
-Railgun is an extension to the [MyAnimeList API](http://myanimelist.net/modules.php?go=api). 
+Railgun is an extension to the [MyAnimeList API](http://myanimelist.net/modules.php?go=api).
 
 ## Motivation
 
@@ -35,7 +35,7 @@ A few reasons:
 
 - Railguns are blazingly fast, efficient, and powerful. Those are the principles for what this API will accomplish.
 
-- It's the nickname given to [Misaka Mikoto](http://myanimelist.net/character/13701/Mikoto_Misaka) from [A Certain Scientific Railgun](http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun). 
+- It's the nickname given to [Misaka Mikoto](http://myanimelist.net/character/13701/Mikoto_Misaka) from [A Certain Scientific Railgun](http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun).
 ![](http://i.imgur.com/74Zdsnu.png)
 
 - It just sounds badass.
