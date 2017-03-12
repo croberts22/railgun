@@ -1,4 +1,5 @@
-require_relative 'url_utilities'
+require_relative '../utilities/url_utilities'
+require_relative '../scrapers/scraper'
 
 module Railgun
 
