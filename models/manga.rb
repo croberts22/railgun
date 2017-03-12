@@ -15,7 +15,7 @@ module Railgun
                 :full_stories, :others, :parent_story,
                 :summary_stats, :score_stats,  :additional_info_urls, :character_voice_actors
 
-    attr_accessor :reviews
+    attr_accessor :reviews, :recommendations
 
     ### Custom Setter Methods
 
@@ -137,6 +137,10 @@ module Railgun
       @synopsis ||= ''
     end
 
+    def recommendations
+      @recommendations ||= []
+    end
+
     def attributes
       {
           id: id,
@@ -184,7 +188,8 @@ module Railgun
 
           characters: character_voice_actors,
           additional_info_urls: additional_info_urls,
-          reviews: reviews
+          reviews: reviews,
+          recommendations: recommendations
       }
     end
 
