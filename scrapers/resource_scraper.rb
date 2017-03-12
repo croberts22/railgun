@@ -1,5 +1,5 @@
-require_relative 'date_formatter'
-require_relative 'url_utilities'
+require_relative '../utilities/date_formatter'
+require_relative '../utilities/url_utilities'
 
 module Railgun
 

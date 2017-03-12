@@ -1,7 +1,7 @@
 require_relative 'resource'
-require_relative '../utilities/anime_scraper'
-require_relative '../utilities/anime_search_scraper'
-require_relative '../utilities/anime_list_scraper'
+require_relative '../scrapers/anime_scraper'
+require_relative '../scrapers/anime_search_scraper'
+require_relative '../scrapers/anime_list_scraper'
 
 module Railgun
 

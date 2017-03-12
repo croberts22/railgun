@@ -1,6 +1,6 @@
 require_relative 'resource'
-require_relative '../utilities/manga_scraper'
-require_relative '../utilities/manga_search_scraper'
+require_relative '../scrapers/manga_scraper'
+require_relative '../scrapers/manga_search_scraper'
 
 module Railgun
 

@@ -1,4 +1,4 @@
-require_relative 'url_utilities'
+require_relative '../utilities/url_utilities'
 
 module Railgun
 
