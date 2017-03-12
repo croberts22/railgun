@@ -25,6 +25,7 @@ module Railgun
       anime.end_date = parse_airing_end_date(node)
       anime.studios = parse_studios(node)
       anime.producers = parse_producers(node)
+      anime.source = parse_source(node)
       anime.genres = parse_genres(node)
       anime.classification = parse_rating(node)
       anime.score = parse_score(node)
@@ -212,6 +213,17 @@ module Railgun
 
         studios
       end
+    end
+
+    def parse_source(nokogiri)
+
+      source = nil
+
+      if (node = nokogiri.at('span:contains("Source:")')) && node.next
+        source = node.next.text.strip
+      end
+
+      source
     end
 
     def parse_manga_adaptations(html_string)

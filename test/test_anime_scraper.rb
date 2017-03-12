@@ -691,4 +691,14 @@ class TestAnimeScraper < Test::Unit::TestCase
 
   end
 
+  def test_parse_source
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_source(nokogiri)
+    expected = 'Original'
+
+    assert_equal(expected, actual)
+  end
+
 end
