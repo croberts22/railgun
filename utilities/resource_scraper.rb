@@ -3,7 +3,13 @@ require_relative 'url_utilities'
 
 module Railgun
 
-  class BaseScraper
+  class ResourceScraper
+
+    attr_accessor :api_version
+
+    def initialize(api_version = API_VERSION)
+      @api_version = api_version
+    end
 
     # Details Parsing.
 

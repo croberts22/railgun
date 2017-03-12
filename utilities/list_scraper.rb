@@ -2,7 +2,7 @@ require_relative 'url_utilities'
 
 module Railgun
 
-  class ListScraper
+  class ListScraper < Scraper
 
     def scrape(nokogiri)
       resources = []
