@@ -78,8 +78,10 @@ module Railgun
 
           manga.reviews = parse_reviews(reviews)
 
-
         end
+
+        manga.recommendations = parse_recommendations(node)
+
       end
 
     end

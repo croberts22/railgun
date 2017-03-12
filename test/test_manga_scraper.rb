@@ -564,4 +564,34 @@ class TestMangaScraper < Test::Unit::TestCase
 
   end
 
+
+  def test_recommendations
+    scraper = Railgun::MangaScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_recommendations(nokogiri)
+
+    actual.each do |recommendation|
+
+      assert(recommendation[:url].nil? == false)
+      assert(recommendation[:url].is_a? String)
+
+      assert(recommendation[:recommended_user_count].nil? == false)
+      assert(recommendation[:recommended_user_count].is_a? Integer)
+
+      resource = recommendation['manga']
+
+      assert(resource.nil? == false)
+      assert(resource.is_a? Hash)
+
+      assert(resource[:title].nil? == false)
+      assert(resource[:title].is_a? String)
+
+      assert(resource[:image_url].nil? == false)
+      assert(resource[:image_url].is_a? String)
+
+    end
+
+  end
+
 end
