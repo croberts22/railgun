@@ -1,11 +1,11 @@
-require_relative 'base_scraper'
+require_relative 'resource_scraper'
 
 module Railgun
 
   ### MangaScraper
   ### Takes a Nokogiri object and converts it into a Manga object.
 
-  class MangaScraper < BaseScraper
+  class MangaScraper < ResourceScraper
 
     def parse_manga(nokogiri, manga)
 

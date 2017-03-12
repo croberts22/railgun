@@ -1,11 +1,11 @@
-require_relative 'base_scraper'
+require_relative 'resource_scraper'
 
 module Railgun
 
   ### AnimeScraper
   ### Takes a Nokogiri object and converts it into an Anime object.
 
-  class AnimeScraper < BaseScraper
+  class AnimeScraper < ResourceScraper
 
     def parse_anime(nokogiri, anime)
 

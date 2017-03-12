@@ -14,6 +14,9 @@ require_relative 'services/mal_network_service'
 
 module Railgun
 
+  # Most current API version.
+  API_VERSION = '1.1'
+
   # Raised when there are any network errors.
   class NetworkError < StandardError
     attr_accessor :original_exception
