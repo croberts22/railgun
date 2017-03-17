@@ -419,7 +419,7 @@ module Railgun
       reviews
     end
 
-    def parse_recommendations(nokogiri)
+    def parse_recommendations(nokogiri, parent_id)
 
       recommendations = []
       recommendations_h2_node = nokogiri.at('h2:contains("Recommendations")').next.next
@@ -434,6 +434,7 @@ module Railgun
           # </a>
 
           recommendation_url = li.at('a').attribute('href').to_s
+          id = recommendation_url.split('/').last
           resource_type = recommendation_url.include?('/manga/') ? 'manga' : 'anime'
           # Phew. Take "<num> Users", remove "Users", trim whitespace, then convert to an int.
           recommend_user_count = li.at('a span[@class="users"] text()').to_s.gsub('Users', '').strip.to_i
@@ -441,11 +442,16 @@ module Railgun
           image_url = li.at('a img').attribute('data-src').to_s
           sanitized_image_url = UrlUtilities.create_original_image_url(resource_type, image_url)
 
+          # We need an ID to associate the resource type. This is located in the recommendation URL.
+          resource_id = id.gsub(parent_id, '').gsub('-', '')
+
           recommendation = {
+              id: id,
               url: recommendation_url,
               recommended_user_count: recommend_user_count,
 
               resource_type => {
+                  id: resource_id,
                   title: title,
                   image_url: sanitized_image_url
               }
