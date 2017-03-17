@@ -666,9 +666,12 @@ class TestAnimeScraper < Test::Unit::TestCase
     scraper = Railgun::AnimeScraper.new
     nokogiri = nokogiri_for_sample_response
 
-    actual = scraper.parse_recommendations(nokogiri)
+    actual = scraper.parse_recommendations(nokogiri, '25835')
 
     actual.each do |recommendation|
+
+      assert(recommendation[:id].nil? == false)
+      assert(recommendation[:id].is_a? String)
 
       assert(recommendation[:url].nil? == false)
       assert(recommendation[:url].is_a? String)
@@ -680,6 +683,9 @@ class TestAnimeScraper < Test::Unit::TestCase
 
       assert(resource.nil? == false)
       assert(resource.is_a? Hash)
+
+      assert(resource[:id].nil? == false)
+      assert(resource[:id].is_a? String)
 
       assert(resource[:title].nil? == false)
       assert(resource[:title].is_a? String)

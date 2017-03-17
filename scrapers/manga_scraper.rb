@@ -80,7 +80,7 @@ module Railgun
 
         end
 
-        manga.recommendations = parse_recommendations(node)
+        manga.recommendations = parse_recommendations(node, manga.id)
 
       end
 
