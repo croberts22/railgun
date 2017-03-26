@@ -99,6 +99,10 @@ module Railgun
       "https://myanimelist.net/manga.php?q=#{query}"
     end
 
+    def self.character_request_for_id(id)
+      "https://myanimelist.net/character/#{id}"
+    end
+
     def self.anime_rank_request(type, page)
       request = 'https://myanimelist.net/topanime.php'
       if rank_type_is_acceptable_for_anime_request(type)

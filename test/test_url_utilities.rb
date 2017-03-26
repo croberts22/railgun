@@ -39,4 +39,13 @@ class TestUrlUtilities < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
+  def test_create_original_image_url_remove_v
+    image_url = 'https://myanimelist.cdn-dena.com/images/voiceactors/2/43356v.jpg'
+
+    actual = Railgun::UrlUtilities.create_original_image_url('manga', image_url)
+    expected = 'https://myanimelist.cdn-dena.com/images/voiceactors/2/43356.jpg'
+
+    assert_equal(expected, actual)
+  end
+
 end

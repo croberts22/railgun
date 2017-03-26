@@ -50,6 +50,7 @@ class App < Sinatra::Base
       anime.to_json
     end
 
+
     # GET /anime?q=#{query}
     # Searches for an anime based on a given query.
     # Parameters:
@@ -69,6 +70,7 @@ class App < Sinatra::Base
 
       results.to_json
     end
+
 
     # GET /anime/top
     # Gets a page of a ranked list of anime. A page consists of 50 anime.
@@ -157,6 +159,54 @@ class App < Sinatra::Base
       results = Railgun::Manga.search(query)
 
       results.to_json
+    end
+
+    #
+    # Character Endpoints
+    #
+
+    # GET /character/#{character_id}
+    # Get details for a character.
+    # Parameters:
+    # - id: The character's ID.
+    get '/character/:id' do
+      pass unless params[:id] =~ /^\d+$/
+
+      logger.info "Fetching character with ID #{params[:id]}..."
+
+      expires 3600, :public, :must_revalidate
+      last_modified Time.now
+      etag "anime/#{params[:id]}"
+
+      character = Railgun::Character.scrape(params[:id])
+
+      character.to_json
+    end
+
+  end
+
+  namespace '/1.1' do
+
+    #
+    # Character Endpoints
+    #
+
+    # GET /character/#{character_id}
+    # Get details for a character.
+    # Parameters:
+    # - id: The character's ID.
+    get '/character/:id' do
+      pass unless params[:id] =~ /^\d+$/
+
+      logger.info "Fetching character with ID #{params[:id]}..."
+
+      expires 3600, :public, :must_revalidate
+      last_modified Time.now
+      etag "anime/#{params[:id]}"
+
+      character = Railgun::Character.scrape(params[:id])
+
+      character.to_json
     end
 
   end
