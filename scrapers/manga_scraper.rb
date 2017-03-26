@@ -168,13 +168,14 @@ module Railgun
 
     def parse_serialization(nokogiri)
       if (node = nokogiri.at('//span[text()="Serialization:"]'))
-        serialization = node.parent.search('a').first
-        url = serialization.attribute('href').to_s
-        name = serialization.attribute('title').to_s
-        id = /\/(\d+)\//.match(url)[1]
+        if serialization = node.parent.search('a').first
+          url = serialization.attribute('href').to_s
+          name = serialization.attribute('title').to_s
+          id = /\/(\d+)\//.match(url)[1]
 
 
-        { :id => id, :name => name, :url => url }
+          { :id => id, :name => name, :url => url }
+          end
       end
     end
 
