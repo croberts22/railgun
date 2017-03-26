@@ -16,9 +16,10 @@ module Railgun
         image_url = base_url + url_match[0]
       end
 
-      # If the last letter of the file is 't', remove it. This returns a
+      # If the last letter of the file is 't' or 'v', remove it. This returns a
       # tiny image.
       image_url = image_url.gsub('t.jpg', '.jpg')
+      image_url = image_url.gsub('v.jpg', '.jpg')
 
       image_url
     end

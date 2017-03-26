@@ -28,6 +28,7 @@ ENV['MEMCACHIER_SERVERS'] = 'localhost'
 if access_token = Railgun::Keys.rollbar_access_token
   Rollbar.configure do |config|
     config.access_token = access_token
+    config.environment = Sinatra::Base.environment
   end
 end
 

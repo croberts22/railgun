@@ -1,15 +1,11 @@
 require_relative '../utilities/date_formatter'
 require_relative '../utilities/url_utilities'
+require_relative '../scrapers/scraper'
 
 module Railgun
 
-  class ResourceScraper
+  class ResourceScraper < Scraper
 
-    attr_accessor :api_version
-
-    def initialize(api_version = API_VERSION)
-      @api_version = api_version
-    end
 
     # Details Parsing.
 
@@ -390,7 +386,7 @@ module Railgun
 
         user_review_div_elements.each do |element|
 
-          puts element
+          # puts element
 
           next unless element.to_s.include?('<div') == false
 

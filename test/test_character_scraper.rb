@@ -1,0 +1,171 @@
+require File.dirname(__FILE__) + '/test_helper'
+
+class TestCharacterScraper < Test::Unit::TestCase
+
+
+  ### Convenience Methods
+
+  def nokogiri_for_sample_response
+    # Izuku Midoriya
+    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/character_117909.html"))
+  end
+
+
+  ### Tests
+
+  def test_parse_id
+    scraper = Railgun::CharacterScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_id(nokogiri)
+    expected = '117909'
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_name
+    scraper = Railgun::CharacterScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_name(nokogiri)
+    expected = 'Izuku Midoriya'
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_url
+    scraper = Railgun::CharacterScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_url(nokogiri)
+    expected = 'https://myanimelist.net/character/117909/Izuku_Midoriya'
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_image_url
+    scraper = Railgun::CharacterScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_image_url(nokogiri)
+    expected = 'https://myanimelist.cdn-dena.com/images/characters/7/299404.jpg'
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_nickname
+    scraper = Railgun::CharacterScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_nickname(nokogiri)
+    expected = 'Deku'
+
+    assert_equal(expected, actual)
+  end
+
+
+  def test_parse_biography
+    scraper = Railgun::CharacterScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_biography(nokogiri)
+    expected = actual.is_a?(String)
+
+    assert(!(actual.include? '<br>'))
+    assert(!(actual.include? '<br />'))
+    assert(expected)
+  end
+
+  def test_parse_animeography
+    scraper = Railgun::CharacterScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_animeography(nokogiri)
+    expected =  [
+        {
+            'id': '31964',
+            'name': 'Boku no Hero Academia',
+            'url': '/anime/31964/Boku_no_Hero_Academia',
+            'image_url': 'https://myanimelist.cdn-dena.com/images/anime/10/78745.jpg',
+            'role': 'Main'
+        },
+        {
+            'id': '33486',
+            'name': 'Boku no Hero Academia 2nd Season',
+            'url': '/anime/33486/Boku_no_Hero_Academia_2nd_Season',
+            'image_url': 'https://myanimelist.cdn-dena.com/images/anime/3/84547.jpg',
+            'role': 'Main'
+        }
+    ]
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_mangography
+    scraper = Railgun::CharacterScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_mangaography(nokogiri)
+    expected =  [
+        {
+            'id': '75989',
+            'name': 'Boku no Hero Academia',
+            'url': '/manga/75989/Boku_no_Hero_Academia',
+            'image_url': 'https://myanimelist.cdn-dena.com/images/manga/1/141381.jpg',
+            'role': 'Main'
+        }
+    ]
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_voice_actors
+    scraper = Railgun::CharacterScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_voice_actors(nokogiri)
+    expected =  [
+        {
+            'id': '94',
+            'name': 'Watanabe, Akeno',
+            'url': '/people/94/Akeno_Watanabe',
+            'image_url': 'https://myanimelist.cdn-dena.com/images/voiceactors/1/17129.jpg',
+            'language': 'Japanese'
+        },
+        {
+            'id': '15441',
+            'name': 'Woodhull, Lara',
+            'url': '/people/15441/Lara_Woodhull',
+            'image_url': 'https://myanimelist.cdn-dena.com/images/voiceactors/2/43356.jpg',
+            'language': 'English'
+        },
+        {
+            'id': '21971',
+            'name': 'Yamashita, Daiki',
+            'url': '/people/21971/Daiki_Yamashita',
+            'image_url': 'https://myanimelist.cdn-dena.com/images/voiceactors/2/42618.jpg',
+            'language': 'Japanese'
+        },
+        {
+            'id': '37957',
+            'name': 'Briner, Justin',
+            'url': '/people/37957/Justin_Briner',
+            'image_url': 'https://myanimelist.cdn-dena.com/images/voiceactors/2/43348.jpg',
+            'language': 'English'
+        }
+    ]
+
+    assert_equal(expected, actual)
+  end
+
+  def test_parse_favorited_count
+    scraper = Railgun::CharacterScraper.new
+    nokogiri = nokogiri_for_sample_response
+
+    actual = scraper.parse_favorite_count(nokogiri)
+    expected = 1898
+
+    assert_equal(expected, actual)
+  end
+
+end

@@ -11,6 +11,7 @@ require_relative 'models/character'
 require_relative 'models/manga'
 require_relative 'models/review'
 require_relative 'services/mal_network_service'
+require_relative 'utilities/logger'
 
 module Railgun
 
