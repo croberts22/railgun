@@ -420,40 +420,43 @@ module Railgun
       recommendations_h2_node = nokogiri.at('h2:contains("Recommendations")').next.next
 
       if recommendations_h2_node
-        li_nodes = recommendations_h2_node.at('div[@class="anime-slide-block"]/div[@class="anime-slide-outer"]/ul').children
-        li_nodes.each do |li|
+        if li_nodes = recommendations_h2_node.at('div[@class="anime-slide-block"]/div[@class="anime-slide-outer"]/ul')
 
-          # <a href="https://myanimelist.net/recommendations/manga/26-75989" class="link bg-center" style="width:90px;height:140px;">
-          #   <span class="title fs10">Hunter x Hunter</span><span class="users">10 Users</span>
-          #   <img src="https://myanimelist.cdn-dena.com/r/90x140/images/manga/2/192445.webp?s=bd1eb4b92539d939cd0cef5a65ac84ca" data-src="https://myanimelist.cdn-dena.com/r/90x140/images/manga/2/192445.webp?s=bd1eb4b92539d939cd0cef5a65ac84ca" data-srcset="https://myanimelist.cdn-dena.com/r/90x140/images/manga/2/192445.webp?s=bd1eb4b92539d939cd0cef5a65ac84ca 1x,https://myanimelist.cdn-dena.com/r/180x280/images/manga/2/192445.webp?s=dd0b5f7e90c97f4f2c24a2b0b44c6e55 2x" width="90" height="140" class="image lazyloaded" alt="Hunter x Hunter" border="0" srcset="https://myanimelist.cdn-dena.com/r/90x140/images/manga/2/192445.webp?s=bd1eb4b92539d939cd0cef5a65ac84ca 1x,https://myanimelist.cdn-dena.com/r/180x280/images/manga/2/192445.webp?s=dd0b5f7e90c97f4f2c24a2b0b44c6e55 2x">
-          # </a>
+          li_nodes = li_nodes.children
+          li_nodes.each do |li|
 
-          recommendation_url = li.at('a').attribute('href').to_s
-          id = recommendation_url.split('/').last
-          resource_type = recommendation_url.include?('/manga/') ? 'manga' : 'anime'
-          # Phew. Take "<num> Users", remove "Users", trim whitespace, then convert to an int.
-          recommend_user_count = li.at('a span[@class="users"] text()').to_s.gsub('Users', '').strip.to_i
-          name = li.at('a span[@class="title fs10"] text()').to_s
-          image_url = li.at('a img').attribute('data-src').to_s
-          sanitized_image_url = UrlUtilities.create_original_image_url(resource_type, image_url)
+            # <a href="https://myanimelist.net/recommendations/manga/26-75989" class="link bg-center" style="width:90px;height:140px;">
+            #   <span class="title fs10">Hunter x Hunter</span><span class="users">10 Users</span>
+            #   <img src="https://myanimelist.cdn-dena.com/r/90x140/images/manga/2/192445.webp?s=bd1eb4b92539d939cd0cef5a65ac84ca" data-src="https://myanimelist.cdn-dena.com/r/90x140/images/manga/2/192445.webp?s=bd1eb4b92539d939cd0cef5a65ac84ca" data-srcset="https://myanimelist.cdn-dena.com/r/90x140/images/manga/2/192445.webp?s=bd1eb4b92539d939cd0cef5a65ac84ca 1x,https://myanimelist.cdn-dena.com/r/180x280/images/manga/2/192445.webp?s=dd0b5f7e90c97f4f2c24a2b0b44c6e55 2x" width="90" height="140" class="image lazyloaded" alt="Hunter x Hunter" border="0" srcset="https://myanimelist.cdn-dena.com/r/90x140/images/manga/2/192445.webp?s=bd1eb4b92539d939cd0cef5a65ac84ca 1x,https://myanimelist.cdn-dena.com/r/180x280/images/manga/2/192445.webp?s=dd0b5f7e90c97f4f2c24a2b0b44c6e55 2x">
+            # </a>
 
-          # We need an ID to associate the resource type. This is located in the recommendation URL.
-          resource_id = id.gsub(parent_id, '').gsub('-', '')
+            recommendation_url = li.at('a').attribute('href').to_s
+            id = recommendation_url.split('/').last
+            resource_type = recommendation_url.include?('/manga/') ? 'manga' : 'anime'
+            # Phew. Take "<num> Users", remove "Users", trim whitespace, then convert to an int.
+            recommend_user_count = li.at('a span[@class="users"] text()').to_s.gsub('Users', '').strip.to_i
+            name = li.at('a span[@class="title fs10"] text()').to_s
+            image_url = li.at('a img').attribute('data-src').to_s
+            sanitized_image_url = UrlUtilities.create_original_image_url(resource_type, image_url)
 
-          recommendation = {
-              id: id,
-              url: recommendation_url,
-              recommended_user_count: recommend_user_count,
+            # We need an ID to associate the resource type. This is located in the recommendation URL.
+            resource_id = id.gsub(parent_id, '').gsub('-', '')
 
-              resource_type => {
-                  id: resource_id,
-                  name: name,
-                  image_url: sanitized_image_url
-              }
+            recommendation = {
+                id: id,
+                url: recommendation_url,
+                recommended_user_count: recommend_user_count,
 
-          }
+                resource_type => {
+                    id: resource_id,
+                    name: name,
+                    image_url: sanitized_image_url
+                }
 
-          recommendations << recommendation
+            }
+
+            recommendations << recommendation
+          end
         end
 
       end
