@@ -26,6 +26,11 @@ class TestAnimeScraper < Test::Unit::TestCase
     Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/railgun_s_anime_response.html"))
   end
 
+  def nokogiri_for_sample_response_no_recommendations
+    # To Love-RU Darkness (2017)
+    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/anime_35000.html"))
+  end
+
   def text_for_related_anime(nokogiri)
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
     related_anime_h2 = node.at('//h2[text()="Related Anime"]')
@@ -694,6 +699,17 @@ class TestAnimeScraper < Test::Unit::TestCase
       assert(resource[:image_url].is_a? String)
 
     end
+
+  end
+
+  def test_recommendations_none
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_sample_response_no_recommendations
+
+    actual = scraper.parse_recommendations(nokogiri, '35000')
+    expected = []
+
+    assert_equal(expected, actual)
 
   end
 
