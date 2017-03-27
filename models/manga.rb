@@ -10,7 +10,7 @@ module Railgun
                   :score, :score_count, :members_count, :favorited_count, :synopsis, :start_date, :end_date
     attr_reader :type, :status
     attr_writer :genres, :tags,
-                :other_titles, :anime_adaptations, :prequels, :sequels, :side_stories,
+                :other_names, :anime_adaptations, :prequels, :sequels, :side_stories,
                 :spin_offs, :summaries, :related_manga, :alternative_versions, :alternative_settings,
                 :full_stories, :others, :parent_story,
                 :summary_stats, :score_stats,  :additional_info_urls, :character_voice_actors
@@ -53,8 +53,8 @@ module Railgun
               end
     end
 
-    def other_titles
-      @other_titles ||= {}
+    def other_names
+      @other_names ||= {}
     end
 
     def summary_stats
@@ -144,7 +144,7 @@ module Railgun
     def attributes
       {
           id: id,
-          title: title,
+          name: name,
           type: type,
           volumes: volumes,
           chapters: chapters,
@@ -156,7 +156,7 @@ module Railgun
           start_date: start_date,
           end_date: end_date,
           image_url: image_url,
-          other_titles: other_titles,
+          other_names: other_names,
           tags: tags,
           authors: authors,
           serialization: serialization,

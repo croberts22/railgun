@@ -5,7 +5,6 @@ module Railgun
   class Resource
 
     attr_accessor :id, :name, :url, :image_url
-    attr_accessor :title
 
     # def initialize(id, name, url, image_url)
     #   # Instance variables

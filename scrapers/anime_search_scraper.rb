@@ -14,7 +14,7 @@ module Railgun
       # 5: Average Score
 
       image_url = parse_image_url('anime', nokogiri)
-      title = parse_name(nokogiri)
+      name = parse_name(nokogiri)
       url = parse_url(nokogiri)
       id = parse_id('anime', url)
       type = parse_type(nokogiri)
@@ -25,7 +25,7 @@ module Railgun
       # TODO: Consider making this a resource object.
       {
           id: id,
-          title: title,
+          name: name,
           url: url,
           image_url: image_url,
           type: type,

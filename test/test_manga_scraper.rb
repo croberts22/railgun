@@ -42,11 +42,11 @@ class TestMangaScraper < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_parse_title
+  def test_parse_name
     scraper = Railgun::MangaScraper.new
     nokogiri = nokogiri_for_sample_response
 
-    actual = scraper.parse_title(nokogiri)
+    actual = scraper.parse_name(nokogiri)
     expected = 'Monogatari Series: First Season'
 
     assert_equal(expected, actual)
@@ -84,11 +84,11 @@ class TestMangaScraper < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_parse_alternative_titles
+  def test_parse_alternative_names
     scraper = Railgun::MangaScraper.new
     nokogiri = nokogiri_for_sample_response
 
-    actual = scraper.parse_alternative_titles(nokogiri)
+    actual = scraper.parse_alternative_names(nokogiri)
     expected = {
         english:  ['Monogatari'],
         synonyms: ['Bakemonogatari', 'Kizumonogatari: Wound Tale', 'Nisemonogatari', 'Nekomonogatari: Kuro'],
@@ -252,39 +252,39 @@ class TestMangaScraper < Test::Unit::TestCase
 
     related_manga_text = text_for_related_manga(nokogiri)
 
-    actual = scraper.parse_anime_adaptations(related_manga_text).sort_by { |item| item[:title] }
+    actual = scraper.parse_anime_adaptations(related_manga_text).sort_by { |item| item[:name] }
     expected = [
         {
             id: '31758',
-            title: 'Kizumonogatari III: Reiketsu-hen',
+            name: 'Kizumonogatari III: Reiketsu-hen',
             url: '/anime/31758/Kizumonogatari_III__Reiketsu-hen'
         },
         {
             id: '5081',
-            title: 'Bakemonogatari',
+            name: 'Bakemonogatari',
             url: '/anime/5081/Bakemonogatari'
         },
         {
             id: '11597',
-            title: 'Nisemonogatari',
+            name: 'Nisemonogatari',
             url: '/anime/11597/Nisemonogatari'
         },
         {
             id: '31757',
-            title: 'Kizumonogatari II: Nekketsu-hen',
+            name: 'Kizumonogatari II: Nekketsu-hen',
             url: '/anime/31757/Kizumonogatari_II__Nekketsu-hen'
         },
         {
             id: '9260',
-            title: 'Kizumonogatari I: Tekketsu-hen',
+            name: 'Kizumonogatari I: Tekketsu-hen',
             url: '/anime/9260/Kizumonogatari_I__Tekketsu-hen'
         },
         {
             id: '15689',
-            title: 'Nekomonogatari: Kuro',
+            name: 'Nekomonogatari: Kuro',
             url: '/anime/15689/Nekomonogatari__Kuro'
         }
-    ].sort_by { |item| item[:title] }
+    ].sort_by { |item| item[:name] }
 
     assert_equal(expected, actual)
   end
@@ -299,7 +299,7 @@ class TestMangaScraper < Test::Unit::TestCase
     expected = [
         {
             id: '14893',
-            title: 'Monogatari Series: First Season',
+            name: 'Monogatari Series: First Season',
             url: '/manga/14893/Monogatari_Series__First_Season'
         }
     ]
@@ -317,7 +317,7 @@ class TestMangaScraper < Test::Unit::TestCase
     expected = [
         {
             id: '23751',
-            title: 'Monogatari Series: Second Season',
+            name: 'Monogatari Series: Second Season',
             url: '/manga/23751/Monogatari_Series__Second_Season'
         }
     ]
@@ -331,29 +331,29 @@ class TestMangaScraper < Test::Unit::TestCase
 
     related_manga_text = text_for_related_manga(nokogiri)
 
-    actual = scraper.parse_side_stories(related_manga_text).sort_by { |item| item[:title] }
+    actual = scraper.parse_side_stories(related_manga_text).sort_by { |item| item[:name] }
     expected = [
         {
             id: '24499',
-            title: 'Bakemonogatari Short Stories',
+            name: 'Bakemonogatari Short Stories',
             url: '/manga/24499/Bakemonogatari_Short_Stories'
         },
         {
             id: '86670',
-            title: 'Monogatari Series Heroine Hon',
+            name: 'Monogatari Series Heroine Hon',
             url: '/manga/86670/Monogatari_Series_Heroine_Hon'
         },
         {
             id: '90322',
-            title: 'Nisemonogatari Short Stories',
+            name: 'Nisemonogatari Short Stories',
             url: '/manga/90322/Nisemonogatari_Short_Stories'
         },
         {
             id: '93097',
-            title: 'Monogatari Series: Off Season',
+            name: 'Monogatari Series: Off Season',
             url: '/manga/93097/Monogatari_Series__Off_Season'
         }
-    ].sort_by { |item| item[:title] }
+    ].sort_by { |item| item[:name] }
 
     assert_equal(expected, actual)
   end
@@ -367,7 +367,7 @@ class TestMangaScraper < Test::Unit::TestCase
     actual = scraper.parse_parent_story(related_manga_text)
     expected = {
             id: '23751',
-            title: 'Monogatari Series: Second Season',
+            name: 'Monogatari Series: Second Season',
             url: '/manga/23751/Monogatari_Series__Second_Season'
     }
 
@@ -384,7 +384,7 @@ class TestMangaScraper < Test::Unit::TestCase
     # expected = [
     #     {
     #         id: '8023',
-    #         title: 'Toaru Kagaku no Railgun Specials',
+    #         name: 'Toaru Kagaku no Railgun Specials',
     #         url: '/manga/8023/Toaru_Kagaku_no_Railgun_Specials'
     #     }
     # ]
@@ -418,7 +418,7 @@ class TestMangaScraper < Test::Unit::TestCase
     expected = [
         {
             id: '66695',
-            title: 'Kimi to Nadekko!',
+            name: 'Kimi to Nadekko!',
             url: '/manga/66695/Kimi_to_Nadekko'
         }
     ]
@@ -434,12 +434,12 @@ class TestMangaScraper < Test::Unit::TestCase
     scraper.parse_manga(nokogiri, manga)
 
     assert(!manga.id.nil?)
-    assert(!manga.title.nil?)
+    assert(!manga.name.nil?)
     assert(!manga.synopsis.nil?)
     assert(!manga.rank.nil?)
     assert(!manga.image_url.nil?)
     assert_not_equal('http://cdn.myanimelist.net/images/spacer.gif', manga.image_url)
-    assert(!manga.other_titles.empty?)
+    assert(!manga.other_names.empty?)
     assert(!manga.type.nil?)
     assert(manga.volumes > 0)
     assert(manga.chapters > 0)
@@ -590,8 +590,8 @@ class TestMangaScraper < Test::Unit::TestCase
       assert(resource[:id].nil? == false)
       assert(resource[:id].is_a? String)
 
-      assert(resource[:title].nil? == false)
-      assert(resource[:title].is_a? String)
+      assert(resource[:name].nil? == false)
+      assert(resource[:name].is_a? String)
 
       assert(resource[:image_url].nil? == false)
       assert(resource[:image_url].is_a? String)

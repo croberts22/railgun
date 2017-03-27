@@ -10,14 +10,14 @@ module Railgun
     def parse_manga(nokogiri, manga)
 
       manga.id = parse_id(nokogiri)
-      manga.title = parse_title(nokogiri)
+      manga.name = parse_name(nokogiri)
       manga.synopsis = parse_synopsis(nokogiri)
       manga.rank = parse_rank(nokogiri)
       manga.image_url = parse_image_url(nokogiri)
 
       node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
-      manga.other_titles = parse_alternative_titles(node)
+      manga.other_names = parse_alternative_names(node)
       manga.type = parse_type(node)
       manga.volumes = parse_volume_count(node)
       manga.chapters = parse_chapter_count(node)
@@ -282,10 +282,10 @@ module Railgun
     def self.generate_manga_from_pattern(html_string, string_to_match, regex_pattern)
       manga = []
       if html_string.match(string_to_match)
-        $1.scan(regex_pattern) do |url, manga_id, title|
+        $1.scan(regex_pattern) do |url, manga_id, name|
           manga << {
               :id => manga_id.to_s,
-              :title => title,
+              :name => name,
               :url => url
           }
         end

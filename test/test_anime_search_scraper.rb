@@ -28,11 +28,11 @@ class TestAnimeSearchScraper < Test::Unit::TestCase
       assert(id.is_a? String)
       assert(!id.empty?)
 
-      title = row[:title]
+      name = row[:name]
 
-      assert(!title.nil?)
-      assert(title.is_a? String)
-      assert(!title.empty?)
+      assert(!name.nil?)
+      assert(name.is_a? String)
+      assert(!name.empty?)
 
       url = row[:url]
 
