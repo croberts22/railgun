@@ -10,14 +10,14 @@ module Railgun
     def parse_anime(nokogiri, anime)
 
       anime.id = parse_id(nokogiri)
-      anime.title = parse_title(nokogiri)
+      anime.name = parse_name(nokogiri)
       anime.synopsis = parse_synopsis(nokogiri)
       anime.rank = parse_rank(nokogiri)
       anime.image_url = parse_image_url(nokogiri)
 
       node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
-      anime.other_titles = parse_alternative_titles(node)
+      anime.other_names = parse_alternative_names(node)
       anime.type = parse_type(node)
       anime.episodes = parse_episode_count(node)
       anime.status = parse_status(node)
@@ -338,10 +338,10 @@ module Railgun
     def self.generate_anime_from_pattern(html_string, string_to_match, regex_pattern)
       anime = []
       if html_string.match(string_to_match)
-        $1.scan(regex_pattern) do |url, anime_id, title|
+        $1.scan(regex_pattern) do |url, anime_id, name|
           anime << {
               :id => anime_id.to_s,
-              :title => title,
+              :name => name,
               :url => url
           }
         end

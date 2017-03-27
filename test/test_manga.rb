@@ -171,7 +171,7 @@ class TestManga < Test::Unit::TestCase
     manga = Railgun::Manga.new
 
     assert(manga.genres.empty?)
-    assert(manga.other_titles.empty?)
+    assert(manga.other_names.empty?)
     assert(manga.anime_adaptations.empty?)
     assert(manga.prequels.empty?)
     assert(manga.sequels.empty?)

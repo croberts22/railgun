@@ -9,7 +9,7 @@ module Railgun
 
     # Details Parsing.
 
-    def parse_title(nokogiri)
+    def parse_name(nokogiri)
       nokogiri.at('h1 span').text
     end
 
@@ -25,20 +25,20 @@ module Railgun
       end
     end
 
-    def parse_alternative_titles(nokogiri)
-      other_titles = {}
+    def parse_alternative_names(nokogiri)
+      other_names = {}
 
       if (node = nokogiri.at('//span[text()="English:"]')) && node.next
-        other_titles[:english] = node.next.text.strip.split(/,\s?/)
+        other_names[:english] = node.next.text.strip.split(/,\s?/)
       end
       if (node = nokogiri.at('//span[text()="Synonyms:"]')) && node.next
-        other_titles[:synonyms] = node.next.text.strip.split(/,\s?/)
+        other_names[:synonyms] = node.next.text.strip.split(/,\s?/)
       end
       if (node = nokogiri.at('//span[text()="Japanese:"]')) && node.next
-        other_titles[:japanese] = node.next.text.strip.split(/,\s?/)
+        other_names[:japanese] = node.next.text.strip.split(/,\s?/)
       end
 
-      other_titles
+      other_names
     end
 
     def parse_synopsis(nokogiri)
@@ -434,7 +434,7 @@ module Railgun
           resource_type = recommendation_url.include?('/manga/') ? 'manga' : 'anime'
           # Phew. Take "<num> Users", remove "Users", trim whitespace, then convert to an int.
           recommend_user_count = li.at('a span[@class="users"] text()').to_s.gsub('Users', '').strip.to_i
-          title = li.at('a span[@class="title fs10"] text()').to_s
+          name = li.at('a span[@class="title fs10"] text()').to_s
           image_url = li.at('a img').attribute('data-src').to_s
           sanitized_image_url = UrlUtilities.create_original_image_url(resource_type, image_url)
 
@@ -448,7 +448,7 @@ module Railgun
 
               resource_type => {
                   id: resource_id,
-                  title: title,
+                  name: name,
                   image_url: sanitized_image_url
               }
 

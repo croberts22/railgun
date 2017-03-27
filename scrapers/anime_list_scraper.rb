@@ -10,7 +10,7 @@ module Railgun
       # 2: Image, Name, Type (Episode Count), Air Date, Members
       # 3: Score
 
-      title = parse_name(nokogiri)
+      name = parse_name(nokogiri)
       url = parse_url(nokogiri)
       id = parse_id('anime', url)
       image_url = parse_image_url('anime', nokogiri)
@@ -23,7 +23,7 @@ module Railgun
 
       {
           id: id,
-          title: title,
+          name: name,
           type: type,
           url: url,
           image_url: image_url,
