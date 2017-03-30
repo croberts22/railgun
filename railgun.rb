@@ -5,7 +5,7 @@
 # Version: 0.1
 
 require_relative 'models/resource'
-require_relative 'models/actor'
+require_relative 'models/person'
 require_relative 'models/anime'
 require_relative 'models/character'
 require_relative 'models/manga'

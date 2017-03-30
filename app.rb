@@ -176,11 +176,33 @@ class App < Sinatra::Base
 
       expires 3600, :public, :must_revalidate
       last_modified Time.now
-      etag "anime/#{params[:id]}"
+      etag "character/#{params[:id]}"
 
       character = Railgun::Character.scrape(params[:id])
 
       character.to_json
+    end
+
+    #
+    # Person Endpoints
+    #
+
+    # GET /person/#{person_id}
+    # Get details for a person.
+    # Parameters:
+    # - id: The person's ID.
+    get '/person/:id' do
+      pass unless params[:id] =~ /^\d+$/
+
+      logger.info "Fetching person with ID #{params[:id]}..."
+
+      expires 3600, :public, :must_revalidate
+      last_modified Time.now
+      etag "person/#{params[:id]}"
+
+      person = Railgun::Person.scrape(params[:id])
+
+      person.to_json
     end
 
   end
