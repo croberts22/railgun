@@ -103,6 +103,10 @@ module Railgun
       "https://myanimelist.net/character/#{id}"
     end
 
+    def self.person_request_for_id(id)
+      "https://myanimelist.net/people/#{id}"
+    end
+
     def self.anime_rank_request(type, page)
       request = 'https://myanimelist.net/topanime.php'
       if rank_type_is_acceptable_for_anime_request(type)

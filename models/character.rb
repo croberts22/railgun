@@ -39,10 +39,6 @@ module Railgun
       }
     end
 
-    def to_json(*args)
-      attributes.to_json(*args)
-    end
-
 
     ### Creation Methods
 
