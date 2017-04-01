@@ -110,7 +110,14 @@ module Railgun
     def self.anime_rank_request(type, page)
       request = 'https://myanimelist.net/topanime.php'
       if rank_type_is_acceptable_for_anime_request(type)
-        request += "?type=#{type}"
+
+        case type
+          when 'popular'
+            request += '?type=bypopularity'
+          else
+            request += "?type=#{type}"
+        end
+
       else
         request += '?type=all'
       end
