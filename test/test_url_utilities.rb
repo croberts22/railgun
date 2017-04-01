@@ -48,4 +48,31 @@ class TestUrlUtilities < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
+  def test_create_original_image_url_remove_thumbs_directory
+    image_url = 'https://myanimelist.cdn-dena.com/images/userimages/thumbs/5346452.jpg'
+
+    actual = Railgun::UrlUtilities.create_original_image_url('manga', image_url)
+    expected = 'https://myanimelist.cdn-dena.com/images/userimages/5346452.jpg'
+
+    assert_equal(expected, actual)
+  end
+
+  def test_create_original_image_url_remove_thumb
+    image_url = 'https://myanimelist.cdn-dena.com/images/userimages/5346452_thumb.jpg'
+
+    actual = Railgun::UrlUtilities.create_original_image_url('manga', image_url)
+    expected = 'https://myanimelist.cdn-dena.com/images/userimages/5346452.jpg'
+
+    assert_equal(expected, actual)
+  end
+
+  def test_create_original_image_url_remove_thumb_complete
+    image_url = 'https://myanimelist.cdn-dena.com/images/userimages/thumbs/5346452_thumb.jpg'
+
+    actual = Railgun::UrlUtilities.create_original_image_url('manga', image_url)
+    expected = 'https://myanimelist.cdn-dena.com/images/userimages/5346452.jpg'
+
+    assert_equal(expected, actual)
+  end
+
 end
