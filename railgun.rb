@@ -15,7 +15,7 @@ require_relative 'utilities/logger'
 
 module Railgun
 
-  # Most current API version.
+  # Current API version.
   API_VERSION = '1.1'
 
   # Raised when there are any network errors.

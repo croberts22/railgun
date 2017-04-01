@@ -173,5 +173,60 @@ class TestAnimeTopListScraper < Test::Unit::TestCase
 
   end
 
+  def test_rank_name
+    scraper = Railgun::AnimeListScraper.new
+
+    list_type = 'all'
+    actual = scraper.rank_key(list_type)
+    expected = 'rank'
+    assert(expected, actual)
+
+    list_type = 'airing'
+    actual = scraper.rank_key(list_type)
+    expected = 'airing_rank'
+    assert(expected, actual)
+
+    list_type = 'upcoming'
+    actual = scraper.rank_key(list_type)
+    expected = 'upcoming_rank'
+    assert(expected, actual)
+
+    list_type = 'tv'
+    actual = scraper.rank_key(list_type)
+    expected = 'tv_rank'
+    assert(expected, actual)
+
+    list_type = 'movie'
+    actual = scraper.rank_key(list_type)
+    expected = 'movie_rank'
+    assert(expected, actual)
+
+    list_type = 'ova'
+    actual = scraper.rank_key(list_type)
+    expected = 'ova_rank'
+    assert(expected, actual)
+
+    list_type = 'special'
+    actual = scraper.rank_key(list_type)
+    expected = 'special_rank'
+    assert(expected, actual)
+
+    list_type = 'popular'
+    actual = scraper.rank_key(list_type)
+    expected = 'popularity_rank'
+    assert(expected, actual)
+
+    list_type = 'favorite'
+    actual = scraper.rank_key(list_type)
+    expected = 'favorited_rank'
+    assert(expected, actual)
+
+    list_type = 'thisdoesnotexist'
+    actual = scraper.rank_key(list_type)
+    expected = 'rank'
+    assert(expected, actual)
+
+  end
+
 
 end
