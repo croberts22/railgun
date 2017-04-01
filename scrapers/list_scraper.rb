@@ -4,13 +4,13 @@ module Railgun
 
   class ListScraper < Scraper
 
-    def scrape(nokogiri)
+    def scrape(nokogiri, options)
       resources = []
 
       # Find the table.
       table = nokogiri.xpath('//div[@id="content"]/div/table')
       table.xpath('//tr[@class="ranking-list"]').each do |tr|
-        resources << parse_row(tr)
+        resources << parse_row(tr, options)
       end
 
       resources

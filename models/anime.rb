@@ -254,7 +254,7 @@ module Railgun
       nokogiri = MALNetworkService.nokogiri_from_request(MALNetworkService.anime_rank_request(options[:type], options[:rank]))
 
       scraper = AnimeListScraper.new
-      scraper.scrape(nokogiri)
+      scraper.scrape(nokogiri, options[:type])
     end
 
   end
