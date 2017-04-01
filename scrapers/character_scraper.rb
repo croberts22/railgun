@@ -154,7 +154,7 @@ module Railgun
     def parse_favorite_count(nokogiri)
       count = 0
 
-      biography_node =  nokogiri.at('div[text()="Animeography"]').next
+      biography_node = nokogiri.at('div[text()="Animeography"]').next
       if biography_node.next
 
         # We only care about looking for text that contains "Member Favorites:".

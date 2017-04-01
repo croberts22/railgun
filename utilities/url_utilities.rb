@@ -4,6 +4,18 @@ module Railgun
 
   class UrlUtilities
 
+    def self.original_image_from_element(entity, element)
+      if image_url = image_url_from_element(element)
+        create_original_image_url(entity, image_url)
+      end
+    end
+
+    def self.image_url_from_element(element)
+      element.attribute('src') ?
+          element.attribute('src').to_s :
+          element.attribute('data-src') ? element.attribute('data-src').to_s : nil
+    end
+
     def self.create_original_image_url(entity, url)
       # http://cdn.myanimelist.net/r/50x71/images/anime/2/73842.jpg?s=7e12d07508f8bc6c9f896fdec7e064ce
       # http://cdn.myanimelist.net        /images/anime/2/73842.jpg
