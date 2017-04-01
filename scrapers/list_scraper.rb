@@ -46,12 +46,25 @@ module Railgun
 
     def parse_type(nokogiri)
       type_element = parse_metadata(nokogiri).first
-      $1 if type_element.match %r{([a-zA-Z]+) \([0-9]+ eps\)}
+
+      # We anticipate something of the format:
+      # TV (24 eps)
+      # However, sometimes episodes may be undefined (?).
+      $1 if type_element.match %r{([a-zA-Z]+) \(([0-9]+|\?) eps\)}
     end
 
     def parse_episodes(nokogiri)
       type_element = parse_metadata(nokogiri).first
-      $1.to_i if type_element.match %r{[a-zA-Z]+ \(([0-9]+) eps\)}
+
+      # We anticipate something of the format:
+      # TV (24 eps)
+      # However, sometimes episodes may be undefined (?).
+      # Return 0 in this instance.
+      if type_element.match %r{[a-zA-Z]+ \(([0-9]+) eps\)}
+        $1.to_i
+      else
+        0
+      end
     end
 
     def parse_start_date(nokogiri)

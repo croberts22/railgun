@@ -129,7 +129,7 @@ class TestMALNetworkService < Test::Unit::TestCase
     type = 'popular'
     page += 1
 
-    expected = 'https://myanimelist.net/topanime.php?type=popular&page=7'
+    expected = 'https://myanimelist.net/topanime.php?type=bypopularity&page=7'
     actual = Railgun::MALNetworkService.anime_rank_request(type, page)
 
     assert_equal(expected, actual)
