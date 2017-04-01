@@ -33,6 +33,11 @@ module Railgun
       image_url = image_url.gsub('t.jpg', '.jpg')
       image_url = image_url.gsub('v.jpg', '.jpg')
 
+      # We can sometimes be stuck inside a 'thumbs/' directory, or the name might
+      # end in '_thumb.jpg'. Sub these out.
+      image_url = image_url.gsub('thumbs/', '')
+      image_url = image_url.gsub('_thumb.jpg', '.jpg')
+
       image_url
     end
 
