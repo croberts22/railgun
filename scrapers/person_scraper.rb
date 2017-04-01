@@ -173,11 +173,11 @@ module Railgun
     end
 
     def parse_anime_staff_positions(nokogiri)
-
+      # TODO
     end
 
     def parse_published_manga(nokogiri)
-
+      # TODO
     end
 
   end
