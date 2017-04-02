@@ -331,7 +331,8 @@ module Railgun
         review.user_url = reviewer_profile.at('a')['href']
 
         # FIXME: Can strip /thumbs/ and _thumb at the end of the url to get a full-size resolution image.
-        review.user_image_url = reviewer_profile.at('a img')['data-src']
+        image_element = UrlUtilities.image_url_from_element(reviewer_profile.at('a img'))
+        review.user_image_url = UrlUtilities.create_original_image_url('userimages', image_element)
         review.username = reviewer_table.at('td[2] a').text
 
         # Review Metadata (number of users who found the review helpful)
