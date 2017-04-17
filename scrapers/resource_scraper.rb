@@ -1,5 +1,6 @@
 require_relative '../utilities/date_formatter'
 require_relative '../utilities/url_utilities'
+require_relative '../utilities/string_formatter'
 require_relative '../scrapers/scraper'
 
 module Railgun
@@ -257,7 +258,7 @@ module Railgun
 
           # Name of Character
           if counter == 1
-            character_name = td.at('a/text()').to_s
+            character_name = StringFormatter.encodedHTML(td.at('a/text()').to_s)
             character_role = td.xpath('div/small/text()').to_s
 
             # puts 'Character name: ' + character_name
@@ -272,7 +273,7 @@ module Railgun
             inner_table_tr_nodes.each { |inner_tr|
               # puts 'inner_tr' + inner_tr.to_s
               # Actor's name and Language
-              actor_name = inner_tr.at('td[1]/a/text()').to_s
+              actor_name = StringFormatter.encodedHTML(inner_tr.at('td[1]/a/text()').to_s)
               actor_name_url = inner_tr.at('td[1]/a/@href').to_s
               actor_language = inner_tr.at('td[1]/small/text()').to_s
               id = actor_name_url[%r{/people/(\d+)/.*?}, 1].to_s
@@ -437,7 +438,7 @@ module Railgun
             resource_type = recommendation_url.include?('/manga/') ? 'manga' : 'anime'
             # Phew. Take "<num> Users", remove "Users", trim whitespace, then convert to an int.
             recommend_user_count = li.at('a span[@class="users"] text()').to_s.gsub('Users', '').strip.to_i
-            name = li.at('a span[@class="title fs10"] text()').to_s
+            name = StringFormatter.encodedHTML(li.at('a span[@class="title fs10"] text()').to_s)
             image_url = li.at('a img').attribute('data-src').to_s
             sanitized_image_url = UrlUtilities.create_original_image_url(resource_type, image_url)
 
