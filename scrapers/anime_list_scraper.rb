@@ -16,6 +16,7 @@ module Railgun
       image_url = parse_image_url('anime', nokogiri)
       type = parse_type(nokogiri)
       rank = parse_rank(nokogiri)
+      score = parse_score(nokogiri)
       episodes = parse_episodes(nokogiri)
       start_date = parse_start_date(nokogiri)
       end_date = parse_end_date(nokogiri)
@@ -35,6 +36,7 @@ module Railgun
           end_date: end_date,
 
           stats: {
+              score: score,
               rank_type => rank,
               member_count: member_count
           }
