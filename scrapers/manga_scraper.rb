@@ -285,7 +285,7 @@ module Railgun
         $1.scan(regex_pattern) do |url, manga_id, name|
           manga << {
               :id => manga_id.to_s,
-              :name => name,
+              :name => StringFormatter.encodedHTML(name),
               :url => url
           }
         end
