@@ -88,6 +88,11 @@ module Railgun
       rank_element.text.to_i
     end
 
+    def parse_score(nokogiri)
+      score_element = nokogiri.at('td[3] div span')
+      score_element.text.to_f
+    end
+
     # Convenience Methods
 
     def parse_metadata(nokogiri)

@@ -78,6 +78,12 @@ class TestAnimeTopListScraper < Test::Unit::TestCase
 
       assert(!stats.nil?)
 
+      score = stats[:score]
+
+      assert(!score.nil?)
+      assert(score.is_a? Float)
+      assert(score >= 0.00)
+
       rank = stats['rank']
 
       assert(!rank.nil?)
@@ -156,6 +162,12 @@ class TestAnimeTopListScraper < Test::Unit::TestCase
       stats = row[:stats]
 
       assert(!stats.nil?)
+
+      score = stats[:score]
+
+      assert(!score.nil?)
+      assert(score.is_a? Float)
+      assert(score >= 0.00)
 
       rank = stats['popularity_rank']
 
