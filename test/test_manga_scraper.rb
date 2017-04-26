@@ -19,6 +19,11 @@ class TestMangaScraper < Test::Unit::TestCase
     Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/monogatari_side_story_manga_response.html"))
   end
 
+  def nokogiri_for_autorecommendations
+    # Fairy Tail: Houou no Miko - Hajimari no Asa
+    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/manga_54697.html"))
+  end
+
   def text_for_related_manga(nokogiri)
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
     related_manga_h2 = node.at('//h2[text()="Related Manga"]')
@@ -598,6 +603,43 @@ class TestMangaScraper < Test::Unit::TestCase
 
     end
 
+  end
+
+  def test_recommendations_autorecommendations
+    scraper = Railgun::MangaScraper.new
+    nokogiri = nokogiri_for_autorecommendations
+
+    actual = scraper.parse_recommendations(nokogiri, '54697')
+
+    actual.each do |recommendation|
+
+      assert(recommendation[:id].nil? == false)
+      assert(recommendation[:id].is_a? String)
+      assert_false(recommendation[:id].include? 'suggestion')
+
+      assert(recommendation[:url].nil? == false)
+      assert(recommendation[:url].is_a? String)
+      assert_false(recommendation[:url].include? 'suggestion')
+
+      assert(recommendation[:recommended_user_count].nil? == false)
+      assert(recommendation[:recommended_user_count].is_a? Integer)
+
+      resource = recommendation['manga']
+
+      assert(resource.nil? == false)
+      assert(resource.is_a? Hash)
+
+      assert(resource[:id].nil? == false)
+      assert(resource[:id].is_a? String)
+      assert_false(resource[:id].include? 'suggestion')
+
+      assert(resource[:name].nil? == false)
+      assert(resource[:name].is_a? String)
+
+      assert(resource[:image_url].nil? == false)
+      assert(resource[:image_url].is_a? String)
+
+    end
   end
 
 end
