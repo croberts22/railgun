@@ -433,17 +433,23 @@ module Railgun
             #   <img src="https://myanimelist.cdn-dena.com/r/90x140/images/manga/2/192445.webp?s=bd1eb4b92539d939cd0cef5a65ac84ca" data-src="https://myanimelist.cdn-dena.com/r/90x140/images/manga/2/192445.webp?s=bd1eb4b92539d939cd0cef5a65ac84ca" data-srcset="https://myanimelist.cdn-dena.com/r/90x140/images/manga/2/192445.webp?s=bd1eb4b92539d939cd0cef5a65ac84ca 1x,https://myanimelist.cdn-dena.com/r/180x280/images/manga/2/192445.webp?s=dd0b5f7e90c97f4f2c24a2b0b44c6e55 2x" width="90" height="140" class="image lazyloaded" alt="Hunter x Hunter" border="0" srcset="https://myanimelist.cdn-dena.com/r/90x140/images/manga/2/192445.webp?s=bd1eb4b92539d939cd0cef5a65ac84ca 1x,https://myanimelist.cdn-dena.com/r/180x280/images/manga/2/192445.webp?s=dd0b5f7e90c97f4f2c24a2b0b44c6e55 2x">
             # </a>
 
-            recommendation_url = li.at('a').attribute('href').to_s
+            recommendation_url = li.at('a').attribute('href').to_s.gsub('?suggestion', '')
             id = recommendation_url.split('/').last
             resource_type = recommendation_url.include?('/manga/') ? 'manga' : 'anime'
             # Phew. Take "<num> Users", remove "Users", trim whitespace, then convert to an int.
             recommend_user_count = li.at('a span[@class="users"] text()').to_s.gsub('Users', '').strip.to_i
-            name = StringFormatter.encodedHTML(li.at('a span[@class="title fs10"] text()').to_s)
+            name = StringFormatter.encodedHTML(li.at('a span[@class="title fs10"] text()').to_s)  
             image_url = li.at('a img').attribute('data-src').to_s
             sanitized_image_url = UrlUtilities.create_original_image_url(resource_type, image_url)
 
             # We need an ID to associate the resource type. This is located in the recommendation URL.
-            resource_id = id.gsub(parent_id, '').gsub('-', '')
+            # If the id is determined as an auto-recommended type, we need to parse the URL for its ID.
+            if id.include? parent_id
+              resource_id = id.gsub(parent_id, '').gsub('-', '')
+            else
+              resource_id = recommendation_url.match(%r{/[a-zA-Z]+\/(\d+)\/.*})[1].to_s
+            end
+
 
             recommendation = {
                 id: id,
