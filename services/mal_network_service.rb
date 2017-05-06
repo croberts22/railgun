@@ -91,6 +91,14 @@ module Railgun
       "https://myanimelist.net/anime.php?q=#{query}"
     end
 
+    def self.anime_request_for_season(year, season)
+      if year.nil? == false and season.nil? == false
+        "https://myanimelist.net/anime/season/#{year}/#{season}"
+      else
+        'https://myanimelist.net/anime/season'
+      end
+    end
+
     def self.anime_rank_request(type, page)
       request = 'https://myanimelist.net/topanime.php'
       if rank_type_is_acceptable_for_anime_request(type)

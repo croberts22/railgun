@@ -108,6 +108,44 @@ class App < Sinatra::Base
 
     end
 
+    # GET /anime/season
+    # Gets a page of a seaonal list of anime.
+    # Parameters:
+    # - year (optional):   The year, expressed in four digits (i.e. 2006).
+    #                      If no value is provided, this defaults to the current year.
+    #                      You _must_ provide a seasonif you provide a year.
+    # - season (optional): The season, expressed as a string (i.e. 'summer').
+    #                      Available options: 'spring', 'summer', 'fall', 'winter'.
+    #                      If no value is provided, this defaults to whatever
+    #                      MyAnimeList deems as the current season.
+    #                      You _must_ provide a year if you provide a season.
+    get '/anime/season' do
+
+      options = {}
+      # options = {
+      #     year: Time.now.year.to_s
+      # }
+
+      # if params.include? 'type' and Railgun::MALNetworkService.rank_type_is_acceptable_for_anime_request(params[:type])
+      #   options[:year] = params[:type]
+      # end
+      #
+      # if params.include? 'page' and params[:page].is_a? Integer
+      #   options[:page] = params[:page]
+      # end
+
+      logger.info "Fetching seasonal anime list with options #{options}..."
+
+      expires 3600, :public, :must_revalidate
+      last_modified Time.now
+      etag "anime/season/#{options[:year]}/#{options[:season]}"
+
+      anime = Railgun::Anime.season(options)
+
+      anime.to_json
+
+    end
+
 
     #
     # Manga Endpoints
