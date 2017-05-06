@@ -2,6 +2,7 @@ require_relative 'resource'
 require_relative '../scrapers/anime_scraper'
 require_relative '../scrapers/anime_search_scraper'
 require_relative '../scrapers/anime_list_scraper'
+require_relative '../scrapers/anime_seasonal_scraper'
 
 module Railgun
 
@@ -255,6 +256,15 @@ module Railgun
 
       scraper = AnimeListScraper.new
       scraper.scrape(nokogiri, options[:type])
+    end
+
+    def self.season(options)
+      puts 'Scraping seasonal anime list...'
+
+      nokogiri = MALNetworkService.nokogiri_from_request(MALNetworkService.anime_request_for_season(options[:year], options[:season]))
+
+      scraper = AnimeSeasonalScraper.new
+      scraper.scrape(nokogiri)
     end
 
   end
