@@ -21,6 +21,7 @@ module Railgun
       episodes = parse_episode_count(nokogiri)
 
       synopsis = parse_synopsis(nokogiri)
+      score = parse_score(nokogiri)
 
       # TODO: Consider making this a resource object.
       {
@@ -31,7 +32,11 @@ module Railgun
           type: type,
           episodes: episodes,
 
-          synopsis: synopsis
+          synopsis: synopsis,
+
+          stats: {
+            score: score,
+          }
       }
     end
 

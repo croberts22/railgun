@@ -64,6 +64,12 @@ module Railgun
       synopsis_element.text.gsub('read more.', '').strip
     end
 
+    def parse_score(nokogiri)
+      if score_element = nokogiri.at('td[5]')
+        score_element.text.to_f
+      end
+    end
+
   end
 
 end
