@@ -91,22 +91,6 @@ module Railgun
       "https://myanimelist.net/anime.php?q=#{query}"
     end
 
-    def self.manga_request_for_id(id)
-      "https://myanimelist.net/manga/#{id}"
-    end
-
-    def self.manga_search_request_with_query(query)
-      "https://myanimelist.net/manga.php?q=#{query}"
-    end
-
-    def self.character_request_for_id(id)
-      "https://myanimelist.net/character/#{id}"
-    end
-
-    def self.person_request_for_id(id)
-      "https://myanimelist.net/people/#{id}"
-    end
-
     def self.anime_rank_request(type, page)
       request = 'https://myanimelist.net/topanime.php'
       if rank_type_is_acceptable_for_anime_request(type)
@@ -127,11 +111,58 @@ module Railgun
       request
     end
 
+    def self.manga_request_for_id(id)
+      "https://myanimelist.net/manga/#{id}"
+    end
+
+    def self.manga_search_request_with_query(query)
+      "https://myanimelist.net/manga.php?q=#{query}"
+    end
+
+    def self.manga_rank_request(type, page)
+      request = 'https://myanimelist.net/topmanga.php'
+      if rank_type_is_acceptable_for_manga_request(type)
+
+        case type
+          when 'popular'
+            request += '?type=bypopularity'
+          when 'doujinshi'
+            request += '?type=doujin'
+          else
+            request += "?type=#{type}"
+        end
+
+      else
+        request += '?type=all'
+      end
+
+      request += "&page=#{page}" if page && (page.is_a? Integer)
+
+      request
+    end
+
+    def self.character_request_for_id(id)
+      "https://myanimelist.net/character/#{id}"
+    end
+
+    def self.person_request_for_id(id)
+      "https://myanimelist.net/people/#{id}"
+    end
+
 
     ### Parameter Checking Methods
 
     def self.rank_type_is_acceptable_for_anime_request(type)
       accepted_types = %w(all airing upcoming tv movie ova special popular favorite)
+
+      acceptable_type = false
+      acceptable_type = true if type and accepted_types.include? type
+
+      acceptable_type
+    end
+
+    def self.rank_type_is_acceptable_for_manga_request(type)
+      accepted_types = %w(all manga novels oneshots doujinshi manhwa manhua popular favorite)
 
       acceptable_type = false
       acceptable_type = true if type and accepted_types.include? type

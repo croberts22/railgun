@@ -44,6 +44,20 @@ module Railgun
 
     end
 
+    def parse_episodes(nokogiri)
+      type_element = parse_metadata(nokogiri).first
+
+      # We anticipate something of the format:
+      # TV (24 eps)
+      # However, sometimes episodes may be undefined (?).
+      # Return 0 in this instance.
+      if type_element.match %r{[a-zA-Z]+ \(([0-9]+) eps\)}
+        $1.to_i
+      else
+        0
+      end
+    end
+
     # Takes a list type param and converts it to the appropriate
     # JSON key. This is a _safe_ method in that it will default
     # to 'rank' if the list_type does not match any appropriate

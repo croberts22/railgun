@@ -101,7 +101,7 @@ module Railgun
           text = text.gsub(/\t/, ' ')
           text = text.gsub(/<br( \/)?>/, '')
 
-          puts text
+          #puts text
 
           biography << text + "\n"
         end

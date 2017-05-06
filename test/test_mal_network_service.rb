@@ -189,9 +189,133 @@ class TestMALNetworkService < Test::Unit::TestCase
 
   def test_manga_rank_request_valid_requests
 
+    # No values. This defaults to 'all'.
+    expected = 'https://myanimelist.net/topmanga.php?type=all'
+    actual = Railgun::MALNetworkService.manga_rank_request(nil, nil)
+
+    assert_equal(expected, actual)
+
+    # All.
+    type = 'all'
+    page = 0
+
+    expected = 'https://myanimelist.net/topmanga.php?type=all&page=0'
+    actual = Railgun::MALNetworkService.manga_rank_request(type, page)
+
+    assert_equal(expected, actual)
+
+    # Manga.
+    type = 'manga'
+    page += 1
+
+    expected = 'https://myanimelist.net/topmanga.php?type=manga&page=1'
+    actual = Railgun::MALNetworkService.manga_rank_request(type, page)
+
+    assert_equal(expected, actual)
+
+    # Novels.
+    type = 'novels'
+    page += 1
+
+    expected = 'https://myanimelist.net/topmanga.php?type=novels&page=2'
+    actual = Railgun::MALNetworkService.manga_rank_request(type, page)
+
+    assert_equal(expected, actual)
+
+    # One-shots.
+    type = 'oneshots'
+    page += 1
+
+    expected = 'https://myanimelist.net/topmanga.php?type=oneshots&page=3'
+    actual = Railgun::MALNetworkService.manga_rank_request(type, page)
+
+    assert_equal(expected, actual)
+
+    # Doujinshi.
+    type = 'doujinshi'
+    page += 1
+
+    expected = 'https://myanimelist.net/topmanga.php?type=doujin&page=4'
+    actual = Railgun::MALNetworkService.manga_rank_request(type, page)
+
+    assert_equal(expected, actual)
+
+    # Manhwa.
+    type = 'manhwa'
+    page += 1
+
+    expected = 'https://myanimelist.net/topmanga.php?type=manhwa&page=5'
+    actual = Railgun::MALNetworkService.manga_rank_request(type, page)
+
+    assert_equal(expected, actual)
+
+    # Manhua.
+    type = 'manhua'
+    page += 1
+
+    expected = 'https://myanimelist.net/topmanga.php?type=manhua&page=6'
+    actual = Railgun::MALNetworkService.manga_rank_request(type, page)
+
+    assert_equal(expected, actual)
+
+    # Popular.
+    type = 'popular'
+    page += 1
+
+    expected = 'https://myanimelist.net/topmanga.php?type=bypopularity&page=7'
+    actual = Railgun::MALNetworkService.manga_rank_request(type, page)
+
+    assert_equal(expected, actual)
+
+    # Favorite.
+    type = 'favorite'
+    page += 1
+
+    expected = 'https://myanimelist.net/topmanga.php?type=favorite&page=8'
+    actual = Railgun::MALNetworkService.manga_rank_request(type, page)
+
+    assert_equal(expected, actual)
+
   end
 
   def test_manga_rank_request_invalid_requests
+
+    type = 'anime'
+    page = 0
+
+    expected = 'https://myanimelist.net/topmanga.php?type=all&page=0'
+    actual = Railgun::MALNetworkService.manga_rank_request(type, page)
+
+    assert_equal(expected, actual)
+
+    type = 'actor'
+    page = 'next'
+
+    expected = 'https://myanimelist.net/topmanga.php?type=all'
+    actual = Railgun::MALNetworkService.manga_rank_request(type, page)
+
+    assert_equal(expected, actual)
+
+    type = 1337
+    page = 'bad values here'
+
+    expected = 'https://myanimelist.net/topmanga.php?type=all'
+    actual = Railgun::MALNetworkService.manga_rank_request(type, page)
+
+    assert_equal(expected, actual)
+
+  end
+
+  def test_rank_type_is_acceptable_for_manga_request
+    accepted_types = %w(all manga novels oneshots doujinshi manhwa manhua popular favorite)
+    accepted_types.each do |type|
+      assert(Railgun::MALNetworkService.rank_type_is_acceptable_for_manga_request(type))
+    end
+
+    invalid_types = %w(anime writing airing broadcast tv movie ova)
+    invalid_types.each do |type|
+      assert_false(Railgun::MALNetworkService.rank_type_is_acceptable_for_manga_request(type))
+    end
 
   end
 
