@@ -92,7 +92,7 @@ class App < Sinatra::Base
         options[:type] = params[:type]
       end
 
-      if params.include? 'page' and params[:age].is_a? Integer
+      if params.include? 'page' and params[:page].is_a? Integer
         options[:page] = params[:page]
       end
 
@@ -159,6 +159,42 @@ class App < Sinatra::Base
       results = Railgun::Manga.search(query)
 
       results.to_json
+    end
+
+    # GET /manga/top
+    # Gets a page of a ranked list of manga. A page consists of 50 manga.
+    # Parameters:
+    # - type (optional): The type of list to fetch. Available options:
+    #                    'all', 'manga', 'novels', 'oneshots', 'doujinshi', 'manhwa', 'manhua', 'popular', 'favorite'.
+    #                    If no type is provided, this defaults to 'all'.
+    # - page (optional): The page of manga to fetch. If no value is provided, this defaults to 0.
+    #                    Each page consists of 50 manga; fetching page 1 returns manga
+    #                    ranked 51-100, page 2 returns 101-150, etc.
+    get '/manga/top' do
+
+      options = {
+          type: 'all',
+          page: 0
+      }
+
+      if params.include? 'type' and Railgun::MALNetworkService.rank_type_is_acceptable_for_manga_request(params[:type])
+        options[:type] = params[:type]
+      end
+
+      if params.include? 'page' and params[:page].is_a? Integer
+        options[:page] = params[:page]
+      end
+
+      logger.info "Fetching manga list with options #{options}..."
+
+      expires 3600, :public, :must_revalidate
+      last_modified Time.now
+      etag "manga/top/#{options[:type]}/#{options[:page]}"
+
+      manga = Railgun::Manga.top(options)
+
+      manga.to_json
+
     end
 
     #

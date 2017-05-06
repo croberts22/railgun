@@ -1,6 +1,7 @@
 require_relative 'resource'
 require_relative '../scrapers/manga_scraper'
 require_relative '../scrapers/manga_search_scraper'
+require_relative '../scrapers/manga_list_scraper'
 
 module Railgun
 
@@ -235,6 +236,16 @@ module Railgun
       manga = scraper.scrape(nokogiri)
 
       { results: manga }
+    end
+
+    def self.top(options)
+
+      puts 'Scraping top manga list...'
+
+      nokogiri = MALNetworkService.nokogiri_from_request(MALNetworkService.manga_rank_request(options[:type], options[:rank]))
+
+      scraper = MangaListScraper.new
+      scraper.scrape(nokogiri, options[:type])
     end
 
   end
