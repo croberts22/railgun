@@ -36,6 +36,11 @@ class TestAnimeScraper < Test::Unit::TestCase
     Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/anime_17535.html"))
   end
 
+  def nokogiri_for_blank_image
+    # ReLIFE Kanketsu-hen
+    Nokogiri::HTML(File.read("#{File.dirname(__FILE__)}/html/anime_35466.html"))
+  end
+
   def text_for_related_anime(nokogiri)
     node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
     related_anime_h2 = node.at('//h2[text()="Related Anime"]')
@@ -764,6 +769,15 @@ class TestAnimeScraper < Test::Unit::TestCase
     expected = 'Original'
 
     assert_equal(expected, actual)
+  end
+
+  def test_parse_image_url_no_affiliates
+    scraper = Railgun::AnimeScraper.new
+    nokogiri = nokogiri_for_blank_image
+
+    actual = scraper.parse_image_url(nokogiri)
+
+    assert_nil(actual)
   end
 
 end

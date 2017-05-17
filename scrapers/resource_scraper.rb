@@ -22,7 +22,11 @@ module Railgun
       if image_node = nokogiri.at('div#content tr td div img')
         # There are often times where this will change between 'src'
         # and 'data-src'. Try one; if it fails, then fallback.
-        image_node['src'] || image_node['data-src']
+        url = image_node['src'] || image_node['data-src']
+
+        # If an image is blank, this code will fetch for affiliation links.
+        # Return null if it includes this.
+        url unless url.include? 'affiliates'
       end
     end
 
