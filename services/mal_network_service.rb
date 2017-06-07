@@ -157,6 +157,13 @@ module Railgun
       "https://myanimelist.net/people/#{id}"
     end
 
+    def self.user_request_for_id(id)
+      "https://myanimelist.net/profile/#{id}"
+    end
+
+    def self.user_friend_list_request_for_id(id)
+      "https://myanimelist.net/profile/#{id}/friends"
+    end
 
     ### Parameter Checking Methods
 

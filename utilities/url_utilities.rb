@@ -11,9 +11,11 @@ module Railgun
     end
 
     def self.image_url_from_element(element)
-      element.attribute('src') ?
-          element.attribute('src').to_s :
-          element.attribute('data-src') ? element.attribute('data-src').to_s : nil
+      if element.attribute('src') then
+        element.attribute('src').to_s
+      else
+        element.attribute('data-src') ? element.attribute('data-src').to_s : nil
+      end
     end
 
     def self.create_original_image_url(entity, url)
@@ -42,9 +44,12 @@ module Railgun
     end
 
     def self.parse_id_from_url(entity, url)
-
       id_match = url.match("/#{entity}/(\\d+)/.*")
+      id_match[1]
+    end
 
+    def self.parse_username_from_url(url)
+      id_match = url.match('/profile/(.+)(/.*)?')
       id_match[1]
     end
 
