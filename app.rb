@@ -543,6 +543,31 @@ class App < Sinatra::Base
       person.to_json
     end
 
+    #
+    # User Endpoints
+    #
+
+    # GET /user/#{user_id}/friends
+    # Get a list of friends for a user.
+    # Parameters:
+    # - id: The user's username.
+    get '/user/:id/:option' do
+      pass unless params[:id] =~ /^\d+$/ || params[:option] =~ /^\w+$/
+
+      if params[:option] == 'friends'
+        logger.info "Fetching friends for user with ID #{params[:id]}..."
+
+        expires 3600, :public, :must_revalidate
+        last_modified Time.now
+        etag "user/#{params[:id]}/friends"
+
+        users = Railgun::User.scrape_friends(params[:id])
+
+        users.to_json
+      end
+
+    end
+
   end
 
 end
