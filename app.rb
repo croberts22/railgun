@@ -13,9 +13,27 @@ class App < Sinatra::Base
     enable :logging
   end
 
+  configure :development do
+    register Sinatra::Reloader
+  end
+
   before do
     content_type 'application/json;charset=utf-8'
   end
+
+  configure do
+    # enable :sessions, :static, :methodoverride
+    # disable :raise_errors
+
+    set :public_folder, Proc.new { File.join(File.dirname(__FILE__), 'public') }
+
+    # JSON CSRF protection interferes with CORS requests. Seeing as we're only acting
+    # as a proxy and not dealing with sensitive information, we'll disable this to
+    # prevent all manner of headaches.
+    # set :protection, :except => :json_csrf
+  end
+
+
 
   namespace '/1.0' do
 
@@ -568,6 +586,11 @@ class App < Sinatra::Base
 
     end
 
+  end
+
+  get '/' do
+    content_type 'text/html;charset=utf-8'
+    send_file File.expand_path('index.html', settings.public_folder)
   end
 
 end
