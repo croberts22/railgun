@@ -8,7 +8,7 @@
 [![Build Status](https://travis-ci.org/croberts22/railgun.svg?branch=master)](https://travis-ci.org/croberts22/railgun)
 [![Coverage Status](https://coveralls.io/repos/github/croberts22/railgun/badge.svg?branch=master)](https://coveralls.io/github/croberts22/railgun?branch=master)
 
-Railgun is an extension to the [MyAnimeList API](http://myanimelist.net/modules.php?go=api).
+Railgun is a REST API extension to the [MyAnimeList API](http://myanimelist.net/modules.php?go=api).
 
 ## Motivation
 
@@ -23,9 +23,20 @@ Learning a few new languages and technologies is also a New Year's Resolution of
 
 ## How to Use
 
-Coming soon.
+- Clone this repository. 👌
+- Run `bundle install` to install all of the dependencies.
+- Set up your environment variables to include your User-Agent. This environment variable must be set up as `ENV['USER_AGENT']` (see `keys.rb`).
+- If you have an instance of Rollbar running, you can also set up your access token via `ENV['ROLLBAR_ACCESS_TOKEN']`.
+- If you have RubyMine, you can open this app and configure it to run `config.ru`. Otherwise, open up a terminal prompt and start it with the following command:
 
-## Demo
+```
+rackup -o 0.0.0.0 -p 9292 config.ru
+```
+
+- This project also supports `memcached`. You can run your instance of `memcached` and it will work out of the box.
+
+
+## API Documentation
 
 The interactive API is currently under construction, but you can check it out [here](http://docs.railgun.apiary.io/).
 
@@ -44,7 +55,7 @@ A few reasons:
 
 The MIT License (MIT)
 
-Copyright (c) 2016 Corey Roberts
+Copyright (c) 2017 Corey Roberts
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
