@@ -59,9 +59,10 @@ class App < Sinatra::Base
       logger.info "Fetching anime with ID #{params[:id]}..."
       logger.info "Options: #{options}" unless options.count == 0
 
-      expires 3600, :public, :must_revalidate
-      last_modified Time.now
-      etag "anime/#{params[:id]}/#{options}"
+      # FIXME: Removing caching on search for now. Figure out how to better cache this
+      # expires 3600, :public, :must_revalidate
+      # last_modified Time.now
+      # etag "anime/#{params[:id]}/#{options}"
 
       anime = Railgun::Anime.scrape(params[:id], options)
 
@@ -188,9 +189,10 @@ class App < Sinatra::Base
       logger.info "Fetching manga with ID #{params[:id]}..."
       logger.info "Options: #{options}" unless options.count == 0
 
-      expires 3600, :public, :must_revalidate
-      last_modified Time.now
-      etag "manga/#{params[:id]}/#{options}"
+      # FIXME: Removing caching on search for now. Figure out how to better cache this
+      # expires 3600, :public, :must_revalidate
+      # last_modified Time.now
+      # etag "manga/#{params[:id]}/#{options}"
 
       manga = Railgun::Manga.scrape(params[:id], options)
 
@@ -323,9 +325,10 @@ class App < Sinatra::Base
       logger.info "Fetching anime with ID #{params[:id]}..."
       logger.info "Options: #{options}" unless options.count == 0
 
-      expires 3600, :public, :must_revalidate
-      last_modified Time.now
-      etag "anime/#{params[:id]}/#{options}"
+      # FIXME: Removing caching on search for now. Figure out how to better cache this
+      # expires 3600, :public, :must_revalidate
+      # last_modified Time.now
+      # etag "anime/#{params[:id]}/#{options}"
 
       anime = Railgun::Anime.scrape(params[:id], options)
 
@@ -452,9 +455,10 @@ class App < Sinatra::Base
       logger.info "Fetching manga with ID #{params[:id]}..."
       logger.info "Options: #{options}" unless options.count == 0
 
-      expires 3600, :public, :must_revalidate
-      last_modified Time.now
-      etag "manga/#{params[:id]}/#{options}"
+      # FIXME: Removing caching on search for now. Figure out how to better cache this
+      # expires 3600, :public, :must_revalidate
+      # last_modified Time.now
+      # etag "manga/#{params[:id]}/#{options}"
 
       manga = Railgun::Manga.scrape(params[:id], options)
 
@@ -530,9 +534,10 @@ class App < Sinatra::Base
 
       logger.info "Fetching character with ID #{params[:id]}..."
 
-      expires 3600, :public, :must_revalidate
-      last_modified Time.now
-      etag "character/#{params[:id]}"
+      # FIXME: Removing caching on search for now. Figure out how to better cache this
+      # expires 3600, :public, :must_revalidate
+      # last_modified Time.now
+      # etag "character/#{params[:id]}"
 
       character = Railgun::Character.scrape(params[:id])
 
@@ -552,9 +557,10 @@ class App < Sinatra::Base
 
       logger.info "Fetching person with ID #{params[:id]}..."
 
-      expires 3600, :public, :must_revalidate
-      last_modified Time.now
-      etag "person/#{params[:id]}"
+      # FIXME: Removing caching on search for now. Figure out how to better cache this
+      # expires 3600, :public, :must_revalidate
+      # last_modified Time.now
+      # etag "person/#{params[:id]}"
 
       person = Railgun::Person.scrape(params[:id])
 
