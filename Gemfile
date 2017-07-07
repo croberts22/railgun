@@ -2,7 +2,8 @@ source 'https://rubygems.org'
 
 ruby '2.3.1'
 
-gem 'sinatra', '1.1.0'
+gem 'sinatra'
+gem 'sinatra-contrib'
 gem 'nokogiri'
 gem 'curb'
 gem 'json'
@@ -12,11 +13,17 @@ gem 'rack-cache'
 gem 'dalli'
 gem 'rollbar'
 gem 'chronic'
-# gem 'memcachier'
+gem 'memcachier'
 
 group :development do
   gem 'thin'
   gem 'rack-test'
+  gem 'derailed_benchmarks'
+  gem 'rack-mini-profiler'
+
+  # For call-stack profiling flamegraphs (requires Ruby MRI 2.0.0+)
+  gem 'flamegraph'
+  gem 'stackprof'
 end
 
 group :test do

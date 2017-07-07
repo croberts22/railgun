@@ -1,20 +1,23 @@
 require_relative 'resource'
-require_relative '../utilities/anime_scraper'
-require_relative '../utilities/anime_search_scraper'
-require_relative '../utilities/anime_list_scraper'
+require_relative '../scrapers/anime_scraper'
+require_relative '../scrapers/anime_search_scraper'
+require_relative '../scrapers/anime_list_scraper'
+require_relative '../scrapers/anime_seasonal_scraper'
 
 module Railgun
 
   class Anime < Resource
 
-    attr_accessor :rank, :popularity_rank, :episodes, :classification,
-                  :members_score, :members_count, :favorited_count, :synopsis, :start_date, :end_date
+    attr_accessor :rank, :popularity_rank, :episodes, :classification, :studios, :producers, :source,
+                  :score, :score_count, :members_count, :favorited_count, :synopsis, :start_date, :end_date
     attr_reader :type, :status
     attr_writer :genres, :tags,
-                :other_titles, :manga_adaptations, :prequels, :sequels, :side_stories,
+                :other_names, :manga_adaptations, :prequels, :sequels, :side_stories,
                 :character_anime, :spin_offs, :summaries, :alternative_versions, :alternative_settings,
                 :full_stories, :others, :parent_story,
                 :summary_stats, :score_stats,  :additional_info_urls, :character_voice_actors
+
+    attr_accessor :reviews, :recommendations, :premiere_year, :premiere_season
 
 
     ### Custom Setter Methods
@@ -51,8 +54,8 @@ module Railgun
                 end
     end
 
-    def other_titles
-      @other_titles ||= {}
+    def other_names
+      @other_names ||= {}
     end
 
     def summary_stats
@@ -69,6 +72,14 @@ module Railgun
 
     def tags
       @tags ||= []
+    end
+
+    def studios
+      @studios ||= []
+    end
+
+    def producers
+      @producers ||= []
     end
 
     def manga_adaptations
@@ -131,10 +142,18 @@ module Railgun
       @synopsis ||= ''
     end
 
+    def reviews
+      @reviews ||= []
+    end
+
+    def recommendations
+      @recommendations ||= []
+    end
+
     def attributes
       {
           id: id,
-          title: title,
+          name: name,
           type: type,
           episodes: episodes,
 
@@ -146,15 +165,23 @@ module Railgun
           start_date: start_date,
           end_date: end_date,
           image_url: image_url,
-          other_titles: other_titles,
+          other_names: other_names,
           tags: tags,
+          studios: studios,
+          producers: producers,
+          source: source,
 
           stats: {
               rank: rank,
               popularity_rank: popularity_rank,
-              members_score: members_score,
+              score: score,
+              score_count: score_count,
               members_count: members_count,
               favorited_count: favorited_count,
+              premiered: {
+                  year: premiere_year,
+                  season: premiere_season
+              },
               summary_stats: summary_stats,
               score_stats: score_stats
           },
@@ -175,12 +202,10 @@ module Railgun
           },
 
           characters: character_voice_actors,
-          additional_info_urls: additional_info_urls
+          additional_info_urls: additional_info_urls,
+          reviews: reviews,
+          recommendations: recommendations
       }
-    end
-
-    def to_json(*args)
-      attributes.to_json(*args)
     end
 
 
@@ -227,13 +252,19 @@ module Railgun
 
       puts 'Scraping top anime list...'
 
-      anime = Anime.new
       nokogiri = MALNetworkService.nokogiri_from_request(MALNetworkService.anime_rank_request(options[:type], options[:rank]))
 
       scraper = AnimeListScraper.new
+      scraper.scrape(nokogiri, options[:type])
+    end
+
+    def self.season(options)
+      puts 'Scraping seasonal anime list...'
+
+      nokogiri = MALNetworkService.nokogiri_from_request(MALNetworkService.anime_request_for_season(options[:year], options[:season]))
+
+      scraper = AnimeSeasonalScraper.new
       scraper.scrape(nokogiri)
-
-
     end
 
   end

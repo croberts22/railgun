@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: http://railgun-api.herokuapp.com/1.0/
+HOST: https://railgun-api.herokuapp.com/1.0/
 
 # railgun
 
@@ -10,22 +10,31 @@ Railgun is an extension to the [MyAnimeList API](http://myanimelist.net/modules.
 
 # Group Anime
 
-Resources related to Anime.
+Endpoints related to the Anime resource.
 
 ## /anime/{anime_id}{?options}
 
-Gets an Anime by an ID.
+Gets an anime by an ID.
 
 <table style="width: 100%; margin: 12px 0 0 0;">
-<tr><td colspan="2"><strong>Required Parameters</strong></td></tr>
-<tr><td colspan="2">anime_id</td></tr>
-<tr><td colspan="2"><strong>Optional Parameters</strong></td></tr>
-<tr><td style="padding-right: 40px; width: 140px;">options</td><td>A comma-separated list of strings that define additional stats.
- Available options include 'stats' and 'characters_and_staff'.</td></tr>
+<tr>
+    <td colspan="2"><strong>Required Parameters</strong></td>
+</tr>
+<tr>
+    <td style="padding-right: 40px; width: 140px;">anime_id</td>
+    <td>The ID of the anime.</td>
+</tr>
+<tr>
+    <td colspan="2"><strong>Optional Parameters</strong></td>
+</tr>
+<tr>
+    <td style="padding-right: 40px; width: 140px;">options</td>
+    <td>A comma-separated list of strings that define additional stats about the anime. Available options include 'stats' and 'characters_and_staff'.</td>
+</tr>
 </table>
 
 + Parameters
-    + anime_id: `6213` (number, required) - ID of the anime.
+    + anime_id: `6213` (number, required) - The ID of the anime.
     + options: `stats` (enum[string], optional) - A comma-separated list of strings that define additional stats about the anime.
         + Members:
             + `stats`
@@ -35,964 +44,278 @@ Gets an Anime by an ID.
 
 + Response 200 (application/json;charset=utf-8)
 
-        {
-            "id": 6213,
-            "title": "Toaru Kagaku no Railgun",
-            "type": "TV",
-            "episodes": 24,
-            "classification": "PG-13 - Teens 13 or older",
-            "genres": ["Action", "Sci-Fi", "Super Power"],
-            "synopsis": "The student-filled Academy City is at the forefront of scientific advancement and home to the esper development program. The seven \"Level 5\" espers are the most powerful in Academy City, and ranked third among them is middle schooler Mikoto Misaka, an electricity manipulator known as \"The Railgun.\"\r\n \r\nWhen strange incidents begin occurring throughout the city, she finds each crime to be connected to the elusive \"Level Upper,\" a legendary device that allegedly increases the esper level of its user. As the situation escalates, it becomes apparent that there is more to the Level Upper than meets the eye, and that Academy City may be a far more twisted place than the glamorous utopia it appears to be.\r\n\r\nToaru Kagaku no Railgun focuses on Mikoto and her friends—and the dangerous situations they find themselves in—as they get caught up in the matter of the Level Upper. As Mikoto says, \"There's never a dull moment in this city.\"\r\n\r\n[Written by MAL Rewrite]",
-            "status": "finished airing",
-            "start_date": "2009-10-03 00:00:00 +0000",
-            "end_date": "2010-03-20 00:00:00 +0000",
-            "image_url": "http://cdn.myanimelist.net/images/anime/8/53581.jpg",
-            "other_titles": {
-                "english": ["A Certain Scientific Railgun"],
-                "synonyms": ["Toaru Kagaku no Choudenjihou"],
-                "japanese": ["とある科学の超電磁砲"]
-            },
-            "tags": [],
-            "stats": {
-                "rank": 715,
-                "popularity_rank": 152,
-                "members_score": 7.88,
-                "members_count": 208410,
-                "favorited_count": 2893,
-                "summary_stats": {
-                    "watching": 10271,
-                    "completed": 133367,
-                    "on_hold": 7622,
-                    "dropped": 5187,
-                    "plan_to_watch": 51952,
-                    "total": 208410
-                },
-                "score_stats": {
-                    "10": 12272,
-                    "9": 23283,
-                    "8": 35439,
-                    "7": 25446,
-                    "6": 9103,
-                    "5": 3522,
-                    "4": 1257,
-                    "3": 438,
-                    "2": 218,
-                    "1": 295
-                }
-            },
-            "related_anime": {
-                "manga_adaptations": [{
-                    "manga_id": "7776",
-                    "title": "Toaru Kagaku no Railgun",
-                    "url": "/manga/7776/Toaru_Kagaku_no_Railgun"
-                }],
-                "prequels": [],
-                "sequels": [{
-                    "anime_id": "16049",
-                    "title": "Toaru Kagaku no Railgun S",
-                    "url": "/anime/16049/Toaru_Kagaku_no_Railgun_S"
-                }],
-                "side_stories": [{
-                    "anime_id": "9047",
-                    "title": "Toaru Kagaku no Railgun: Misaka-san wa Ima Chuumoku no Mato desukara",
-                    "url": "/anime/9047/Toaru_Kagaku_no_Railgun__Misaka-san_wa_Ima_Chuumoku_no_Mato_desukara"
-                }, {
-                    "anime_id": "9063",
-                    "title": "Toaru Kagaku no Railgun: Entenka no Satsuei Model mo Raku Ja Arimasen wa ne.",
-                    "url": "/anime/9063/Toaru_Kagaku_no_Railgun__Entenka_no_Satsuei_Model_mo_Raku_Ja_Arimasen_wa_ne"
-                }],
-                "parent_story": {
-                    "anime_id": "4654",
-                    "title": "Toaru Majutsu no Index",
-                    "url": "/anime/4654/Toaru_Majutsu_no_Index"
-                },
-                "character_anime": [{
-                    "anime_id": "27509",
-                    "title": "Toaru Majutsu no Index 10th Anniversary PV",
-                    "url": "/anime/27509/Toaru_Majutsu_no_Index_10th_Anniversary_PV"
-                }],
-                "spin_offs": [{
-                    "anime_id": "8023",
-                    "title": "Toaru Kagaku no Railgun: Motto Marutto Railgun",
-                    "url": "/anime/8023/Toaru_Kagaku_no_Railgun__Motto_Marutto_Railgun"
-                }],
-                "summaries": [],
-                "alternative_versions": [],
-                "alternative_settings": [],
-                "full_stories": [],
-                "others": []
-            },
-            "characters": [{
-                "character": {
-                    "name": "Misaka, Mikoto",
-                    "id": "13701",
-                    "url": "/character/13701/Mikoto_Misaka",
-                    "role": "Main",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/3/78211.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Satou, Rina",
-                    "id": "241",
-                    "url": "/people/241/Rina_Satou",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Karbowski, Brittney",
-                    "id": "414",
-                    "url": "/people/414/Brittney_Karbowski",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Wu, Jeong Sin",
-                    "id": "14773",
-                    "url": "/people/14773/Jeong_Sin_Wu",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Saten, Ruiko",
-                    "id": "20626",
-                    "url": "/character/20626/Ruiko_Saten",
-                    "role": "Main",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/14/109006.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Palencia, Brina",
-                    "id": "659",
-                    "url": "/people/659/Brina_Palencia",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Itou, Kanae",
-                    "id": "762",
-                    "url": "/people/762/Kanae_Itou",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Yeo, Min Jeong",
-                    "id": "14769",
-                    "url": "/people/14769/Min_Jeong_Yeo",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Shirai, Kuroko",
-                    "id": "17017",
-                    "url": "/character/17017/Kuroko_Shirai",
-                    "role": "Main",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/12/101104.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Arai, Satomi",
-                    "id": "124",
-                    "url": "/people/124/Satomi_Arai",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Viktorin, Alison",
-                    "id": "479",
-                    "url": "/people/479/Alison_Viktorin",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Yun, Seong Hye",
-                    "id": "14987",
-                    "url": "/people/14987/Seong_Hye_Yun",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Uiharu, Kazari",
-                    "id": "20622",
-                    "url": "/character/20622/Kazari_Uiharu",
-                    "role": "Main",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/12/108281.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Toyosaki, Aki",
-                    "id": "599",
-                    "url": "/people/599/Aki_Toyosaki",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Leigh, Cherami",
-                    "id": "1650",
-                    "url": "/people/1650/Cherami_Leigh",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Jeong, Mi Sook",
-                    "id": "8812",
-                    "url": "/people/8812/Mi_Sook_Jeong",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Awatsuki, Maaya",
-                    "id": "29090",
-                    "url": "/character/29090/Maaya_Awatsuki",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/15/82687.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Nanjo, Yoshino",
-                    "id": "1592",
-                    "url": "/people/1592/Yoshino_Nanjo",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Ballard, Tia",
-                    "id": "9526",
-                    "url": "/people/9526/Tia_Ballard",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Chae, Ui Jin",
-                    "id": "14983",
-                    "url": "/people/14983/Ui_Jin_Chae",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Daigo",
-                    "id": "30237",
-                    "url": "/character/30237/Daigo",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/14/140561.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Vale, Eric",
-                    "id": "312",
-                    "url": "/people/312/Eric_Vale",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Majima, Junji",
-                    "id": "820",
-                    "url": "/people/820/Junji_Majima",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "O, In Seong",
-                    "id": "15097",
-                    "url": "/people/15097/In_Seong_O",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Edasaki, Banri",
-                    "id": "31499",
-                    "url": "/character/31499/Banri_Edasaki",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/4/140563.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Christian, Luci",
-                    "id": "189",
-                    "url": "/people/189/Luci_Christian",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Sato, Satomi",
-                    "id": "6560",
-                    "url": "/people/6560/Satomi_Sato",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Haruki, Kounoe",
-                    "id": "37890",
-                    "url": "/character/37890/Kounoe_Haruki",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/14/203063.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Minagawa, Junko",
-                    "id": "62",
-                    "url": "/people/62/Junko_Minagawa",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Burnett, Chris",
-                    "id": "8060",
-                    "url": "/people/8060/Chris_Burnett",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "O, In Seong",
-                    "id": "15097",
-                    "url": "/people/15097/In_Seong_O",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Haruue, Erii",
-                    "id": "30455",
-                    "url": "/character/30455/Erii_Haruue",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/5/80854.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Hanazawa, Kana",
-                    "id": "185",
-                    "url": "/people/185/Kana_Hanazawa",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Savage, Carrie",
-                    "id": "327",
-                    "url": "/people/327/Carrie_Savage",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Heaven Canceller",
-                    "id": "23513",
-                    "url": "/character/23513/Heaven_Canceller",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/4/113429.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Brown, Cole",
-                    "id": "5441",
-                    "url": "/people/5441/Cole_Brown",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Nakano, Yutaka",
-                    "id": "7260",
-                    "url": "/people/7260/Yutaka_Nakano",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Jang, Gwang",
-                    "id": "14767",
-                    "url": "/people/14767/Gwang_Jang",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Himegami, Aisa",
-                    "id": "17179",
-                    "url": "/character/17179/Aisa_Himegami",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/7/37948.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Noto, Mamiko",
-                    "id": "40",
-                    "url": "/people/40/Mamiko_Noto",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Seidel, Lindsay",
-                    "id": "10881",
-                    "url": "/people/10881/Lindsay_Seidel",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Juufuku, Miho",
-                    "id": "27016",
-                    "url": "/character/27016/Miho_Juufuku",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/14/82686.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Tamura, Yukari",
-                    "id": "27",
-                    "url": "/people/27/Yukari_Tamura",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Clark, Leah",
-                    "id": "859",
-                    "url": "/people/859/Leah_Clark",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Park, Seon Yeong",
-                    "id": "14921",
-                    "url": "/people/14921/Seon_Yeong_Park",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Lee, Ji Yeong",
-                    "id": "14993",
-                    "url": "/people/14993/Ji_Yeong_Lee",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Kaitabi, Hatsuya",
-                    "id": "41873",
-                    "url": "/character/41873/Hatsuya_Kaitabi",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/9/181223.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Nojima, Hirofumi",
-                    "id": "341",
-                    "url": "/people/341/Hirofumi_Nojima",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Grelle, Josh",
-                    "id": "1047",
-                    "url": "/people/1047/Josh_Grelle",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Kamijou, Touma",
-                    "id": "13700",
-                    "url": "/character/13700/Touma_Kamijou",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/5/91921.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Abe, Atsushi",
-                    "id": "991",
-                    "url": "/people/991/Atsushi_Abe",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Solusod, Micah",
-                    "id": "8686",
-                    "url": "/people/8686/Micah_Solusod",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Choi, Won Hyeong",
-                    "id": "14757",
-                    "url": "/people/14757/Won_Hyeong_Choi",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Kihara, Gensei",
-                    "id": "42500",
-                    "url": "/character/42500/Gensei_Kihara",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/11/203065.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Campbell, Charles",
-                    "id": "5990",
-                    "url": "/people/5990/Charles_Campbell",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Takaoka, Binbin",
-                    "id": "10777",
-                    "url": "/people/10777/Binbin_Takaoka",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Kihara Lifeline, Therestina",
-                    "id": "30481",
-                    "url": "/character/30481/Therestina_Kihara_Lifeline",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/2/81478.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Ohara, Sayaka",
-                    "id": "92",
-                    "url": "/people/92/Sayaka_Ohara",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Clinkenbeard, Colleen",
-                    "id": "472",
-                    "url": "/people/472/Colleen_Clinkenbeard",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Kiyama, Harumi",
-                    "id": "20620",
-                    "url": "/character/20620/Harumi_Kiyama",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/6/77133.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Tanaka, Atsuko",
-                    "id": "100",
-                    "url": "/people/100/Atsuko_Tanaka",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Munoz, Anastasia",
-                    "id": "10292",
-                    "url": "/people/10292/Anastasia_Munoz",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Kongou, Mitsuko",
-                    "id": "28986",
-                    "url": "/character/28986/Mitsuko_Kongou",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/4/83334.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Marchi, Jamie",
-                    "id": "891",
-                    "url": "/people/891/Jamie_Marchi",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Kotobuki, Minako",
-                    "id": "6634",
-                    "url": "/people/6634/Minako_Kotobuki",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Kim, Seon Hye",
-                    "id": "14927",
-                    "url": "/people/14927/Seon_Hye_Kim",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Konori, Mii",
-                    "id": "26941",
-                    "url": "/character/26941/Mii_Konori",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/16/100999.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Ueda, Kana",
-                    "id": "116",
-                    "url": "/people/116/Kana_Ueda",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Nishimura, Trina",
-                    "id": "1804",
-                    "url": "/people/1804/Trina_Nishimura",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Lee, Ji Yeong",
-                    "id": "14993",
-                    "url": "/people/14993/Ji_Yeong_Lee",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Kurozuma, Wataru",
-                    "id": "29827",
-                    "url": "/character/29827/Wataru_Kurozuma",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/7/100998.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Konishi, Katsuyuki",
-                    "id": "20",
-                    "url": "/people/20/Katsuyuki_Konishi",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Hawkins, Brad",
-                    "id": "8028",
-                    "url": "/people/8028/Brad_Hawkins",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Choi, Han",
-                    "id": "14821",
-                    "url": "/people/14821/Han_Choi",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Librorum Prohibitorum, Index",
-                    "id": "13699",
-                    "url": "/character/13699/Index_Librorum_Prohibitorum",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/8/304142.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Rial, Monica",
-                    "id": "159",
-                    "url": "/people/159/Monica_Rial",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Iguchi, Yuka",
-                    "id": "885",
-                    "url": "/people/885/Yuka_Iguchi",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Ryoukan",
-                    "id": "31500",
-                    "url": "/character/31500/Ryoukan",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/6/85149.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Nabatame, Hitomi",
-                    "id": "184",
-                    "url": "/people/184/Hitomi_Nabatame",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Cranz, Cynthia",
-                    "id": "851",
-                    "url": "/people/851/Cynthia_Cranz",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Chae, Ui Jin",
-                    "id": "14983",
-                    "url": "/people/14983/Ui_Jin_Chae",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Tessou, Tsuzuri",
-                    "id": "29082",
-                    "url": "/character/29082/Tsuzuri_Tessou",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/15/101000.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Endou, Aya",
-                    "id": "54",
-                    "url": "/people/54/Aya_Endou",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Edwards, Kara",
-                    "id": "773",
-                    "url": "/people/773/Kara_Edwards",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Trick",
-                    "id": "124059",
-                    "url": "/character/124059/Trick",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/13/275465.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Mignogna, Vic",
-                    "id": "43",
-                    "url": "/people/43/Vic_Mignogna",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Kondou, Takayuki",
-                    "id": "829",
-                    "url": "/people/829/Takayuki_Kondou",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Tsuchimikado, Maika",
-                    "id": "17785",
-                    "url": "/character/17785/Maika_Tsuchimikado",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/5/66338.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Fukuen, Misato",
-                    "id": "207",
-                    "url": "/people/207/Misato_Fukuen",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Woodhull, Lara",
-                    "id": "15441",
-                    "url": "/people/15441/Lara_Woodhull",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Tsuguo, Hebitani",
-                    "id": "101995",
-                    "url": "/character/101995/Hebitani_Tsuguo",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net"
-                },
-                "voice_actor": [{
-                    "name": "Yasumura, Makoto",
-                    "id": "1074",
-                    "url": "/people/1074/Makoto_Yasumura",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Inman, Jeremy",
-                    "id": "1339",
-                    "url": "/people/1339/Jeremy_Inman",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Tsukuyomi, Komoe",
-                    "id": "16222",
-                    "url": "/character/16222/Komoe_Tsukuyomi",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/11/101005.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Koyama, Kimiko",
-                    "id": "171",
-                    "url": "/people/171/Kimiko_Koyama",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Saxton, Jad",
-                    "id": "6729",
-                    "url": "/people/6729/Jad_Saxton",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Lee, Myeong Seon",
-                    "id": "14837",
-                    "url": "/people/14837/Myeong_Seon_Lee",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Wannai, Kinuho",
-                    "id": "29087",
-                    "url": "/character/29087/Kinuho_Wannai",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/13/203067.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Tomatsu, Haruka",
-                    "id": "890",
-                    "url": "/people/890/Haruka_Tomatsu",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Kang, Kristi",
-                    "id": "10943",
-                    "url": "/people/10943/Kristi_Kang",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Jeong, Hye Ok",
-                    "id": "14995",
-                    "url": "/people/14995/Hye_Ok_Jeong",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Woman Gang Boss",
-                    "id": "31444",
-                    "url": "/character/31444/Woman_Gang_Boss",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/6/83661.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Asano, Masumi",
-                    "id": "77",
-                    "url": "/people/77/Masumi_Asano",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Cavanagh, Jessica",
-                    "id": "10912",
-                    "url": "/people/10912/Jessica_Cavanagh",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Yanagisako, Aomi",
-                    "id": "92069",
-                    "url": "/character/92069/Aomi_Yanagisako",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/13/220527.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Yuzuki, Ryouka",
-                    "id": "141",
-                    "url": "/people/141/Ryouka_Yuzuki",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Whitehead, Maxey",
-                    "id": "8722",
-                    "url": "/people/8722/Maxey_Whitehead",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }, {
-                "character": {
-                    "name": "Yomikawa, Aiho",
-                    "id": "29083",
-                    "url": "/character/29083/Aiho_Yomikawa",
-                    "role": "Supporting",
-                    "image_url": "http://cdn.myanimelist.net/images/characters/9/112626.jpg"
-                },
-                "voice_actor": [{
-                    "name": "Kaida, Yuuko",
-                    "id": "428",
-                    "url": "/people/428/Yuuko_Kaida",
-                    "language": "Japanese",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Park, Seon Yeong",
-                    "id": "14921",
-                    "url": "/people/14921/Seon_Yeong_Park",
-                    "language": "Korean",
-                    "image_url": "http://cdn.myanimelist.net"
-                }, {
-                    "name": "Harms, Martha",
-                    "id": "16087",
-                    "url": "/people/16087/Martha_Harms",
-                    "language": "English",
-                    "image_url": "http://cdn.myanimelist.net"
-                }]
-            }],
-            "additional_info_urls": {
-                "details": "http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun",
-                "reviews": "http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/reviews",
-                "recommendations": "http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/userrecs",
-                "stats": "http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/stats",
-                "characters_and_staff": "http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/characters",
-                "news": "http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/news",
-                "forum": "http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/forum",
-                "pictures": "http://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/pics"
-            }
-        }
+    + Attributes (Anime Response)
 
+
+## /anime?q={query}
+
+Searches for an anime.
+
+NOTE: This endpoint returns a subset of an anime's data.
+
+<table style="width: 100%; margin: 12px 0 0 0;">
+<tr>
+    <td colspan="2"><strong>Required Parameters</strong></td>
+</tr>
+<tr>
+    <td style="padding-right: 40px; width: 140px;">q</td>
+    <td>The query to search with. This should be a percent-escaped string.</td>
+</tr>
+</table>
+
++ Parameters
+    + query: `railgun` (string, required) - The query to search with. This should be a percent-escaped string.
+
+### Search Anime [GET]
+
++ Response 200 (application/json;charset=utf-8)
+
+    + Attributes (Anime Search Response)
 
 # Group Manga
 
 Resources related to Manga.
 
-## /manga/{manga_id}
+<table style="width: 100%; margin: 12px 0 0 0;">
+<tr><td colspan="2"><strong>Required Parameters</strong></td></tr>
+<tr><td colspan="2">manga_id</td></tr>
+<tr><td colspan="2"><strong>Optional Parameters</strong></td></tr>
+<tr><td style="padding-right: 40px; width: 140px;">options</td><td>A comma-separated list of strings that define additional stats.
+ Available options include 'stats' and 'characters_and_staff'.</td></tr>
+</table>
+
+## /manga/{manga_id}{?options}
 
 + Parameters
   + manga_id: `7776` (number, required) - ID of the manga.
+  + options: `stats` (enum[string], optional) - A comma-separated list of strings that define additional stats about the anime.
+      + Members:
+          + `stats`
+          + `characters_and_staff`
 
 ### View Manga [GET]
 
 + Response 200 (application/json;charset=utf-8)
 
-        {
-            "id": 7776,
-            "title": "Toaru Kagaku no Railgun",
-            "type": "Manga",
-            "volumes": null,
-            "chapters": null,
-            "genres": ["Action", "Comedy", "Sci-Fi", "Super Power"],
-            "synopsis": "Welcome to a world where mysticism and science collide, and supernatural powers are derived from either science or religion. At the heart of this world is Academy City, an advanced metropolis whose population is comprised mostly of students The majority of students are enrolled in the city's \"Power Curriculum Program,\" where they must learn to master their latent psychic powers. Out of several million students, only seven are deemed powerful enough to have Level 5 status.\r\n\r\nMeet Mikoto Misaka, the third most powerful Level 5 esper in Academy City. Together with her best friends Kuroko Shirai and the other members of Judgment, a student-run law enforcement agency, Mikoto delves deep into the dark heart of the scientific sprawl she calls home, and uncovers secrets she wishes she hadn't!\r\n\r\n(Source: Seven Seas Entertainment)",
-            "status": "publishing",
-            "start_date": "2007-05-27 00:00:00 +0000",
-            "end_date": null,
-            "image_url": "http://cdn.myanimelist.net/images/manga/1/149212.jpg",
-            "other_titles": {
-                "english": ["A Certain Scientific Railgun"],
-                "synonyms": ["To Aru Kagaku no Choudenjihou"],
-                "japanese": ["とある科学の超電磁砲〈レールガン〉"]
-            },
-            "tags": [],
-            "stats": {
-                "rank": 328,
-                "popularity_rank": 325,
-                "members_score": 8.3,
-                "members_count": 13447,
-                "favorited_count": 1028,
-                "summary_stats": {},
-                "score_stats": {}
-            },
-            "related_manga": {
-                "anime_adaptations": [{
-                    "anime_id": "6213",
-                    "title": "Toaru Kagaku no Railgun",
-                    "url": "/anime/6213/Toaru_Kagaku_no_Railgun"
-                }, {
-                    "anime_id": "16049",
-                    "title": "Toaru Kagaku no Railgun S",
-                    "url": "/anime/16049/Toaru_Kagaku_no_Railgun_S"
-                }],
-                "prequels": [],
-                "sequels": [],
-                "side_stories": [{
-                    "manga_id": "27843",
-                    "title": "Toaru Kagaku no Railgun SS",
-                    "url": "/manga/27843/Toaru_Kagaku_no_Railgun_SS"
-                }, {
-                    "manga_id": "36561",
-                    "title": "Toaru Kagaku no Railgun SS: Dasoku, Mata wa Toaru Jiken no Shuusoku",
-                    "url": "/manga/36561/Toaru_Kagaku_no_Railgun_SS__Dasoku_Mata_wa_Toaru_Jiken_no_Shuusoku"
-                }, {
-                    "manga_id": "28973",
-                    "title": "Toaru Kagaku no Railgun SS2",
-                    "url": "/manga/28973/Toaru_Kagaku_no_Railgun_SS2"
-                }, {
-                    "manga_id": "47483",
-                    "title": "Toaru Kagaku no Railgun: Giten Railgun",
-                    "url": "/manga/47483/Toaru_Kagaku_no_Railgun__Giten_Railgun"
-                }, {
-                    "manga_id": "31649",
-                    "title": "Toaru Majutsu no Index SP",
-                    "url": "/manga/31649/Toaru_Majutsu_no_Index_SP"
-                }],
-                "parent_story": {
-                    "manga_id": "12854",
-                    "title": "Toaru Majutsu no Index",
-                    "url": "/manga/12854/Toaru_Majutsu_no_Index"
-                },
-                "spin_offs": [],
-                "summaries": [],
-                "alternative_settings": [],
-                "alternative_versions": [],
-                "full_stories": [],
-                "others": [{
-                    "manga_id": "59857",
-                    "title": "4-koma Koushiki Anthology: Toaru Kagaku no Railgun x Toaru Majutsu no Index",
-                    "url": "/manga/59857/4-koma_Koushiki_Anthology__Toaru_Kagaku_no_Railgun_x_Toaru_Majutsu_no_Index"
-                }]
-            },
-            "characters": [],
-            "additional_info_urls": {
-                "details": "/manga/7776/Toaru_Kagaku_no_Railgun",
-                "reviews": "/manga/7776/Toaru_Kagaku_no_Railgun/reviews",
-                "recommendations": "/manga/7776/Toaru_Kagaku_no_Railgun/userrecs",
-                "stats": "/manga/7776/Toaru_Kagaku_no_Railgun/stats",
-                "characters_and_staff": "/manga/7776/Toaru_Kagaku_no_Railgun/characters",
-                "news": "/manga/7776/Toaru_Kagaku_no_Railgun/news",
-                "forum": "/manga/7776/Toaru_Kagaku_no_Railgun/forum",
-                "pictures": "/manga/7776/Toaru_Kagaku_no_Railgun/pics"
-            }
-        }
+    + Attributes (Manga Response)
+
+
+# Data Structures
+
+## Anime Response
+
++ id: 6213 (string, required)
++ name: Toaru Kagaku no Railgun (string, required)
++ type: TV (string, required)
++ episodes: 24 (number, required, nullable) - The number of episodes for this anime. `null` if this is undefined (typically when an anime is still airing).
++ classification: `PG-13 - Teens 13 or older` (string, required)
++ image_url: http://cdn.myanimelist.net/images/anime/8/53581.jpg (string, required, optional)
++ genres: Action, `Sci-Fi`, Super Power (array[string], required)
++ synopsis: The `student-filled` Academy City is at the forefront of scientific advancement and home to the esper development program. The seven \"Level 5\" espers are the most powerful in Academy City, and ranked third among them is middle schooler Mikoto Misaka, an electricity manipulator known as \"The Railgun.\"\r\n \r\nWhen strange incidents begin occurring throughout the city, she finds each crime to be connected to the elusive \"Level Upper,\" a legendary device that allegedly increases the esper level of its user. As the situation escalates, it becomes apparent that there is more to the Level Upper than meets the eye, and that Academy City may be a far more twisted place than the glamorous utopia it appears to be.\r\n\r\nToaru Kagaku no Railgun focuses on Mikoto and her friends—and the dangerous situations they find themselves in—as they get caught up in the matter of the Level Upper. As Mikoto says, \"There's never a dull moment in this city.\"\r\n\r\n[Written by MAL Rewrite] (string, required)
++ status: finished airing (string, required)
++ start_date: `2009-10-03T05:00:00Z` (string, required, nullable)
++ end_date: `2010-03-20T05:00:00Z` (string, required, nullable)
++ other_names (Other Names, required)
++ studios (array[Studio Subset], required)
++ producers (array[Producer Subset], required)
++ source: Manga (string, optional) - The place where this resource originated from.
++ stats (Stats, required)
++ related_anime (object, required)
+    + manga_adaptations (array[Manga Subset], optional)
+    + prequels (array[Anime Subset], optional)
+    + sequels (array[Anime Subset], optional)
+    + side_stories (array[Anime Subset], optional)
+    + parent_story (Anime Subset, optional)
+    + character_anime (array[Anime Subset], optional)
+    + spin_offs (array[Anime Subset], optional)
+    + summaries (array[Anime Subset], optional)
+    + alternative_versions (array[Anime Subset], optional)
+    + alternative_settings (array[Anime Subset], optional)
+    + full_stories (array[Anime Subset], optional)
+    + others (array[Anime Subset], optional)
++ characters (array[Character Role], optional)
++ additional_info_urls (object, required)
+    + details: https://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun (string, required)
+    + reviews: https://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/reviews (string, required)
+    + recommendations: https://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/userrecs (string, required)
+    + stats: https://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/stats (string, required)
+    + characters_and_staff: https://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/characters (string, required)
+    + news: https://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/news (string, required)
+    + forum: https://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/forum (string, required)
+    + pictures: https://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/pics (string, required)
++ reviews (array[User Review], required)
++ recommendations (array[Anime Recommendation Subset], required)
+
+## Manga Response
+
++ id: 7776 (string, required)
++ name: Toaru Kagaku no Railgun (string, required)
++ type: Manga (string, required)
++ volumes: 24 (number, required, nullable) - The number of volumes for this manga. `null` if this is undefined (typically when a manga is still in publication).
++ chapters: 76 (number, required, nullable) - The number of chapters for this manga. `null` if this is undefined (typically when a manga is still in publication).
++ image_url: http://cdn.myanimelist.net/images/anime/8/53581.jpg (string, required, nullable)
++ genres: Action, Comedy, `Sci-Fi`, Super Power (array[string], required)
++ synopsis: `Welcome to a world where mysticism and science collide, and supernatural powers are derived from either science or religion. At the heart of this world is Academy City, an advanced metropolis whose population is comprised mostly of students The majority of students are enrolled in the city's \"Power Curriculum Program,\" where they must learn to master their latent psychic powers. Out of several million students, only seven are deemed powerful enough to have Level 5 status.\r\n\r\nMeet Mikoto Misaka, the third most powerful Level 5 esper in Academy City. Together with her best friends Kuroko Shirai and the other members of Judgment, a student-run law enforcement agency, Mikoto delves deep into the dark heart of the scientific sprawl she calls home, and uncovers secrets she wishes she hadn't!\r\n\r\n(Source: Seven Seas Entertainment)` (string, required)
++ status: publishing (string, required)
++ start_date: `2007-05-27T05:00:00Z` (string, required, nullable)
++ end_date: `2017-05-27T05:00:00Z` (string, required, nullable)
++ other_names (Other Names, required)
++ authors (array[Author Subset], required)
++ serialization (Serialization Subset, required)
++ stats (Stats, required)
++ related_manga (object, required)
+    + anime_adaptations (array[Anime Subset], optional)
+    + prequels (array[Manga Subset], optional)
+    + sequels (array[Manga Subset], optional)
+    + side_stories (array[Manga Subset], optional)
+    + parent_story (Manga Subset, optional)
+    + spin_offs (array[Manga Subset], optional)
+    + summaries (array[Manga Subset], optional)
+    + alternative_versions (array[Manga Subset], optional)
+    + alternative_settings (array[Manga Subset], optional)
+    + full_stories (array[Manga Subset], optional)
+    + others (array[Manga Subset], optional)
++ characters (array[Character Role], optional)
++ additional_info_urls (object, required)
+    + details: https://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun (string, required)
+    + reviews: https://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/reviews (string, required)
+    + recommendations: https://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/userrecs (string, required)
+    + stats: https://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/stats (string, required)
+    + characters_and_staff: https://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/characters (string, required)
+    + news: https://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/news (string, required)
+    + forum: https://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/forum (string, required)
+    + pictures: https://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun/pics (string, required)
++ reviews (array[User Review], required)
++ recommendations (array[Manga Recommendation Subset], required)
+
+
+## Other Names
++ english: A Certain Scientific Railgun (array, optional) - A collection of English names for this resource.
++ synonyms: Toaru Kagaku no Choudenjihou (array, optional) - A collection of different names for this resource.
++ japanese: とある科学の超電磁砲 (array, optional) - A collection of Japanese names for this resource.
+
+## Stats
++ rank: 774 (number, required) - The overall rank for this resource.
++ popularity_rank: 177 (number, required) - The popular rank for this resource.
++ score: 7.85 (number, required) - The current rating for this resource.
++ score_count: 122802 (number, required) - The number of people who have rated this resource.
++ members_count: 244243 (number, required) - The number of members for this resource.
++ favorited_count: 3205 (number, required) - The number of people who have favorited this resource.
++ premiered (Premier, optional) - An object detailing when this resource was premiered.
++ summary_stats (Summary Stats, optional) - A collection of stats detailing the distribution of watch/read statuses.
++ score_stats (Score Stats, optional) - A collection of stats detailing the distribution of ratings.
+
+## Premier
++ year: 2009 (number, required)
++ season: "fall" (string, optional)
+
+## Summary Stats
++ in_progress: 12161 (number, required)
++ completed: 153754 (number, required)
++ on_hold: 8905 (number, required)
++ dropped: 6114 (number, required)
++ planned: 63309 (number, required)
++ total: 244243 (number, required)
+
+## Score Stats
++ 1: 215 (number, required)
++ 2: 257 (number, required)
++ 3: 524 (number, required)
++ 4: 1483 (number, required)
++ 5: 4195 (number, required)
++ 6: 10714 (number, required)
++ 7: 29696 (number, required)
++ 8: 40659 (number, required)
++ 9: 25644 (number, required)
++ 10: 13557 (number, required)
+
+## Anime Search Response
++ results (array[Anime Search Subset], required) - A collection of Anime with a subset of information.
+
+## Anime Search Subset
++ id: 6213 (string, required)
++ name: Toaru Kagaku no Railgun (string, required)
++ url: https://myanimelist.net/anime/6213/Toaru_Kagaku_no_Railgun (string, required)
++ image_url: http://cdn.myanimelist.net/images/anime/8/53581.jpg (string, required)
++ type: TV (string, required)
++ episodes: 24 (number, required)
++ synopsis: The student filled Academy City is at the forefront of scientific advancement and home to the esper development program. The seven \"Level 5\" espers are the most powerful in Academy City, and ranked th... (string, required)
+
+## Studio Subset
++ id: 7 (string, required)
++ name: J.C.Staff (string, required)
++ url: /anime/producer/7/JCStaff (string, required)
+
+## Producer Subset
++ id: 31 (string, required)
++ name: Geneon Universal Entertainment (string, required)
++ url: /anime/producer/31/Geneon_Universal_Entertainment (string, required)
+
+## Anime Subset
++ id: 6213 (string, required)
++ name: Toaru Kagaku no Railgun (string, required)
++ url: /anime/6213/Toaru_Kagaku_no_Railgun (string, required)
+
+## Manga Subset
++ id: 7776 (string, required)
++ name: Toaru Kagaku no Railgun (string, required)
++ url: /anime/7776/Toaru_Kagaku_no_Railgun (string, required)
+
+## Character Role
++ character (Character Subset, required)
++ voice_actor (array[Voice Actor Subset], required)
+
+## Character Subset
++ id: 13701 (string, required)
++ name: Misaka, Mikoto (string, required)
++ url: /character/13701/Mikoto_Misaka (string, required)
++ role: Main (string, required)
++ image_url: `https://myanimelist.cdn-dena.com/images/characters/3/78211.jpg` (string, required)
+
+## Voice Actor Subset
++ id: 241 (string, required)
++ name: Satou, Rina (string, required)
++ url: /people/241/Mikoto_Misaka (string, required)
++ language: Japanese (string, required)
++ image_url: `https://myanimelist.cdn-dena.com/images/voiceactors/2/43718.jpg` (string, required)
+
+## Author Subset
++ id: 5389 (string, required)
++ name: Kamachi, Kazuma (string, required)
++ url: /people/5389/Kazuma_Kamachi (string, required)
++ responsibility: Story (string, required)
+
+## Serialization Subset
++ id: 23 (string, required)
++ name: Dengeki Daioh (string, required)
++ url: /manga/magazine/23/Dengeki_Daioh (string, required)
+
+## Anime Recommendation Subset
++ id: `2025-6213` (string, required)
++ url: https://myanimelist.net/recommendations/anime/2025-6213 (string, required)
++ recommended_user_count: 8 (number, optional)
++ anime (Anime Subset, required)
+
+## Manga Recommendation Subset
++ id: `5281-7776` (string, required)
++ url: https://myanimelist.net/recommendations/manga/5821-7776 (string, required)
++ recommended_user_count: 3 (number, optional)
++ manga (Manga Subset, required)
+
+## User Review
++ user (User Subset, required)
++ review (Review, required)
+
+## User Subset
++ id: 137 (string, optional) - This is currently in flux and will be potentially removed in a future release, please do not use this.
++ name: SpacePyro (string, required)
++ url: https://myanimelist.net/profile/SpacePyro (string, required)
++ image_url: `https://myanimelist.cdn-dena.com/images/userimages/1938074.jpg` (string, required)
+
+## Review
++ id: 24523 (string, required)
++ date: `2010-03-31T05:00:00Z` (string, required)
++ helpful_review_count: 313 (number, required)
++ episodes_watched: 24 (number, required)
++ episodes_total: 24 (number, required)
++ review: `Are the burdens of being special greater or lesser than the burdens of being ordinary?\\n\\nAcademy City is a city that thrives on those who are espers -- who are special -- whether they already have powers or are trying to attain them. Everyone is reaching towards their ideal self, but some people don’t care what methods get used. The pursuit of the “next level” is absolute. If our limitations only exist so we can surpass them, should there be a limit to how far we can go to get there?` (string, required)

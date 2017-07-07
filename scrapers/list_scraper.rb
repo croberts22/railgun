@@ -1,22 +1,22 @@
-require_relative 'url_utilities'
+require_relative '../utilities/url_utilities'
 
 module Railgun
 
-  class ListScraper
+  class ListScraper < Scraper
 
-    def scrape(nokogiri)
+    def scrape(nokogiri, options)
       resources = []
 
       # Find the table.
       table = nokogiri.xpath('//div[@id="content"]/div/table')
       table.xpath('//tr[@class="ranking-list"]').each do |tr|
-        resources << parse_row(tr)
+        resources << parse_row(tr, options)
       end
 
       resources
     end
 
-    def parse_row(nokogiri)
+    def parse_row(nokogiri, list_type)
       # TO BE OVERRIDDEN BY SUBCLASSES
     end
 
@@ -46,22 +46,21 @@ module Railgun
 
     def parse_type(nokogiri)
       type_element = parse_metadata(nokogiri).first
-      $1 if type_element.match %r{([a-zA-Z]+) \([0-9]+ eps\)}
-    end
 
-    def parse_episodes(nokogiri)
-      type_element = parse_metadata(nokogiri).first
-      $1.to_i if type_element.match %r{[a-zA-Z]+ \(([0-9]+) eps\)}
+      # We anticipate something of the format:
+      # TV (24 eps)
+      # However, sometimes episodes may be undefined (?).
+      $1 if type_element.match %r{([a-zA-Z]+) \(([0-9]+|\?) eps\)}
     end
 
     def parse_start_date(nokogiri)
       date = parse_dates(nokogiri).first
-      BaseScraper::parse_start_date(date)
+      Railgun::DateFormatter.new.date_from_string(date)
     end
 
     def parse_end_date(nokogiri)
       date = parse_dates(nokogiri).last
-      BaseScraper::parse_end_date(date)
+      Railgun::DateFormatter.new.date_from_string(date)
     end
 
     def parse_member_count(nokogiri)
@@ -73,6 +72,11 @@ module Railgun
     def parse_rank(nokogiri)
       rank_element = nokogiri.at('td[1] span')
       rank_element.text.to_i
+    end
+
+    def parse_score(nokogiri)
+      score_element = nokogiri.at('td[3] div span')
+      score_element.text.to_f
     end
 
     # Convenience Methods

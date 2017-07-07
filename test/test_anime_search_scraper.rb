@@ -67,6 +67,17 @@ class TestAnimeSearchScraper < Test::Unit::TestCase
       assert(!synopsis.empty?)
       assert(!(synopsis.include? 'read more.'))
 
+
+      stats = row[:stats]
+
+      assert(!stats.nil?)
+
+      score = stats[:score]
+
+      assert(!score.nil?)
+      assert(score.is_a? Float)
+      assert(score >= 0)
+
     }
 
   end

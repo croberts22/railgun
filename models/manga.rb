@@ -1,20 +1,22 @@
 require_relative 'resource'
-require_relative '../utilities/manga_scraper'
-require_relative '../utilities/manga_search_scraper'
+require_relative '../scrapers/manga_scraper'
+require_relative '../scrapers/manga_search_scraper'
+require_relative '../scrapers/manga_list_scraper'
 
 module Railgun
 
   class Manga < Resource
 
-    attr_accessor :rank, :popularity_rank, :volumes, :chapters,
-                  :members_score, :members_count, :favorited_count, :synopsis, :start_date, :end_date
+    attr_accessor :rank, :popularity_rank, :volumes, :chapters, :authors, :serialization,
+                  :score, :score_count, :members_count, :favorited_count, :synopsis, :start_date, :end_date
     attr_reader :type, :status
     attr_writer :genres, :tags,
-                :other_titles, :anime_adaptations, :prequels, :sequels, :side_stories,
+                :other_names, :anime_adaptations, :prequels, :sequels, :side_stories,
                 :spin_offs, :summaries, :related_manga, :alternative_versions, :alternative_settings,
                 :full_stories, :others, :parent_story,
                 :summary_stats, :score_stats,  :additional_info_urls, :character_voice_actors
 
+    attr_accessor :reviews, :recommendations
 
     ### Custom Setter Methods
 
@@ -52,8 +54,8 @@ module Railgun
               end
     end
 
-    def other_titles
-      @other_titles ||= {}
+    def other_names
+      @other_names ||= {}
     end
 
     def summary_stats
@@ -70,6 +72,10 @@ module Railgun
 
     def tags
       @tags ||= []
+    end
+
+    def authors
+      @authors ||= []
     end
 
     def anime_adaptations
@@ -132,10 +138,14 @@ module Railgun
       @synopsis ||= ''
     end
 
+    def recommendations
+      @recommendations ||= []
+    end
+
     def attributes
       {
           id: id,
-          title: title,
+          name: name,
           type: type,
           volumes: volumes,
           chapters: chapters,
@@ -147,13 +157,16 @@ module Railgun
           start_date: start_date,
           end_date: end_date,
           image_url: image_url,
-          other_titles: other_titles,
+          other_names: other_names,
           tags: tags,
+          authors: authors,
+          serialization: serialization,
 
           stats: {
               rank: rank,
               popularity_rank: popularity_rank,
-              members_score: members_score,
+              score: score,
+              score_count: score_count,
               members_count: members_count,
               favorited_count: favorited_count,
               summary_stats: summary_stats,
@@ -175,7 +188,9 @@ module Railgun
           },
 
           characters: character_voice_actors,
-          additional_info_urls: additional_info_urls
+          additional_info_urls: additional_info_urls,
+          reviews: reviews,
+          recommendations: recommendations
       }
     end
 
@@ -196,8 +211,20 @@ module Railgun
       scraper = MangaScraper.new
       scraper.parse_manga(nokogiri, manga)
 
-      # TODO:
       # If any options were passed in, perform a fetch and continue parsing.
+      if options.include? 'characters_and_staff'
+        puts 'Scraping characters and staff...'
+        nokogiri = MALNetworkService.nokogiri_from_request(manga.additional_info_urls[:characters_and_staff])
+        characters_and_staff = scraper.parse_staff(nokogiri)
+        manga.character_voice_actors = characters_and_staff
+      end
+
+      if options.include? 'stats'
+        puts 'Scraping additional stats...'
+        nokogiri = MALNetworkService.nokogiri_from_request(manga.additional_info_urls[:stats])
+        manga.summary_stats = scraper.parse_summary_stats(nokogiri)
+        manga.score_stats = scraper.parse_score_stats(nokogiri)
+      end
 
       manga
     end
@@ -209,6 +236,16 @@ module Railgun
       manga = scraper.scrape(nokogiri)
 
       { results: manga }
+    end
+
+    def self.top(options)
+
+      puts 'Scraping top manga list...'
+
+      nokogiri = MALNetworkService.nokogiri_from_request(MALNetworkService.manga_rank_request(options[:type], options[:rank]))
+
+      scraper = MangaListScraper.new
+      scraper.scrape(nokogiri, options[:type])
     end
 
   end

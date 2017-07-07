@@ -1,8 +1,9 @@
-require_relative 'url_utilities'
+require_relative '../utilities/url_utilities'
+require_relative '../scrapers/scraper'
 
 module Railgun
 
-  class SearchScraper
+  class SearchScraper < Scraper
 
     def scrape(nokogiri)
       resources = []
@@ -61,6 +62,12 @@ module Railgun
     def parse_synopsis(nokogiri)
       synopsis_element = nokogiri.at('td div[class="pt4"]')
       synopsis_element.text.gsub('read more.', '').strip
+    end
+
+    def parse_score(nokogiri)
+      if score_element = nokogiri.at('td[5]')
+        score_element.text.to_f
+      end
     end
 
   end

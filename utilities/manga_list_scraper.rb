@@ -1,2 +1,0 @@
-class MangaListScraper
-end

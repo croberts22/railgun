@@ -1,34 +1,40 @@
-require_relative 'base_scraper'
+require_relative 'resource_scraper'
 
 module Railgun
 
   ### AnimeScraper
   ### Takes a Nokogiri object and converts it into an Anime object.
 
-  class AnimeScraper < BaseScraper
+  class AnimeScraper < ResourceScraper
 
     def parse_anime(nokogiri, anime)
 
       anime.id = parse_id(nokogiri)
-      anime.title = parse_title(nokogiri)
+      anime.name = parse_name(nokogiri)
       anime.synopsis = parse_synopsis(nokogiri)
       anime.rank = parse_rank(nokogiri)
       anime.image_url = parse_image_url(nokogiri)
 
       node = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
-      anime.other_titles = parse_alternative_titles(node)
+      anime.other_names = parse_alternative_names(node)
       anime.type = parse_type(node)
       anime.episodes = parse_episode_count(node)
       anime.status = parse_status(node)
       anime.start_date = parse_airing_start_date(node)
       anime.end_date = parse_airing_end_date(node)
+      anime.studios = parse_studios(node)
+      anime.producers = parse_producers(node)
+      anime.source = parse_source(node)
       anime.genres = parse_genres(node)
       anime.classification = parse_rating(node)
-      anime.members_score = parse_score(node)
+      anime.score = parse_score(node)
+      anime.score_count = parse_score_count(node)
       anime.popularity_rank = parse_popularity_rank(node)
       anime.members_count = parse_member_count(node)
       anime.favorited_count = parse_favorite_count(node)
+      anime.premiere_year = parse_premiere_year(node)
+      anime.premiere_season = parse_premiere_season(node)
       anime.tags = parse_tags(node)
 
       node = nokogiri.xpath('//div[@id="content"]/table/tr/td/div')
@@ -58,6 +64,29 @@ module Railgun
 
       end
 
+      reviews_h2 = node.at('//h2[text()="Reviews"]')
+      if reviews_h2
+
+        # Get all text between "Reviews</h2>" and the next </h2> tag.
+        matched_data = reviews_h2.parent.to_s.match(%r{Reviews</h2>(.+?)<h2>}m)
+        if matched_data
+
+          # Translate the captured string back into HTML so we can iterate upon it easier.
+          # This is preferred versus attempting to iterate against a preset condition against
+          # the entire page, since the outline could potentially change at any time (and it
+          # would suck if this while loop kept going endlessly).
+
+          # FIXME: This isn't the right regex, but will suffice for now. Having trailing \t\t\t\t at the beginning.
+          data = matched_data[1].gsub(/>\s+</, '><')
+          reviews = Nokogiri::HTML(data)
+
+          anime.reviews = parse_reviews(reviews)
+
+
+        end
+      end
+
+      anime.recommendations = parse_recommendations(node, anime.id)
 
     end
 
@@ -65,10 +94,10 @@ module Railgun
     def parse_id(nokogiri)
       anime_id_input = nokogiri.at('input[@name="aid"]')
       if anime_id_input
-        id = anime_id_input['value'].to_i
+        id = anime_id_input['value'].to_s
       else
         details_link = nokogiri.at('//a[text()="Details"]')
-        id = details_link['href'][%r{http[s]?://myanimelist.net/anime/(\d+)/.*?}, 1].to_i
+        id = details_link['href'][%r{http[s]?://myanimelist.net/anime/(\d+)/.*?}, 1].to_s
       end
 
       id
@@ -86,7 +115,7 @@ module Railgun
     def parse_airing_start_date(nokogiri)
       if (node = nokogiri.at('//span[text()="Aired:"]')) && node.next
         airdates_text = node.next.text.strip
-        start_date = BaseScraper::parse_start_date(airdates_text)
+        start_date = parse_start_date(airdates_text)
 
         start_date
       end
@@ -95,7 +124,7 @@ module Railgun
     def parse_airing_end_date(nokogiri)
       if (node = nokogiri.at('//span[text()="Aired:"]')) && node.next
         airdates_text = node.next.text.strip
-        end_date = BaseScraper::parse_end_date(airdates_text)
+        end_date = parse_end_date(airdates_text)
 
         end_date
       end
@@ -107,6 +136,94 @@ module Railgun
 
         classification
       end
+    end
+
+    def parse_premiere_url(nokogiri)
+      if (node = nokogiri.at('//span[text()="Premiered:"]')) && node.next.next
+
+        premiere_href = node.next.next.attribute('href')
+        return unless premiere_href != nil
+
+        matches = node.next.next.attribute('href').to_s.match(%r{/season/(\d+)/([A-z]+)})
+        year = matches[1].to_i
+        season = matches[2]
+
+        [year, season]
+      end
+    end
+
+    def parse_premiere_year(nokogiri)
+      premiere_group = parse_premiere_url(nokogiri)
+      premiere_group.first unless premiere_group.nil?
+    end
+
+    def parse_premiere_season(nokogiri)
+      premiere_group = parse_premiere_url(nokogiri)
+      premiere_group.last unless premiere_group.nil?
+    end
+
+    def parse_producers(nokogiri)
+      if (node = nokogiri.at('//span[text()="Producers:"]')) && node.parent
+
+        producers = []
+
+        node.parent.search('a').each do |a|
+
+          url = a.attribute('href').to_s
+          name = a.attribute('title').to_s
+
+          if name.empty?
+            break if a.text.to_s == 'add some'
+          end
+
+          if matches = url.match(%r{/producer/(\d+)/})
+            id = matches[1].to_s
+          end
+
+          producer = { :id => id, :name => name, :url => url }
+          producers << producer
+
+        end
+
+        producers
+      end
+    end
+
+    def parse_studios(nokogiri)
+      if (node = nokogiri.at('//span[text()="Studios:"]')) && node.parent
+
+        studios = []
+        node.parent.search('a').each do |a|
+
+          url = a.attribute('href').to_s
+          name = a.attribute('title').to_s
+
+          if name.empty?
+            break if a.text.to_s == 'add some'
+          end
+
+          if matches = url.match(%r{/producer/(\d+)/})
+            id = matches[1].to_s
+          end
+
+          studio = { :id => id, :name => name, :url => url }
+          studios << studio
+
+        end
+
+        studios
+      end
+    end
+
+    def parse_source(nokogiri)
+
+      source = nil
+
+      if (node = nokogiri.at('span:contains("Source:")')) && node.next
+        source = node.next.text.strip
+      end
+
+      source
     end
 
     def parse_manga_adaptations(html_string)
@@ -221,10 +338,10 @@ module Railgun
     def self.generate_anime_from_pattern(html_string, string_to_match, regex_pattern)
       anime = []
       if html_string.match(string_to_match)
-        $1.scan(regex_pattern) do |url, anime_id, title|
+        $1.scan(regex_pattern) do |url, anime_id, name|
           anime << {
-              :anime_id => anime_id,
-              :title => title,
+              :id => anime_id.to_s,
+              :name => StringFormatter.encodedHTML(name),
               :url => url
           }
         end
@@ -250,7 +367,7 @@ module Railgun
       left_column_nodeset = nokogiri.xpath('//div[@id="content"]/table/tr/td[@class="borderClass"]')
 
       if (node = left_column_nodeset.at('//span[text()="Watching:"]')) && node.next
-        summary_stats[:watching] = node.next.text.strip.gsub(',','').to_i
+        summary_stats[:in_progress] = node.next.text.strip.gsub(',','').to_i
       end
       if (node = left_column_nodeset.at('//span[text()="Completed:"]')) && node.next
         summary_stats[:completed] = node.next.text.strip.gsub(',','').to_i
@@ -262,7 +379,7 @@ module Railgun
         summary_stats[:dropped] = node.next.text.strip.gsub(',','').to_i
       end
       if (node = left_column_nodeset.at('//span[text()="Plan to Watch:"]')) && node.next
-        summary_stats[:plan_to_watch] = node.next.text.strip.gsub(',','').to_i
+        summary_stats[:planned] = node.next.text.strip.gsub(',','').to_i
       end
       if (node = left_column_nodeset.at('//span[text()="Total:"]')) && node.next
         summary_stats[:total] = node.next.text.strip.gsub(',','').to_i
