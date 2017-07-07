@@ -1,12 +1,13 @@
 <h3 align="center">
   <img src="http://i.imgur.com/WaxRVGs.png" alt="Railgun" />
 </h3>
-=======
+
 
 [![Twitter](https://img.shields.io/badge/contact-%40spacepyro-00aced.svg)](https://twitter.com/spacepyro)
 [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/)
 [![Build Status](https://travis-ci.org/croberts22/railgun.svg?branch=master)](https://travis-ci.org/croberts22/railgun)
 [![Coverage Status](https://coveralls.io/repos/github/croberts22/railgun/badge.svg?branch=master)](https://coveralls.io/github/croberts22/railgun?branch=master)
+
 
 Railgun is a REST API extension to the [MyAnimeList API](http://myanimelist.net/modules.php?go=api).
 
