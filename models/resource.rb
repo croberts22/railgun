@@ -6,13 +6,10 @@ module Railgun
 
     attr_accessor :id, :name, :url, :image_url
 
-    # def initialize(id, name, url, image_url)
-    #   # Instance variables
-    #   @id = id
-    #   @name = name
-    #   @url = url
-    #   @image_url = image_url
-    # end
+    def initialize(id)
+      # Instance variables
+      @id = id
+    end
 
     def attributes
       # MUST OVERRIDE

@@ -175,7 +175,7 @@ class TestPerson < Test::Unit::TestCase
     scraper = Railgun::PersonScraper.new
     nokogiri = nokogiri_for_sample_response
 
-    person = Railgun::Person.new
+    person = Railgun::Person.new('185)')
     scraper.scrape(nokogiri, person)
 
     assert_not_nil(person.id)

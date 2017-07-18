@@ -7,7 +7,7 @@ module Railgun
 
     def scrape(nokogiri, person)
 
-      person.id = parse_id(nokogiri)
+      person.id = parse_id(nokogiri) unless person.id.nil? == false
       person.name = parse_name(nokogiri)
       person.url = parse_url(nokogiri)
       person.image_url = parse_image_url(nokogiri)

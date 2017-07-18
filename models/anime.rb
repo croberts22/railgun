@@ -215,7 +215,8 @@ module Railgun
 
       puts 'Scraping anime...'
 
-      anime = Anime.new
+      anime = Anime.new(id)
+
       nokogiri = MALNetworkService.nokogiri_from_request(MALNetworkService.anime_request_for_id(id))
 
       scraper = AnimeScraper.new
