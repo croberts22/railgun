@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/namespace'
 require 'rollbar/middleware/sinatra'
 require 'redis'
+require 'fileutils'
 require_relative 'lib/redis_cache'
 require_relative 'services/mal_network_service'
 require_relative 'railgun'
@@ -13,16 +14,21 @@ class App < Sinatra::Base
 
   redis = Redis.new
 
+  error_logger = File.new(File.join(FileUtils.mkdir_p("#{File.dirname(File.expand_path(__FILE__))}/log"),'error.log'), 'a+')
+  error_logger.sync = true
+
   configure :production, :development do
     enable :logging
   end
 
   configure :development do
+    # disable :show_exceptions
     register Sinatra::Reloader
   end
 
   before do
     content_type 'application/json;charset=utf-8'
+    env['rack.errors'] = error_logger
   end
 
   configure do
@@ -37,6 +43,24 @@ class App < Sinatra::Base
     # set :protection, :except => :json_csrf
   end
 
+  error Railgun::NotFoundError do
+    status 404
+    log.warn "Resource not found: #{request.env['sinatra.error'].message}"
+    body = { :error => 'not-found', :details => request.env['sinatra.error'].message }.to_json
+    params[:callback].nil? ? body : "#{params[:callback]}(#{body})"
+  end
+
+  error Railgun::NetworkError do
+    log.warn "An error occurred: #{request.env['sinatra.error'].message}"
+    body = { :error => 'network-error', :details => request.env['sinatra.error'].message }.to_json
+    params[:callback].nil? ? body : "#{params[:callback]}(#{body})"
+  end
+
+  error do
+    log.warn "An error occurred: #{request.env['sinatra.error'].message}"
+    body = { :error => 'unknown-error', :details => request.env['sinatra.error'].message }.to_json
+    params[:callback].nil? ? body : "#{params[:callback]}(#{body})"
+  end
 
 
   namespace '/1.0' do
