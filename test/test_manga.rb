@@ -15,7 +15,7 @@ class TestManga < Test::Unit::TestCase
   # end
 
   def test_status
-    manga = Railgun::Manga.new
+    manga = Railgun::Manga.new('0')
 
     # Finished Publishing.
     manga.status = 2
@@ -62,7 +62,7 @@ class TestManga < Test::Unit::TestCase
   end
 
   def test_type
-    manga = Railgun::Manga.new
+    manga = Railgun::Manga.new('0')
 
     # Manga.
     manga.type = 'manga'
@@ -168,7 +168,7 @@ class TestManga < Test::Unit::TestCase
   end
 
   def test_initialized_attributes
-    manga = Railgun::Manga.new
+    manga = Railgun::Manga.new('0')
 
     assert(manga.genres.empty?)
     assert(manga.other_names.empty?)

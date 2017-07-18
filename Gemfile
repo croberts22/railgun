@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.3.1'
+ruby '2.4.0'
 
 gem 'sinatra'
 gem 'sinatra-contrib'
@@ -14,6 +14,7 @@ gem 'dalli'
 gem 'rollbar'
 gem 'chronic'
 gem 'memcachier'
+gem 'redis'
 
 group :development do
   gem 'thin'

@@ -318,7 +318,7 @@ module Railgun
 
       while review_div
 
-        review = Review.new
+        review = Review.new('0')
 
         # Reviewer.
         # td[1] = Profile picture, url

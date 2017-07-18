@@ -9,7 +9,8 @@ module Railgun
 
     def parse_anime(nokogiri, anime)
 
-      anime.id = parse_id(nokogiri)
+      # TODO: To eliminate this completely, we should pass in the id as a param.
+      anime.id = parse_id(nokogiri) unless anime.id.nil? == false
       anime.name = parse_name(nokogiri)
       anime.synopsis = parse_synopsis(nokogiri)
       anime.rank = parse_rank(nokogiri)

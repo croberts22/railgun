@@ -463,7 +463,7 @@ class TestAnimeScraper < Test::Unit::TestCase
     scraper = Railgun::AnimeScraper.new
     nokogiri = nokogiri_for_sample_response
 
-    anime = Railgun::Anime.new
+    anime = Railgun::Anime.new('25835')
     scraper.parse_anime(nokogiri, anime)
 
     assert(!anime.id.nil?)

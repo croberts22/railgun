@@ -15,7 +15,7 @@ class TestAnime < Test::Unit::TestCase
   # end
 
   def test_status
-    anime = Railgun::Anime.new
+    anime = Railgun::Anime.new('0')
 
     # Finished Airing.
     anime.status = 2
@@ -62,7 +62,7 @@ class TestAnime < Test::Unit::TestCase
   end
 
   def test_type
-    anime = Railgun::Anime.new
+    anime = Railgun::Anime.new('0')
 
     # TV.
     anime.type = 'tv'
@@ -155,7 +155,7 @@ class TestAnime < Test::Unit::TestCase
   end
 
   def test_initialized_attributes
-    anime = Railgun::Anime.new
+    anime = Railgun::Anime.new('0')
 
     assert(anime.genres.empty?)
     assert(anime.other_names.empty?)

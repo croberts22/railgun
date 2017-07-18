@@ -9,7 +9,7 @@ module Railgun
 
     def parse_manga(nokogiri, manga)
 
-      manga.id = parse_id(nokogiri)
+      manga.id = parse_id(nokogiri) unless manga.id.nil? == false
       manga.name = parse_name(nokogiri)
       manga.synopsis = parse_synopsis(nokogiri)
       manga.rank = parse_rank(nokogiri)
@@ -87,6 +87,7 @@ module Railgun
     end
 
     def parse_id(nokogiri)
+
       manga_id_input = nokogiri.at('input[@name="mid"]')
       if manga_id_input
         id = manga_id_input['value'].to_s

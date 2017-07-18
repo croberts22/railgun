@@ -435,7 +435,7 @@ class TestMangaScraper < Test::Unit::TestCase
     scraper = Railgun::MangaScraper.new
     nokogiri = nokogiri_for_sample_response
 
-    manga = Railgun::Manga.new
+    manga = Railgun::Manga.new('14893')
     scraper.parse_manga(nokogiri, manga)
 
     assert(!manga.id.nil?)
