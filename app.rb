@@ -353,9 +353,9 @@ class App < Sinatra::Base
       logger.info "Fetching anime with ID #{params[:id]}..."
       logger.info "Options: #{options}" unless options.count == 0
 
-      anime = redis.get "anime:#{params[:id]}"
+      # anime = redis.get "anime:#{params[:id]}"
 
-      if anime.nil?
+      # if anime.nil?
 
         logger.info 'Anime was not found in redis, making a request...'
         # FIXME: Removing caching on search for now. Figure out how to better cache this
@@ -367,24 +367,26 @@ class App < Sinatra::Base
 
         json = response.to_json
 
+        json
+
         # FIXME: This is temporary; we should attempt to store just the anime response
         # (no options) to bypass an extra call.
-        if options.count > 0
-          begin
-            logger.info '[REDIS] Storing in redis...'
-            redis.setnx "anime:#{params[:id]}", json
-            redis.cache(params[:id], 21600) { json }
-          rescue Exception => e
-            logger.warn "[REDIS] Could not store in redis! An exception occurred: #{e}"
-            json
-          end
+        # if options.count > 0
+        #   begin
+        #     logger.info '[REDIS] Storing in redis...'
+        #     redis.setnx "anime:#{params[:id]}", json
+        #     redis.cache(params[:id], 21600) { json }
+        #   rescue Exception => e
+        #     logger.warn "[REDIS] Could not store in redis! An exception occurred: #{e}"
+        #     json
+        #   end
+        #
+        # end
 
-        end
-
-      else
-        logger.info "[REDIS] Cached version of #{params[:id]} found, returning..."
-        anime
-      end
+      # else
+      #   logger.info "[REDIS] Cached version of #{params[:id]} found, returning..."
+      #   anime
+      # end
 
 
 
