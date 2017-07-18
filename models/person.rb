@@ -52,7 +52,7 @@ module Railgun
 
       # Log::Logger.log(Severity.INFO, "Starting web scrape for id #{id}...")
 
-      person = Person.new
+      person = Person.new(id)
       nokogiri = MALNetworkService.nokogiri_from_request(MALNetworkService.person_request_for_id(id))
 
       scraper = PersonScraper.new
