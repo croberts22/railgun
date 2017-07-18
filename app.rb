@@ -367,11 +367,22 @@ class App < Sinatra::Base
 
         json = response.to_json
 
-        logger.info 'Storing in redis...'
-        redis.setnx "anime:#{params[:id]}", json
-        redis.cache(params[:id], 86400) { json }
+        # FIXME: This is temporary; we should attempt to store just the anime response
+        # (no options) to bypass an extra call.
+        if options.count > 0
+          begin
+            logger.info '[REDIS] Storing in redis...'
+            redis.setnx "anime:#{params[:id]}", json
+            redis.cache(params[:id], 21600) { json }
+          rescue Exception => e
+            logger.warn "[REDIS] Could not store in redis! An exception occurred: #{e}"
+            json
+          end
+
+        end
+
       else
-        logger.info "Cached version of #{params[:id]} found, returning..."
+        logger.info "[REDIS] Cached version of #{params[:id]} found, returning..."
         anime
       end
 
