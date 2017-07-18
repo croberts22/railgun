@@ -20,7 +20,7 @@ Learning a few new languages and technologies is also a New Year's Resolution of
 ## Requirements
 
 - A User-Agent from MyAnimeList.net
-- Ruby 2.2.1 or greater
+- Ruby 2.4.0 or greater
 
 ## How to Use
 
