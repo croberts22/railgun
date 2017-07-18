@@ -1,6 +1,8 @@
 require 'sinatra'
 require 'sinatra/namespace'
 require 'rollbar/middleware/sinatra'
+require 'redis'
+require_relative 'lib/redis_cache'
 require_relative 'services/mal_network_service'
 require_relative 'railgun'
 
@@ -8,6 +10,8 @@ require_relative 'railgun'
 class App < Sinatra::Base
   register Sinatra::Namespace
   use Rollbar::Middleware::Sinatra
+
+  redis = Redis.new
 
   configure :production, :development do
     enable :logging
@@ -325,14 +329,32 @@ class App < Sinatra::Base
       logger.info "Fetching anime with ID #{params[:id]}..."
       logger.info "Options: #{options}" unless options.count == 0
 
-      # FIXME: Removing caching on search for now. Figure out how to better cache this
-      # expires 3600, :public, :must_revalidate
-      # last_modified Time.now
-      # etag "anime/#{params[:id]}/#{options}"
+      anime = redis.get "anime:#{params[:id]}"
 
-      anime = Railgun::Anime.scrape(params[:id], options)
+      if anime.nil?
 
-      anime.to_json
+        logger.info 'Anime was not found in redis, making a request...'
+        # FIXME: Removing caching on search for now. Figure out how to better cache this
+        # expires 3600, :public, :must_revalidate
+        # last_modified Time.now
+        # etag "anime/#{params[:id]}/#{options}"
+
+        response = Railgun::Anime.scrape(params[:id], options)
+
+        json = response.to_json
+
+        logger.info 'Storing in redis...'
+        redis.setnx "anime:#{params[:id]}", json
+        redis.cache(params[:id], 86400) { json }
+      else
+        logger.info "Cached version of #{params[:id]} found, returning..."
+        anime
+      end
+
+
+
+
+
     end
 
 

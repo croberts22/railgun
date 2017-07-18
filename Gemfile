@@ -14,6 +14,7 @@ gem 'dalli'
 gem 'rollbar'
 gem 'chronic'
 gem 'memcachier'
+gem 'redis'
 
 group :development do
   gem 'thin'
