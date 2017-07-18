@@ -45,19 +45,19 @@ class App < Sinatra::Base
 
   error Railgun::NotFoundError do
     status 404
-    log.warn "Resource not found: #{request.env['sinatra.error'].message}"
+    logger.warn "Resource not found: #{request.env['sinatra.error'].message}"
     body = { :error => 'not-found', :details => request.env['sinatra.error'].message }.to_json
     params[:callback].nil? ? body : "#{params[:callback]}(#{body})"
   end
 
   error Railgun::NetworkError do
-    log.warn "An error occurred: #{request.env['sinatra.error'].message}"
+    logger.warn "An error occurred: #{request.env['sinatra.error'].message}"
     body = { :error => 'network-error', :details => request.env['sinatra.error'].message }.to_json
     params[:callback].nil? ? body : "#{params[:callback]}(#{body})"
   end
 
   error do
-    log.warn "An error occurred: #{request.env['sinatra.error'].message}"
+    logger.warn "An error occurred: #{request.env['sinatra.error'].message}"
     body = { :error => 'unknown-error', :details => request.env['sinatra.error'].message }.to_json
     params[:callback].nil? ? body : "#{params[:callback]}(#{body})"
   end
