@@ -350,45 +350,59 @@ class App < Sinatra::Base
         options = params[:options].split(',')
       end
 
-      logger.info "Fetching anime with ID #{params[:id]}..."
+      id = params[:id]
+
+      logger.info "Fetching anime with ID #{id}..."
       logger.info "Options: #{options}" unless options.count == 0
 
-      anime = redis.get "anime:#{params[:id]}"
+      cache_control :public, :must_revalidate, :max_age => 86400
+      last_modified Date.today
+      etag "anime/#{params[:id]}/#{options}"
 
-      if anime.nil?
+      # cached_json = redis.get "anime:#{id}"
+      
+      # if cached_json.nil?
 
-        logger.info 'Anime was not found in redis, making a request...'
-        # FIXME: Removing caching on search for now. Figure out how to better cache this
-        # expires 3600, :public, :must_revalidate
-        # last_modified Time.now
-        # etag "anime/#{params[:id]}/#{options}"
+        # NOTE: Disabling redis for now.
+        # logger.info 'Anime was not found in redis, making a request...'
 
-        response = Railgun::Anime.scrape(params[:id], options)
+        nokogiri = Railgun::MALNetworkService.nokogiri_from_request(Railgun::MALNetworkService.anime_request_for_id(id))
+        anime = Railgun::Anime.scrape(nokogiri, id)
 
-        json = response.to_json
+        # Cache the contents if we can.
+        # begin
+        #   logger.info '[REDIS] Storing in redis...'
+        #   redis.setnx "anime:#{id}", anime.to_json
+        #   redis.cache(id, 21600) { anime.to_json }
+        # rescue Exception => e
+        #   logger.warn "[REDIS] Could not store in redis! An exception occurred: #{e}"
+        # end
 
-        # FIXME: This is temporary; we should attempt to store just the anime response
-        # (no options) to bypass an extra call.
+        # Are there additional options? We'll need to make additional requests if so.
+
         if options.count > 0
-          begin
-            logger.info '[REDIS] Storing in redis...'
-            redis.setnx "anime:#{params[:id]}", json
-            redis.cache(params[:id], 21600) { json }
-          rescue Exception => e
-            logger.warn "[REDIS] Could not store in redis! An exception occurred: #{e}"
-            json
+          if options.include? 'characters_and_staff'
+            logger.info 'Scraping characters and staff...'
+
+            nokogiri = Railgun::MALNetworkService.nokogiri_from_request(anime.additional_info_urls[:characters_and_staff])
+            anime.summary_stats = Railgun::Anime.scrape_characters_and_staff(nokogiri, anime)
+
+          end
+
+          if options.include? 'stats'
+            logger.info 'Scraping stats...'
+
+            nokogiri = Railgun::MALNetworkService.nokogiri_from_request(anime.additional_info_urls[:stats])
+            anime.score_stats = Railgun::Anime.scrape_stats(nokogiri, anime)
           end
 
         end
 
-      else
-        logger.info "[REDIS] Cached version of #{params[:id]} found, returning..."
-        anime
-      end
-
-
-
-
+        anime.to_json
+      # else
+      #   logger.info "[REDIS] Cached version of #{params[:id]} found, returning..."
+      #   cached_json
+      # end
 
     end
 
@@ -512,10 +526,9 @@ class App < Sinatra::Base
       logger.info "Fetching manga with ID #{params[:id]}..."
       logger.info "Options: #{options}" unless options.count == 0
 
-      # FIXME: Removing caching on search for now. Figure out how to better cache this
-      # expires 3600, :public, :must_revalidate
-      # last_modified Time.now
-      # etag "manga/#{params[:id]}/#{options}"
+      cache_control :public, :must_revalidate, :max_age => 86400
+      last_modified Date.today
+      etag "manga/#{params[:id]}/#{options}"
 
       manga = Railgun::Manga.scrape(params[:id], options)
 
