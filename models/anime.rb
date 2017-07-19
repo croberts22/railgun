@@ -211,33 +211,29 @@ module Railgun
 
     ### Creation Methods
 
-    def self.scrape(id, options)
+    def self.scrape(nokogiri, id)
 
       puts 'Scraping anime...'
 
       anime = Anime.new(id)
-
-      nokogiri = MALNetworkService.nokogiri_from_request(MALNetworkService.anime_request_for_id(id))
-
       scraper = AnimeScraper.new
       scraper.parse_anime(nokogiri, anime)
 
-      # If any options were passed in, perform a fetch and continue parsing.
-      if options.include? 'characters_and_staff'
-        puts 'Scraping characters and staff...'
-        nokogiri = MALNetworkService.nokogiri_from_request(anime.additional_info_urls[:characters_and_staff])
-        characters_and_staff = scraper.parse_staff(nokogiri)
-        anime.character_voice_actors = characters_and_staff
-      end
-
-      if options.include? 'stats'
-        puts 'Scraping additional stats...'
-        nokogiri = MALNetworkService.nokogiri_from_request(anime.additional_info_urls[:stats])
-        anime.summary_stats = scraper.parse_summary_stats(nokogiri)
-        anime.score_stats = scraper.parse_score_stats(nokogiri)
-      end
-
       anime
+    end
+
+    def self.scrape_characters_and_staff(nokogiri, anime)
+      puts 'Scraping characters and staff...'
+      scraper = AnimeScraper.new
+      characters_and_staff = scraper.parse_staff(nokogiri)
+      anime.character_voice_actors = characters_and_staff
+    end
+
+    def self.scrape_stats(nokogiri, anime)
+      puts 'Scraping additional stats...'
+      scraper = AnimeScraper.new
+      anime.summary_stats = scraper.parse_summary_stats(nokogiri)
+      anime.score_stats = scraper.parse_score_stats(nokogiri)
     end
 
     def self.search(query)
