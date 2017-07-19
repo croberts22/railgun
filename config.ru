@@ -7,8 +7,8 @@ require_relative 'services/keys'
 Bundler.require
 
 # For local testing, fire up memcached and uncomment this:
-ENV['MEMCACHIER_SERVERS'] = 'localhost'
-
+# ENV['MEMCACHIER_SERVERS'] = 'localhost'
+#
 # if memcache_servers = ENV['MEMCACHIER_SERVERS']
 #   use Rack::Cache,
 #       verbose: true,

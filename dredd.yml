@@ -24,4 +24,4 @@ timestamp: false
 silent: false
 path: []
 blueprint: apiary.apib
-endpoint: 'http://localhost:9292/1.0'
+endpoint: 'http://localhost:9292/1.1'
