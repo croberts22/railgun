@@ -69,11 +69,30 @@ class TestCharacterScraper < Test::Unit::TestCase
     nokogiri = nokogiri_for_sample_response
 
     actual = scraper.parse_biography(nokogiri)
-    expected = actual.is_a?(String)
+    expected = "Age: 14-16
+Birthday: July 15
+Blood Type: O
+Height: 166 cm (5'5\")
+Affiliation: Yuuei
+Quirk: One For All
+
+He is the main protagonist of Boku no Hero Academia. Though originally born without a Quirk, he manages to catch the attention of the legendary hero All Might and has since become his close pupil and a student at UA.
+
+Izuku is a very timid and polite boy. Due to being bullied since childhood for being born without a Quirk, he is initially portrayed as insecure, being more reserved and not self expressive, especially in front of Katsuki. However, after being accepted into Yuuei and facing Katsuki during Battle Training, he has gradually become more confident and brave.
+
+Izuku is also very diligent and strong willed. Since he greatly admires Heroes and has always aimed to be one, he has a habit of writing down in his notebooks all he knows about heroes and their quirks, including other Yuuei students. He is a very caring person, and will never hesitate to rescue someone in danger, even if he knows he's not strong enough. When someone has a personal problem, Izuku will always try to help, even if it's not his business. Izuku also has the tendency to overthink with anything that grabs his attention, which makes him start mumbling to himself a lot.
+
+(Source: Boku no Hero Academia Wikia)"
+
+    assert_equal(actual, expected)
 
     assert(!(actual.include? '<br>'))
     assert(!(actual.include? '<br />'))
     assert(expected)
+  end
+
+  def test_parse_biography_spoilers
+    #FIXME
   end
 
   def test_parse_animeography
