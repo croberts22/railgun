@@ -30,7 +30,7 @@ module Railgun
     end
 
     def parse_nickname(nokogiri)
-      nokogiri.at('h1').text[%r{"(.+)"}, 1]
+       nokogiri.at('h1').text[%r{"(.+)"}, 1]
     end
 
     def parse_animeography(nokogiri)
@@ -94,6 +94,11 @@ module Railgun
 
           # Once we hit another header, stop parsing.
           break if div_class = biography_node['class'] and div_class == 'normal_header'
+
+          # Hide spoilers unless requested.
+          # FIXME: We need to pass in a param from the networking layer down here for spoiler info.
+          break if div_class = biography_node['class'] and div_class == 'spoiler'
+
 
           text = biography_node.text.strip
 
