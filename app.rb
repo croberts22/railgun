@@ -5,6 +5,7 @@ require 'redis'
 require 'fileutils'
 require_relative 'lib/redis_cache'
 require_relative 'services/mal_network_service'
+require_relative 'utilities/request_helper'
 require_relative 'railgun'
 
 
@@ -355,9 +356,9 @@ class App < Sinatra::Base
       logger.info "Fetching anime with ID #{id}..."
       logger.info "Options: #{options}" unless options.count == 0
 
-      cache_control :public, :must_revalidate, :max_age => 86400
+      cache_control :public, :must_revalidate, :max_age => 259200
       last_modified Date.today
-      etag "anime/#{params[:id]}/#{options}"
+      etag Railgun::RequestHelper.generate_etag('anime', params[:id], Date.today)
 
       # cached_json = redis.get "anime:#{id}"
       
@@ -454,9 +455,9 @@ class App < Sinatra::Base
 
       logger.info "Fetching anime list with options #{options}..."
 
-      expires 3600, :public, :must_revalidate
-      last_modified Time.now
-      etag "anime/top/#{options[:type]}/#{options[:page]}"
+      cache_control :public, :must_revalidate, :max_age => 259200
+      last_modified Date.today
+      etag Railgun::RequestHelper.generate_etag('animetop', params[:type], Date.today)
 
       anime = Railgun::Anime.top(options)
 
@@ -492,8 +493,8 @@ class App < Sinatra::Base
 
       logger.info "Fetching seasonal anime list with options #{options}..."
 
-      expires 3600, :public, :must_revalidate
-      last_modified Time.now
+      cache_control :public, :must_revalidate, :max_age => 259200
+      last_modified Date.today
       etag "anime/season/#{options[:year]}/#{options[:season]}"
 
       anime = Railgun::Anime.season(options)
@@ -526,9 +527,9 @@ class App < Sinatra::Base
       logger.info "Fetching manga with ID #{params[:id]}..."
       logger.info "Options: #{options}" unless options.count == 0
 
-      cache_control :public, :must_revalidate, :max_age => 86400
+      cache_control :public, :must_revalidate, :max_age => 259200
       last_modified Date.today
-      etag "manga/#{params[:id]}/#{options}"
+      etag Railgun::RequestHelper.generate_etag('manga', params[:id], Date.today)
 
       manga = Railgun::Manga.scrape(params[:id], options)
 
@@ -581,9 +582,9 @@ class App < Sinatra::Base
 
       logger.info "Fetching manga list with options #{options}..."
 
-      expires 3600, :public, :must_revalidate
-      last_modified Time.now
-      etag "manga/top/#{options[:type]}/#{options[:page]}"
+      cache_control :public, :must_revalidate, :max_age => 259200
+      last_modified Date.today
+      etagRailgun::RequestHelper.generate_etag('mangatop', params[:type], Date.today)
 
       manga = Railgun::Manga.top(options)
 
@@ -604,10 +605,9 @@ class App < Sinatra::Base
 
       logger.info "Fetching character with ID #{params[:id]}..."
 
-      # FIXME: Removing caching on search for now. Figure out how to better cache this
-      # expires 3600, :public, :must_revalidate
-      # last_modified Time.now
-      # etag "character/#{params[:id]}"
+      cache_control :public, :must_revalidate, :max_age => 259200
+      last_modified Date.today
+      etag Railgun::RequestHelper.generate_etag('character', params[:id], Date.today)
 
       character = Railgun::Character.scrape(params[:id])
 
@@ -627,10 +627,9 @@ class App < Sinatra::Base
 
       logger.info "Fetching person with ID #{params[:id]}..."
 
-      # FIXME: Removing caching on search for now. Figure out how to better cache this
-      # expires 3600, :public, :must_revalidate
-      # last_modified Time.now
-      # etag "person/#{params[:id]}"
+      cache_control :public, :must_revalidate, :max_age => 259200
+      last_modified Date.today
+      etag Railgun::RequestHelper.generate_etag('person', params[:id], Date.today)
 
       person = Railgun::Person.scrape(params[:id])
 
@@ -651,9 +650,9 @@ class App < Sinatra::Base
       if params[:option] == 'friends'
         logger.info "Fetching friends for user with ID #{params[:id]}..."
 
-        expires 3600, :public, :must_revalidate
-        last_modified Time.now
-        etag "user/#{params[:id]}/friends"
+        cache_control :public, :must_revalidate, :max_age => 259200
+        last_modified Date.today
+        etag Railgun::RequestHelper.generate_etag('user', params[:id], Date.today)
 
         users = Railgun::User.scrape_friends(params[:id])
 
