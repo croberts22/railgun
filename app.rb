@@ -584,7 +584,7 @@ class App < Sinatra::Base
 
       cache_control :public, :must_revalidate, :max_age => 259200
       last_modified Date.today
-      etagRailgun::RequestHelper.generate_etag('mangatop', params[:type], Date.today)
+      etag Railgun::RequestHelper.generate_etag('mangatop', params[:type], Date.today)
 
       manga = Railgun::Manga.top(options)
 
