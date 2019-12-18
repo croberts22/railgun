@@ -36,7 +36,7 @@ GEM
     nokogiri (1.8.0)
       mini_portile2 (~> 2.2.0)
     power_assert (1.0.2)
-    rack (2.0.3)
+    rack (2.0.8)
     rack-cache (1.7.0)
       rack (>= 0.4)
     rack-mini-profiler (0.10.5)
