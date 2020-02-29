@@ -45,7 +45,7 @@ GEM
       rack
     rack-test (0.7.0)
       rack (>= 1.0, < 3)
-    rake (12.0.0)
+    rake (12.3.3)
     redis (3.3.3)
     rollbar (2.15.0)
       multi_json
