@@ -1,7 +1,4 @@
-<h3 align="center">
-  <img src="http://i.imgur.com/WaxRVGs.png" alt="Railgun" />
-</h3>
-
+# ⚠️ This repository is now archived. MyAnimeList.net has an API (in beta) that solves most of the issues this web scraping project intended to accomplish. ⚠️
 
 [![Twitter](https://img.shields.io/badge/contact-%40spacepyro-00aced.svg)](https://twitter.com/spacepyro)
 [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/)
